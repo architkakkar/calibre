@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,23 +35,29 @@ export function HeroSection() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4 pt-3">
-            <Link
-              href="/signup"
-              className={cn(
-                buttonVariants({ size: "sm", variant: "default" }),
-                "font-bold"
-              )}
-            >
-              Get Started
-            </Link>
-            <Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "default" })
-              )}
-            >
-              Login
-            </Link>
+            <SignedOut>
+              <SignUpButton>
+                <Link
+                  href="/register"
+                  className={cn(
+                    buttonVariants({ size: "sm", variant: "default" }),
+                    "font-bold"
+                  )}
+                >
+                  Get Started
+                </Link>
+              </SignUpButton>
+              <SignInButton>
+                <Link
+                  href="/login"
+                  className={cn(
+                    buttonVariants({ variant: "secondary", size: "default" })
+                  )}
+                >
+                  Login
+                </Link>
+              </SignInButton>
+            </SignedOut>
             <span className="text-sm text-muted-foreground">
               No credit card required, Cancel anytime.
             </span>
