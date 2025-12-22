@@ -32,7 +32,7 @@ export function RewardsVisual() {
       {/* Decorative glow */}
       <div className="absolute top-6 left-12 w-16 h-16 rounded-full bg-secondary/10 blur-2xl" />
 
-      <div className="relative h-full flex flex-col px-6 pt-2 pb-8 gap-3">
+      <div className="relative h-full flex flex-col px-6 pt-3 pb-8 gap-2">
         {/* Top row - Level Badge & Streak */}
         <div className="flex items-center justify-between">
           {/* Level badge */}
@@ -47,25 +47,10 @@ export function RewardsVisual() {
               <span className="text-[9px] text-primary/80">Pro Athlete</span>
             </div>
           </div>
-
-          {/* Streak counter */}
-          {/* <div className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border border-primary/20">
-            <div className="flex items-center gap-1">
-              <HugeiconsIcon
-                icon={Fire03Icon}
-                size={16}
-                className="text-secondary flame"
-              />
-              <span className="text-base font-bold text-secondary">7</span>
-            </div>
-            <span className="text-[8px] text-muted-foreground/70 uppercase tracking-wider">
-              Day Streak
-            </span>
-          </div> */}
         </div>
 
         {/* XP Progress bar */}
-        <div className="space-y-1">
+        <div className="space-y-1 mt-1">
           <div className="flex justify-between items-center">
             <span className="text-[9px] font-medium text-muted-foreground/80 uppercase tracking-wide">
               Experience
