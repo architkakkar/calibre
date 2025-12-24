@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "Login | Calibre",
+  title: "Login · Calibre",
   description: "Login to your Calibre account to access your dashboard.",
 };
 

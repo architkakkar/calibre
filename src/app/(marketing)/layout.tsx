@@ -11,7 +11,9 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { AppLogo } from "@/components/brand/app-logo";
 
-export default function MarketingLayout({ children }: { children: ReactNode }) {
+export default function MarketingLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <div className="min-h-dvh w-full overflow-hidden bg-background">
       <header className="px-6 py-5">
