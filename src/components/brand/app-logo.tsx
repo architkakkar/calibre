@@ -1,11 +1,8 @@
 import { cn } from "@/lib/utils";
-
-// import { Rubik_Wet_Paint } from "next/font/google";
 import { Wendy_One } from "next/font/google";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BodyPartMuscleIcon } from "@hugeicons/core-free-icons";
 
-// const logoFont = Rubik_Wet_Paint({ subsets: ["latin"], weight: "400" });
 const logoFont = Wendy_One({ subsets: ["latin"], weight: "400" });
 
 export function AppLogo() {
