@@ -1,6 +1,5 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Fire03Icon,
   Medal01Icon,
   StarIcon,
   CheckmarkBadge01Icon,
