@@ -9,7 +9,7 @@ import {
 } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { AppLogo } from "@/components/brand/app-logo";
+import { AppLogo } from "@/components/common/app-logo";
 
 export default function MarketingLayout({
   children,
