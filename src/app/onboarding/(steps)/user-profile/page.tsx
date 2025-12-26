@@ -32,7 +32,10 @@ export default function UserProfilePage() {
   return (
     <form className="flex flex-col h-full">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between gap-4">
+      <div className="mb-8 flex flex-col items-start justify-between">
+        <div className="text-sm text-muted-foreground self-end mb-2">
+          Step 2 of 3
+        </div>
         <div className="space-y-2">
           <h1 className="text-3xl font-black leading-tight">
             Setup your Profile
@@ -41,7 +44,6 @@ export default function UserProfilePage() {
             Let&apos;s personalize your Calibre experience.
           </p>
         </div>
-        <div className="text-sm text-muted-foreground">Step 2 of 3</div>
       </div>
 
       {/* Fields (scroll area handled by parent layout) */}
@@ -81,7 +83,7 @@ export default function UserProfilePage() {
                   !dob && "text-muted-foreground"
                 )}
               >
-                <span>{dob ? format(dob, "PPP") : "Select date"}</span>
+                <span>{dob ? format(dob, "P") : "Select date"}</span>
                 <HugeiconsIcon icon={Calendar03Icon} size={18} />
               </PopoverTrigger>
               <PopoverContent align="start" className="w-auto p-0">

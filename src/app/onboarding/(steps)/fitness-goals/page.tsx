@@ -26,7 +26,10 @@ export default function FitnessGoalsPage() {
   return (
     <form className="flex flex-col h-full">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex flex-col items-start justify-between">
+        <div className="text-sm text-muted-foreground self-end mb-2">
+          Step 3 of 3
+        </div>
         <div className="space-y-2">
           <h1 className="text-3xl font-black leading-tight">
             Setup your Fitness Goals
@@ -35,7 +38,6 @@ export default function FitnessGoalsPage() {
             Tell us what you want to achieve so we can tailor your plan.
           </p>
         </div>
-        <div className="text-sm text-muted-foreground">Step 3 of 3</div>
       </div>
 
       {/* Content */}
@@ -49,7 +51,7 @@ export default function FitnessGoalsPage() {
 
         <div className="space-y-2">
           <Label>
-            Primary Goals *
+            <span className="shrink-0">Primary Goals *</span>
             <span className="text-[11px] text-muted-foreground">
               (Select up to 3 goals that matter most to you)
             </span>
@@ -82,7 +84,7 @@ export default function FitnessGoalsPage() {
                     )
                   }
                   className={cn(
-                    "h-9 rounded-md border px-4 text-sm font-medium transition-colors",
+                    "min-h-9 rounded-md border px-4 text-sm font-medium transition-colors",
                     "hover:bg-muted",
                     isSelected
                       ? "border-primary bg-primary/5"
@@ -152,13 +154,13 @@ export default function FitnessGoalsPage() {
 
         <div className="space-y-2">
           <Label>
-            Weekly Workout Frequency *
+            <span className="shrink-0">Weekly Workout Frequency *</span>
             <span className="text-[11px] text-muted-foreground">
               (Choose a frequency you can realistically maintain)
             </span>
           </Label>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {[
               { label: "2–3 days", value: "2-3" },
               { label: "3–4 days", value: "3-4" },
@@ -173,7 +175,7 @@ export default function FitnessGoalsPage() {
                   type="button"
                   onClick={() => setWeeklyFrequency(value)}
                   className={cn(
-                    "h-9 rounded-md border px-3 text-sm font-medium transition-colors",
+                    "min-h-9 rounded-md border px-3 text-sm font-medium transition-colors",
                     "hover:bg-muted",
                     isSelected ? "border-primary bg-primary/5" : "border-border"
                   )}
@@ -187,7 +189,7 @@ export default function FitnessGoalsPage() {
 
         <div className="space-y-2">
           <Label>
-            Motivation *
+            <span className="shrink-0">Motivation *</span>
             <span className="text-[11px] text-muted-foreground">
               (Select up to 3 reasons that motivate you to stay consistent)
             </span>
@@ -220,7 +222,7 @@ export default function FitnessGoalsPage() {
                     )
                   }
                   className={cn(
-                    "h-9 rounded-md border px-4 text-sm font-medium transition-colors",
+                    "min-h-9 rounded-md border px-4 text-sm font-medium transition-colors",
                     "hover:bg-muted",
                     isSelected
                       ? "border-primary bg-primary/5"
