@@ -15,7 +15,7 @@ export default function MarketingLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="min-h-dvh w-full overflow-hidden bg-background">
+    <div className="lg:min-h-dvh w-full lg:overflow-hidden bg-background">
       <header className="px-6 py-5">
         <div className="mx-auto rounded-xl border border-border bg-card/30 shadow-sm px-4 py-3 flex items-center justify-between">
           <AppLogo />
