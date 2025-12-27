@@ -1,10 +1,6 @@
-"use client";
-
-import {
-  HeroSection,
-  FeaturesGrid,
-  Testimonial,
-} from "@/app/(marketing)/_components";
+import { FeaturesGrid } from "./_components/features-grid";
+import { HeroSection } from "./_components/hero-section";
+import { Testimonial } from "./_components/testimonial";
 
 export default function MarketingPage() {
   return (

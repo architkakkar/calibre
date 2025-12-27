@@ -10,7 +10,7 @@ import { cn } from "@/lib/shared/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { HeroStats } from "@/app/(marketing)/_components/hero-stats";
+import { HeroStats } from "./hero-stats";
 
 export function HeroSection() {
   return (

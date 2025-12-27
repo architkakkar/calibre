@@ -4,13 +4,11 @@ import {
   AiChat02Icon,
   Award01Icon,
 } from "@hugeicons/core-free-icons";
-import { FlipCard } from "@/app/(marketing)/_components/flip-card";
-import {
-  DietVisual,
-  AITrainerVisual,
-  RewardsVisual,
-  WorkoutVisual,
-} from "@/app/(marketing)/_components/visuals/index";
+import { FlipCard } from "./flip-card";
+import { WorkoutVisual } from "./visuals/workout-visual";
+import { DietVisual } from "./visuals/diet-visual";
+import { AITrainerVisual } from "./visuals/ai-trainer-visual";
+import { RewardsVisual } from "./visuals/rewards-visual";
 
 export function FeaturesGrid() {
   const features = [
