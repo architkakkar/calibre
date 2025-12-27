@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { db } from "@/lib/server/drizzle";
-import { usersTable } from "@/db/schema";
+import { db } from "@/lib/server/db/drizzle";
+import { usersTable } from "@/lib/server/db/schema";
 
 const clerkWebhookSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
 
