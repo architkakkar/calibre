@@ -1,8 +1,15 @@
 import Link from "next/link";
-import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  SignInButton,
+  SignUpButton,
+  SignedOut,
+} from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { HeroStats } from "@/app/(marketing)/_components/hero-stats";
 
 export function HeroSection() {
@@ -35,29 +42,36 @@ export function HeroSection() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4 pt-3">
-            <SignedOut>
-              <SignUpButton>
-                <Link
-                  href="/register"
-                  className={cn(
-                    buttonVariants({ size: "sm", variant: "default" }),
-                    "font-bold"
-                  )}
-                >
-                  Get Started
-                </Link>
-              </SignUpButton>
-              <SignInButton>
-                <Link
-                  href="/login"
-                  className={cn(
-                    buttonVariants({ variant: "secondary", size: "default" })
-                  )}
-                >
-                  Login
-                </Link>
-              </SignInButton>
-            </SignedOut>
+            <ClerkLoading>
+              <Skeleton className="h-8 w-24 rounded-md" />
+              <Skeleton className="h-8 w-16 rounded-md" />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <SignedOut>
+                <SignUpButton>
+                  <Link
+                    href="/register"
+                    className={cn(
+                      buttonVariants({ variant: "default" }),
+                      "h-8 w-24 font-bold"
+                    )}
+                  >
+                    Get Started
+                  </Link>
+                </SignUpButton>
+                <SignInButton>
+                  <Link
+                    href="/login"
+                    className={cn(
+                      buttonVariants({ variant: "secondary" }),
+                      "h-8 w-16 border border-secondary"
+                    )}
+                  >
+                    Login
+                  </Link>
+                </SignInButton>
+              </SignedOut>
+            </ClerkLoaded>
             <span className="text-sm text-muted-foreground">
               No credit card required, Cancel anytime.
             </span>
