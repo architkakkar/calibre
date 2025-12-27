@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SignedIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: {
@@ -13,9 +12,5 @@ export const metadata: Metadata = {
 export default function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <>
-      <SignedIn>{children}</SignedIn>
-    </>
-  );
+  return <>{children}</>;
 }
