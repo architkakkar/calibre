@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shared/utils";
 import { Wendy_One } from "next/font/google";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BodyPartMuscleIcon } from "@hugeicons/core-free-icons";

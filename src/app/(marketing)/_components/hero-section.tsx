@@ -6,7 +6,7 @@ import {
   SignUpButton,
   SignedOut,
 } from "@clerk/nextjs";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/shared/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
