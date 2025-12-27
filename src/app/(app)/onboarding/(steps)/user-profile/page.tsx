@@ -29,6 +29,8 @@ export default function UserProfilePage() {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [dob, setDob] = useState<Date | undefined>();
 
+  console.log("user-profile page rendered");
+
   return (
     <form className="flex flex-col h-full">
       {/* Header */}
