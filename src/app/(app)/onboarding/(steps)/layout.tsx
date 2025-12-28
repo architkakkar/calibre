@@ -7,7 +7,7 @@ import { CheckmarkCircle03Icon } from "@hugeicons/core-free-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export default function OnBoardingStepLayout({
+export default function OnboardingStepLayout({
   children,
 }: {
   children: React.ReactNode;
