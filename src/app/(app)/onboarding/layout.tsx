@@ -11,6 +11,5 @@ export default function OnboardingLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("Onboarding Layout Rendered");
   return <>{children}</>;
 }
