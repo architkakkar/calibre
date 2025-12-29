@@ -32,9 +32,10 @@ export default function FitnessGoalsPage() {
     useOnboardingStore();
   const commitmentValue = goals.commitment ?? "";
 
-  async function handleFinishSetup() {
-    const success = await completeOnboarding();
+  async function handleFinishSetup(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
+    const success = await completeOnboarding();
     if (success) {
       router.push("/dashboard");
     }
