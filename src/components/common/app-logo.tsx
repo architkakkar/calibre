@@ -2,6 +2,7 @@ import { cn } from "@/lib/shared/utils";
 import { Wendy_One } from "next/font/google";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BodyPartMuscleIcon } from "@hugeicons/core-free-icons";
+import { APP_NAME } from "@/lib/shared/constants";
 
 const logoFont = Wendy_One({ subsets: ["latin"], weight: "400" });
 
@@ -17,7 +18,7 @@ export function AppLogo() {
           logoFont.className
         )}
       >
-        Calibre
+        {APP_NAME}
       </span>
     </div>
   );
