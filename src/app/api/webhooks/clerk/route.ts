@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { handleClerkWebhook } from "@/services/clerk-webhook.service";
+import { handleClerkWebhook } from "@/lib/server/services/clerk-webhook.service";
 
 export async function POST(request: Request) {
   const clerkWebhookSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET;

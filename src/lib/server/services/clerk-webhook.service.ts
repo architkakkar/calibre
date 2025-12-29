@@ -1,5 +1,5 @@
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser } from "@/services/user.service";
+import { createUser } from "@/lib/server/services/user.service";
 
 export async function handleClerkWebhook(event: WebhookEvent) {
   if (event.type !== "user.created") {
