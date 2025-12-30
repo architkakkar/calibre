@@ -1,7 +1,10 @@
 /* App related constants */
 export const APP_NAME = "Calibre" as const;
 
-/* Onboarding related constants */
+/*
+Onboarding related constants.
+These should correspond to the enums defined in src/lib/server/db/enums.ts
+*/
 export const GENDERS = [
   "Male",
   "Female",
