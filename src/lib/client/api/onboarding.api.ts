@@ -3,7 +3,7 @@ import API_ROUTES from "@/lib/client/api-routes";
 import type { OnboardingPayload } from "@/lib/validators/onboarding.validator";
 
 export async function submitOnboarding(payload: OnboardingPayload) {
-  const { data } = await apiClient.post(API_ROUTES.onboarding, payload);
+  const response = await apiClient.post(API_ROUTES.onboarding, payload);
 
-  return data;
+  return response.data;
 }
