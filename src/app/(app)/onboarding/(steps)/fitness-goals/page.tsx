@@ -30,7 +30,7 @@ export default function FitnessGoalsPage() {
   const router = useRouter();
   const { goals, updateGoals, isFitnessGoalsComplete, completeOnboarding } =
     useOnboardingStore();
-  const commitmentValue = goals.commitment ?? "";
+  const commitmentValue = goals.commitmentLevel ?? "";
 
   async function handleFinishSetup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -173,7 +173,7 @@ export default function FitnessGoalsPage() {
               <Select
                 value={commitmentValue}
                 onValueChange={(v) =>
-                  updateGoals({ commitment: v as FitnessGoals["commitment"] })
+                  updateGoals({ commitmentLevel: v as FitnessGoals["commitmentLevel"] })
                 }
               >
                 <SelectTrigger className="h-9 w-full">

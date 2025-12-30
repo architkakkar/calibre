@@ -44,7 +44,7 @@ const defaultState: Pick<OnboardingState, "profile" | "goals"> = {
   goals: {
     primaryGoals: [],
     targetWeightKg: undefined,
-    commitment: undefined,
+    commitmentLevel: undefined,
     weeklyFrequency: undefined,
     motivations: [],
     notes: undefined,
@@ -81,7 +81,7 @@ function validateFitnessGoals(goals: Partial<FitnessGoals>): boolean {
       typeof goals.targetWeightKg === "string"
         ? Number(goals.targetWeightKg)
         : goals.targetWeightKg,
-    commitment: goals.commitment,
+    commitmentLevel: goals.commitmentLevel,
     notes: goals.notes,
   });
 
@@ -171,7 +171,7 @@ export const useOnboardingStore = create<OnboardingState>()(
               typeof goals.targetWeightKg === "string"
                 ? Number(goals.targetWeightKg)
                 : (goals.targetWeightKg as number),
-            commitment: goals.commitment as FitnessGoals["commitment"],
+            commitmentLevel: goals.commitmentLevel as FitnessGoals["commitmentLevel"],
             notes: goals.notes,
           },
         };

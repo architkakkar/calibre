@@ -63,7 +63,7 @@ export const FitnessGoalsSchema = z.object({
     })
     .min(20)
     .max(500),
-  commitment: z.enum(COMMITMENT_LEVELS),
+  commitmentLevel: z.enum(COMMITMENT_LEVELS),
   weeklyFrequency: z.enum(WEEKLY_FREQUENCIES),
   motivations: z
     .array(MotivationEnum)
