@@ -1,7 +1,21 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 
 /**
+ * Semantic error categories used by the UI layer.
+ * These abstract away raw HTTP / Axios details.
+ */
+export type ApiErrorType =
+  | "VALIDATION"
+  | "UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "SERVER"
+  | "NETWORK"
+  | "UNKNOWN";
+
+/**
  * Central Axios client for all client-side API calls.
+ * Handles HTTP concerns only (base URL, timeouts, headers, errors).
  */
 const apiClient: AxiosInstance = axios.create({
   baseURL: "/api",
@@ -12,38 +26,34 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
-// Request interceptor: Runs before every request
+// Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    // Example: attach auth token later if needed
-    // const token = getAuthToken();
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
-
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: Runs for every response / error
+// Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    // Central place for handling HTTP errors
+    let errorType: ApiErrorType = "UNKNOWN";
+
     if (error.response) {
       const status = error.response.status;
 
-      // Example global handling (optional)
-      if (status === 401) {
-        // auth expired / unauthorized
-        // e.g. redirect to login, clear store, etc.
-      }
-
-      if (status >= 500) {
-        // server error logging hook
-      }
+      if (status === 400) errorType = "VALIDATION";
+      else if (status === 401) errorType = "UNAUTHORIZED";
+      else if (status === 403) errorType = "FORBIDDEN";
+      else if (status === 404) errorType = "NOT_FOUND";
+      else if (status >= 500) errorType = "SERVER";
+    } else if (error.request) {
+      errorType = "NETWORK";
     }
+
+    (error as AxiosError & { apiErrorType?: ApiErrorType }).apiErrorType =
+      errorType;
 
     return Promise.reject(error);
   }

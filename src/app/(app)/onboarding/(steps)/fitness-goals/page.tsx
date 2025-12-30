@@ -35,9 +35,16 @@ export default function FitnessGoalsPage() {
   async function handleFinishSetup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const success = await completeOnboarding();
-    if (success) {
-      router.push("/dashboard");
+    try {
+      const success = await completeOnboarding();
+      if (success) {
+        router.push("/dashboard");
+      } else {
+        alert("payload invalid");
+      }
+    } catch (error) {
+      const err = error as Error;
+      alert(err.message);
     }
   }
 
