@@ -8,7 +8,7 @@ import {
   type FitnessGoals,
   type OnboardingPayload,
 } from "@/lib/validators/onboarding.validator";
-import { submitOnboarding } from "@/lib/client/api/onboarding.api";
+import { completeOnboardingApi } from "@/lib/client/api/onboarding.api";
 
 type ClientProfile = Omit<UserProfile, "dob"> & { dobIso?: string };
 
@@ -185,7 +185,7 @@ export const useOnboardingStore = create<OnboardingState>()(
         if (!payload) {
           return false;
         }
-        await submitOnboarding(payload);
+        await completeOnboardingApi(payload);
         get().reset();
         return true;
       }
