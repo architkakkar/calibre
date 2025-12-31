@@ -1,14 +1,8 @@
 import Link from "next/link";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
 import { cn } from "@/lib/shared/utils";
-import { buttonVariants } from "@/components/ui/button";
 import { AppLogo } from "@/components/common/app-logo";
+import { buttonVariants } from "@/components/ui/button";
 
 export function Navbar() {
   return (
@@ -37,10 +31,6 @@ export function Navbar() {
               </Link>
             </SignUpButton>
           </SignedOut>
-          {/* using currently until dashboard is ready */}
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
         </nav>
       </div>
     </header>
