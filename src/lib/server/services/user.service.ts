@@ -41,8 +41,8 @@ export async function createUser({ id, email }: { id: string; email: string }) {
     userId: id,
     type: "publicMetadata",
     metadata: {
-      isSubscribed: false,
-      onboardingStatus: "PENDING",
+      isSubscribed: 0, // 0: false, 1: true
+      onboardingStatus: 0, // 0: PENDING, 1: COMPLETED
     },
   });
 }
@@ -110,7 +110,7 @@ export async function onboardUser({
     userId,
     type: "publicMetadata",
     metadata: {
-      onboardingStatus: "COMPLETED",
+      onboardingStatus: 1, // 0: PENDING, 1: COMPLETED
     },
   });
 }
