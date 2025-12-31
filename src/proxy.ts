@@ -17,8 +17,8 @@ export default clerkMiddleware(async (auth, req) => {
     await auth.protect();
   }
 
-  // authentication-based redirects
-  if (userId) {
+  // authentication-based redirects (Only for UI routes, NOT API routes)
+  if (userId && !pathname.startsWith("/api")) {
     // redirect root to dashboard
     if (pathname === "/") {
       return NextResponse.redirect(new URL("/dashboard", req.url));
@@ -34,7 +34,11 @@ export default clerkMiddleware(async (auth, req) => {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
-    if (!onboardingCompleted && !isPublicRoute(req)) {
+    if (
+      !onboardingCompleted &&
+      !pathname.startsWith("/onboarding") &&
+      !isPublicRoute(req)
+    ) {
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
   }
