@@ -11,6 +11,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.0.0
         version: 1.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@clerk/backend':
+        specifier: ^2.29.0
+        version: 2.29.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@clerk/nextjs':
         specifier: ^6.36.5
         version: 6.36.5(next@16.0.10(@babel/core@7.28.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
