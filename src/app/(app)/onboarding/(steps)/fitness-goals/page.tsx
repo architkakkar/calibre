@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { Required } from "@/components/common/required";
@@ -21,6 +20,7 @@ import { cn } from "@/lib/shared/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { useOnboardingStore } from "@/stores/onboarding.store";
+import { useGlobalStore } from "@/stores/global.store";
 import type { FitnessGoals } from "@/lib/validators/onboarding.validator";
 import {
   getGoalOptions,
@@ -32,26 +32,26 @@ import {
 export default function FitnessGoalsPage() {
   const router = useRouter();
   const { user } = useUser();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showLoader, hideLoader } = useGlobalStore.getState();
   const { goals, updateGoals, isFitnessGoalsComplete, completeOnboarding } =
     useOnboardingStore();
   const commitmentValue = goals.commitmentLevel ?? "";
 
   async function handleFinishSetup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSubmitting(true);
+    showLoader("Calibrating your experience...");
 
     try {
       const success = await completeOnboarding();
       if (success) {
-        // Reload user to fetch updated sessionClaims
         if (user) {
-          await user.reload();
+          await user.reload(); // Reload user to fetch updated sessionClaims
         }
         showToast({
           type: "success",
           message: "Setup completed successfully!",
         });
+        
         router.push("/dashboard");
       } else {
         showToast({
@@ -67,7 +67,7 @@ export default function FitnessGoalsPage() {
         message: "An unexpected error occurred. Please try again later.",
       });
     } finally {
-      setIsSubmitting(false);
+      hideLoader();
     }
   }
 
@@ -336,11 +336,11 @@ export default function FitnessGoalsPage() {
       </main>
       <footer className="sticky bottom-0 mt-auto -mx-6 md:-mx-10 border-t border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 px-6 md:px-10 py-4">
         <Button
-          disabled={!isFitnessGoalsComplete || isSubmitting}
+          disabled={!isFitnessGoalsComplete}
           type="submit"
           className="w-full h-10 font-semibold cursor-pointer bg-primary/90 hover:bg-primary"
         >
-          {isSubmitting ? "Saving..." : "Finish Setup"}
+          Finish Setup
           <HugeiconsIcon
             icon={ArrowRight01Icon}
             strokeWidth={2.5}

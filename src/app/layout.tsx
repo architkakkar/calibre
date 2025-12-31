@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { shadcn } from "@clerk/themes";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { Loader } from "@/components/common/loader";
 
 const alanSans = Alan_Sans({
   variable: "--font-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <body className={`${alanSans.variable} antialiased dark`}>
           {children}
           <Toaster position="top-right" richColors />
+          <Loader />
         </body>
       </html>
     </ClerkProvider>
