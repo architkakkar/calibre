@@ -2,6 +2,7 @@ import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
 import { eq } from "drizzle-orm";
+import { updateClerkUserMetadata } from "@/lib/server/services/clerk.service";
 import {
   usersTable,
   userProfilesTable,
@@ -26,6 +27,7 @@ export async function createUser({ id, email }: { id: string; email: string }) {
     throw new Error("Invalid user data");
   }
 
+  // create user if not exists
   await db
     .insert(usersTable)
     .values({
@@ -33,6 +35,16 @@ export async function createUser({ id, email }: { id: string; email: string }) {
       email,
     })
     .onConflictDoNothing();
+
+  // initialize clerk user public metadata
+  await updateClerkUserMetadata({
+    userId: id,
+    type: "publicMetadata",
+    metadata: {
+      isSubscribed: false,
+      onboardingStatus: "PENDING",
+    },
+  });
 }
 
 export async function onboardUser({
@@ -75,7 +87,7 @@ export async function onboardUser({
   // update onboarding status
   await db
     .update(usersTable)
-    .set({ onboarding_status: "COMPLETED" })
+    .set({ onboarding_status: "COMPLETED", updated_at: new Date() })
     .where(eq(usersTable.id, userId));
 
   // insert user profile details
@@ -91,5 +103,14 @@ export async function onboardUser({
   await db.insert(userGoalsTable).values(userGoalsData).onConflictDoUpdate({
     target: userGoalsTable.users_id,
     set: userGoalsData,
+  });
+
+  // sync onboarding status to clerk user public metadata
+  await updateClerkUserMetadata({
+    userId,
+    type: "publicMetadata",
+    metadata: {
+      onboardingStatus: "COMPLETED",
+    },
   });
 }
