@@ -5,8 +5,7 @@ These should correspond to the constants defined in src/lib/shared/constants.ts
 import { pgEnum } from "drizzle-orm/pg-core";
 
 export const onboardingStatusEnum = pgEnum("onboarding_status", [
-  "NOT_STARTED",
-  "PARTIAL",
+  "PENDING",
   "COMPLETED",
 ]);
 

@@ -21,7 +21,7 @@ export const usersTable = pgTable("users", {
   email: varchar({ length: 255 }).notNull().unique(),
   is_active: boolean().notNull().default(true),
   is_subscribed: boolean().notNull().default(false),
-  onboarding_status: onboardingStatusEnum().notNull().default("NOT_STARTED"),
+  onboarding_status: onboardingStatusEnum().notNull().default("PENDING"),
   created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
   updated_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
