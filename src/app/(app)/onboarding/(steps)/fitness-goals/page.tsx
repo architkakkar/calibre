@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import { Required } from "@/components/common/required";
+import { showToast } from "@/lib/client/toast";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -24,27 +28,46 @@ import {
   getWeeklyFrequencyOptions,
   getMotivationOptions,
 } from "@/lib/shared/helpers";
-import { Required } from "@/components/common/required";
 
 export default function FitnessGoalsPage() {
   const router = useRouter();
+  const { user } = useUser();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { goals, updateGoals, isFitnessGoalsComplete, completeOnboarding } =
     useOnboardingStore();
   const commitmentValue = goals.commitmentLevel ?? "";
 
   async function handleFinishSetup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const success = await completeOnboarding();
       if (success) {
+        // Reload user to fetch updated sessionClaims
+        if (user) {
+          await user.reload();
+        }
+        showToast({
+          type: "success",
+          message: "Setup completed successfully!",
+        });
         router.push("/dashboard");
       } else {
-        alert("payload invalid");
+        showToast({
+          type: "error",
+          message:
+            "We couldn't save your details. Please check the form for errors and try again.",
+        });
       }
     } catch (error) {
-      const err = error as Error;
-      alert(err.message);
+      console.error("Onboarding error:", error);
+      showToast({
+        type: "error",
+        message: "An unexpected error occurred. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -173,7 +196,9 @@ export default function FitnessGoalsPage() {
               <Select
                 value={commitmentValue}
                 onValueChange={(v) =>
-                  updateGoals({ commitmentLevel: v as FitnessGoals["commitmentLevel"] })
+                  updateGoals({
+                    commitmentLevel: v as FitnessGoals["commitmentLevel"],
+                  })
                 }
               >
                 <SelectTrigger className="h-9 w-full">
@@ -311,11 +336,11 @@ export default function FitnessGoalsPage() {
       </main>
       <footer className="sticky bottom-0 mt-auto -mx-6 md:-mx-10 border-t border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 px-6 md:px-10 py-4">
         <Button
-          disabled={!isFitnessGoalsComplete}
+          disabled={!isFitnessGoalsComplete || isSubmitting}
           type="submit"
           className="w-full h-10 font-semibold cursor-pointer bg-primary/90 hover:bg-primary"
         >
-          Finish Setup
+          {isSubmitting ? "Saving..." : "Finish Setup"}
           <HugeiconsIcon
             icon={ArrowRight01Icon}
             strokeWidth={2.5}
