@@ -1,80 +1,257 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AppLogo } from "@/components/common/app-logo";
+import { NotificationPopup } from "@/components/layout/notification-popup";
+import { Sidebar } from "@/components/layout/sidebar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Coins01Icon,
+  CoinsDollarIcon,
   Fire02Icon,
   Notification01Icon,
   SparklesIcon,
   Home03Icon,
-  ShoppingBag01Icon,
+  Notebook02Icon,
   AiChat02Icon,
+  Dumbbell01Icon,
+  Apple01Icon,
+  User02Icon,
+  Logout01Icon,
+  Menu01Icon,
 } from "@hugeicons/core-free-icons";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { Separator } from "@base-ui/react/separator";
 
 export function Navbar() {
-  const navItems = [
-    { label: "Dashboard", icon: Home03Icon },
-    { label: "Plans", icon: ShoppingBag01Icon },
-    { label: "AI Trainer", icon: AiChat02Icon },
-  ];
+  const router = useRouter();
+  const pathname = usePathname();
+  const firstName = "Archit Kakkar";
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when sidebar is open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isSidebarOpen]);
 
   return (
-    <header className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card/30 px-4 py-2 shadow-sm backdrop-blur-md lg:mb-5">
-      <div className="flex items-center gap-4">
-        <AppLogo />
-        <nav className="hidden items-center gap-2 rounded-full bg-gradient-to-b from-card/40 to-card/20 ring-1 ring-border/60 p-1 sm:flex">
-          {navItems.map((item) => (
+    <>
+      <header className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card/30 px-2 lg:px-4 py-2 shadow-sm backdrop-blur-md lg:mb-5">
+        {/* Left Section */}
+        <div className="flex items-center gap-2 lg:gap-4">
+          {/* Hamburger Menu - Mobile & Tablet */}
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setIsSidebarOpen(true)}
+            className="size-8 rounded-lg text-foreground hover:bg-white/10 lg:hidden"
+          >
+            <HugeiconsIcon icon={Menu01Icon} className="size-5" />
+          </Button>
+
+          <AppLogo />
+
+          {/* Desktop Navigation - Only on Desktop (1024px+) */}
+          <nav className="hidden lg:flex items-center gap-2 rounded-full bg-card/60 ring-1 ring-border/60 p-1">
             <Button
-              key={item.label}
               size="sm"
-              variant={item.label === "Plans" ? "default" : "ghost"}
-              className={`h-8 rounded-full px-4 py-1.5 text-sm font-semibold gap-2 transition-all duration-200 flex items-center ${
-                item.label === "Plans"
-                  ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-primary/50"
+              variant="ghost"
+              onClick={() => router.push("/dashboard")}
+              className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+                pathname === "/dashboard"
+                  ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                   : "text-foreground hover:bg-white/10 hover:text-primary"
               }`}
             >
-              <HugeiconsIcon icon={item.icon} className="size-4" />
-              {item.label}
+              <HugeiconsIcon icon={Home03Icon} className="size-4" />
+              Dashboard
             </Button>
-          ))}
-        </nav>
-      </div>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all ${
+                      pathname?.startsWith("/plans")
+                        ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
+                        : "text-foreground/80 bg-inherit hover:text-primary hover:bg-white/5"
+                    }`}
+                  >
+                    <HugeiconsIcon icon={Notebook02Icon} className="size-4" />
+                    Plans
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="flex flex-col gap-1 min-w-44 w-auto">
+                      <li>
+                        <NavigationMenuLink
+                          href="/plans/workout-plans"
+                          className="flex items-center gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
+                        >
+                          <HugeiconsIcon
+                            icon={Dumbbell01Icon}
+                            className="size-4"
+                          />
+                          Workout Plans
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink
+                          href="/plans/diet-plans"
+                          className="flex items-center gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
+                        >
+                          <HugeiconsIcon
+                            icon={Apple01Icon}
+                            className="size-4"
+                          />
+                          Diet Plans
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => router.push("/ai-trainer/new-chat")}
+              className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+                pathname?.startsWith("/ai-trainer")
+                  ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
+                  : "text-foreground hover:bg-white/10 hover:text-primary"
+              }`}
+            >
+              <HugeiconsIcon icon={AiChat02Icon} className="size-4" />
+              AI Trainer
+            </Button>
+          </nav>
+        </div>
 
-      <div className="flex items-center gap-2 text-foreground">
-        <Badge
-          variant="secondary"
-          className="hidden h-8 gap-1.5 rounded-lg px-3 text-xs font-semibold sm:flex bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
-        >
-          <HugeiconsIcon icon={SparklesIcon} className="size-3.5" />
-          Upgrade
-        </Badge>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-9 gap-1.5 rounded-lg px-3 text-xs font-medium text-foreground hover:bg-white/10 hover:text-orange-500 transition-all"
-        >
-          <HugeiconsIcon icon={Fire02Icon} className="size-4 text-orange-500" />
-          <span className="hidden sm:inline">12</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-9 gap-1.5 rounded-lg px-3 text-xs font-medium text-foreground hover:bg-white/10 hover:text-amber-500 transition-all"
-        >
-          <HugeiconsIcon icon={Coins01Icon} className="size-4 text-amber-500" />
-          <span className="hidden sm:inline">120</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="size-9 rounded-lg text-foreground hover:bg-white/10 transition-all"
-        >
-          <HugeiconsIcon icon={Notification01Icon} className="size-4" />
-        </Button>
-        <div className="ml-2 size-9 cursor-pointer rounded-full bg-gradient-to-br from-primary to-secondary ring-2 ring-border/70 transition-all hover:ring-primary/60 hover:shadow-lg hover:shadow-primary/40" />
-      </div>
-    </header>
+        {/* Right Section */}
+        <div className="flex items-center gap-3 text-foreground">
+          {/* Upgrade - Desktop Only */}
+          <Badge
+            variant="secondary"
+            onClick={() => router.push("/upgrade")}
+            className="hidden lg:flex h-7 gap-1.5 rounded-full px-3 text-xs font-semibold bg-linear-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
+          >
+            <HugeiconsIcon icon={SparklesIcon} />
+            Upgrade
+          </Badge>
+
+          {/* Streak & Coins - Tablet & Desktop (hidden on mobile) */}
+          <div className="hidden sm:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/streak")}
+              className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground hover:bg-orange-500/5! hover:text-orange-500 transition-all"
+            >
+              <HugeiconsIcon
+                icon={Fire02Icon}
+                className="size-4 text-orange-500"
+              />
+              <span className="hidden lg:inline">12</span>
+            </Button>
+            <div className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground transition-all flex items-center justify-center">
+              <HugeiconsIcon
+                icon={CoinsDollarIcon}
+                className="size-4 text-emerald-600"
+              />
+              <span className="hidden lg:inline">120</span>
+            </div>
+          </div>
+
+          {/* Notifications - Tablet & Desktop (hidden on mobile) */}
+          <NotificationPopup />
+
+          {/* Separator - Tablet & Desktop */}
+          <Separator
+            orientation="vertical"
+            className="hidden sm:block h-8 w-px bg-border"
+          />
+
+          {/* Avatar Dropdown - All Screens */}
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="bg-inherit px-2">
+                  <div
+                    className="size-7 cursor-pointer rounded-full bg-linear-to-br from-primary to-secondary ring-2 ring-border/70 transition-all hover:shadow-lg hover:shadow-primary/40 mr-1"
+                    aria-label="Open profile menu"
+                  />
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="flex flex-col gap-1 p-0 min-w-44 w-auto">
+                    <li className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold text-foreground">
+                      Hello, {firstName}
+                    </li>
+                    <Separator className="my-1 bg-border h-px" />
+                    <li>
+                      <NavigationMenuLink
+                        href="/account"
+                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
+                      >
+                        <HugeiconsIcon icon={User02Icon} className="size-4" />
+                        Accounts
+                      </NavigationMenuLink>
+                    </li>
+                    {/* Notifications - Mobile Only */}
+                    <li className="sm:hidden">
+                      <NavigationMenuLink
+                        href="/notifications"
+                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
+                      >
+                        <div className="relative">
+                          <HugeiconsIcon
+                            icon={Notification01Icon}
+                            className="size-4"
+                          />
+                          <span className="absolute -right-0.5 -top-0.5 size-1.5 rounded-full bg-orange-500" />
+                        </div>
+                        Notifications
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink
+                        href="/logout"
+                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-all"
+                      >
+                        <HugeiconsIcon icon={Logout01Icon} className="size-4" />
+                        Logout
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+      </header>
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+    </>
   );
 }
