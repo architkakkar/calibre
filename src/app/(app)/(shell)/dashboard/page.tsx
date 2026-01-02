@@ -62,7 +62,7 @@ const DashboardPage = () => {
       </section>
 
       {/* AI Trainer - 6 cols, 2 rows */}
-      <section className="col-span-12 row-span-1 flex flex-col rounded-xl border border-border/70 bg-card/30 p-4 shadow-sm lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:p-5">
+      <section className="col-span-12 row-span-1 hidden lg:flex flex-col rounded-xl border border-border/70 bg-card/30 p-4 shadow-sm lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:p-5">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10">
