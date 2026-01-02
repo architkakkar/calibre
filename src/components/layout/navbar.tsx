@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -73,12 +74,12 @@ export function Navbar() {
           <AppLogo />
 
           {/* Desktop Navigation - Only on Desktop (1024px+) */}
-          <nav className="hidden lg:flex items-center gap-2 rounded-full bg-card/60 ring-1 ring-border/60 p-1">
+          <nav className="hidden lg:flex items-center gap-2 rounded-xl bg-card/60 ring-1 ring-border/60 p-1">
             <Button
               size="sm"
               variant="ghost"
               onClick={() => router.push("/dashboard")}
-              className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+              className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
                 pathname === "/dashboard"
                   ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                   : "text-foreground hover:bg-white/10 hover:text-primary"
@@ -91,7 +92,7 @@ export function Navbar() {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
-                    className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all ${
+                    className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all ${
                       pathname?.startsWith("/plans")
                         ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                         : "text-foreground/80 bg-inherit hover:text-primary hover:bg-white/5"
@@ -135,7 +136,7 @@ export function Navbar() {
               size="sm"
               variant="ghost"
               onClick={() => router.push("/ai-trainer/new-chat")}
-              className={`h-8 rounded-full px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+              className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
                 pathname?.startsWith("/ai-trainer")
                   ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                   : "text-foreground hover:bg-white/10 hover:text-primary"
@@ -153,7 +154,7 @@ export function Navbar() {
           <Badge
             variant="secondary"
             onClick={() => router.push("/upgrade")}
-            className="hidden lg:flex h-7 gap-1.5 rounded-full px-3 text-xs font-semibold bg-linear-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
+            className="hidden lg:flex h-7 gap-1.5 rounded-tl rounded-lg px-3 text-xs font-semibold bg-linear-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
           >
             <HugeiconsIcon icon={SparklesIcon} />
             Upgrade
@@ -181,14 +182,18 @@ export function Navbar() {
           />
 
           {/* Avatar Dropdown - All Screens */}
-          <NavigationMenu>
+          <NavigationMenu className={"border border-primary/10 rounded-xl"}>
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-inherit px-2">
-                  <div
+                  <Avatar className="size-7.5">
+                    <AvatarImage />
+                    <AvatarFallback className="text-xs">AK</AvatarFallback>
+                  </Avatar>
+                  {/* <div
                     className="size-7 cursor-pointer rounded-full bg-linear-to-br from-primary to-secondary ring-2 ring-border/70 transition-all hover:shadow-lg hover:shadow-primary/40 mr-1"
                     aria-label="Open profile menu"
-                  />
+                  /> */}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="flex flex-col gap-1 p-0 min-w-44 w-auto">
