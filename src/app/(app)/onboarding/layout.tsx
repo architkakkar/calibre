@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Onboarding · Calibre",
+  title: "Onboarding",
   description:
     "An AI-powered fitness companion offering personalized workout plans, diet guidance, progress tracking, streaks, rewards, and an interactive AI trainer.",
 };
