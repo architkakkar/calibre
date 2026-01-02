@@ -2,15 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { AppLogo } from "@/components/common/app-logo";
 import { NotificationPopup } from "@/components/layout/notification-popup";
+import { StreakActivityPopup } from "@/components/layout/streak-activity-popup";
 import { Sidebar } from "@/components/layout/sidebar";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   CoinsDollarIcon,
-  Fire02Icon,
   Notification01Icon,
   SparklesIcon,
   Home03Icon,
@@ -22,15 +31,6 @@ import {
   Logout01Icon,
   Menu01Icon,
 } from "@hugeicons/core-free-icons";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { Separator } from "@base-ui/react/separator";
 
 export function Navbar() {
   const router = useRouter();
@@ -161,18 +161,7 @@ export function Navbar() {
 
           {/* Streak & Coins - Tablet & Desktop (hidden on mobile) */}
           <div className="hidden sm:flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push("/streak")}
-              className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground hover:bg-orange-500/5! hover:text-orange-500 transition-all"
-            >
-              <HugeiconsIcon
-                icon={Fire02Icon}
-                className="size-4 text-orange-500"
-              />
-              <span className="hidden lg:inline">12</span>
-            </Button>
+            <StreakActivityPopup />
             <div className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground transition-all flex items-center justify-center">
               <HugeiconsIcon
                 icon={CoinsDollarIcon}
