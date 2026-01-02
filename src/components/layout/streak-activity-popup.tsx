@@ -272,81 +272,98 @@ export function StreakActivityPopup() {
           <Separator className="my-5 bg-linear-to-r from-transparent via-border to-transparent" />
 
           {/* Weekly Progress with enhanced styling */}
-          <div className="mb-6">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="rounded-full bg-primary/10 p-1.5">
-                  <HugeiconsIcon
-                    icon={Target03Icon}
-                    className="size-4 text-primary"
-                  />
+          <div className="mb-6 overflow-hidden rounded-xl border-2 border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/30">
+            <div className="p-4">
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="absolute inset-0 rounded-xl bg-primary/20 blur-md" />
+                    <div className="relative rounded-xl border border-primary/30 bg-linear-to-br from-primary/20 to-primary/10 p-2.5">
+                      <HugeiconsIcon
+                        icon={Calendar03Icon}
+                        className="size-5 text-primary"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">
+                      This Week's Progress
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {daysCompleted} out of {weeklyGoal} days completed
+                    </p>
+                  </div>
                 </div>
-                <span className="text-sm font-bold text-foreground">
-                  Weekly Goal
-                </span>
+                <Badge variant="secondary" className="gap-1 font-bold">
+                  <span className="text-primary">{daysCompleted}</span>
+                  <span className="text-muted-foreground">/</span>
+                  <span>{weeklyGoal}</span>
+                </Badge>
               </div>
-              <Badge variant="secondary" className="gap-1 font-bold">
-                <span className="text-primary">{daysCompleted}</span>
-                <span className="text-muted-foreground">/</span>
-                <span>{weeklyGoal}</span>
-              </Badge>
-            </div>
 
-            {/* Enhanced Progress Bar with glow */}
-            <div className="relative mb-4 h-3 w-full overflow-hidden rounded-full bg-secondary/50 ring-1 ring-border/50">
-              <div
-                className="h-full rounded-full bg-linear-to-r from-primary via-primary/90 to-secondary shadow-lg shadow-primary/50 transition-all duration-700 ease-out"
-                style={{ width: `${(daysCompleted / weeklyGoal) * 100}%` }}
-              />
-              {/* Shimmer effect */}
-              <div
-                className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent"
-                style={{ width: `${(daysCompleted / weeklyGoal) * 100}%` }}
-              />
-            </div>
-
-            {/* Week Days with enhanced design */}
-            <div className="grid grid-cols-7 gap-2">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-                (day, index) => {
-                  const isCompleted = index < daysCompleted;
-                  const isToday = index === daysCompleted;
-                  return (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center gap-1.5"
-                    >
+              {/* Week Days with enhanced design */}
+              <div className="mb-4 grid grid-cols-7 gap-2">
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                  (day, index) => {
+                    const isCompleted = index < daysCompleted;
+                    const isToday = index === daysCompleted;
+                    return (
                       <div
-                        className={`flex size-10 items-center justify-center rounded-xl text-xs font-bold transition-all duration-300 ${
-                          isCompleted
-                            ? "bg-linear-to-br from-primary via-primary/90 to-secondary text-primary-foreground shadow-lg shadow-primary/40 ring-2 ring-primary/30 scale-105"
-                            : isToday
-                            ? "bg-secondary ring-2 ring-primary/50 text-foreground scale-100 animate-pulse"
-                            : "bg-secondary/50 text-muted-foreground hover:bg-secondary/80"
+                        key={index}
+                        className={`group relative cursor-pointer rounded-xl p-2.5 text-center transition-all ${
+                          isToday
+                            ? "scale-110 bg-primary text-primary-foreground shadow-lg ring-4 ring-primary/30"
+                            : isCompleted
+                            ? "border-2 border-primary/40 bg-primary/20 hover:scale-105"
+                            : "border-2 border-muted bg-muted/30 hover:scale-105 hover:border-primary/20"
                         }`}
                       >
+                        <div className="mb-2 text-[10px] font-bold">
+                          {day.slice(0, 3)}
+                        </div>
                         {isCompleted ? (
                           <HugeiconsIcon
                             icon={CheckmarkCircle01Icon}
-                            className="size-5"
+                            className={`size-5 mx-auto ${
+                              isToday
+                                ? "text-primary-foreground"
+                                : "text-primary animate-pulse"
+                            }`}
                           />
                         ) : (
-                          <span className="text-[10px] font-bold">
-                            {day.slice(0, 1)}
-                          </span>
+                          <div className="mx-auto size-5 rounded-full border-2 border-muted-foreground/30 transition-colors group-hover:border-primary" />
                         )}
                       </div>
-                      <span
-                        className={`text-[9px] font-semibold uppercase tracking-wider ${
-                          isCompleted ? "text-primary" : "text-muted-foreground"
-                        }`}
-                      >
-                        {day}
-                      </span>
-                    </div>
-                  );
-                }
-              )}
+                    );
+                  }
+                )}
+              </div>
+
+              {/* Weekly Stats */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-center">
+                  <div className="text-xl font-bold text-green-600">
+                    {Math.round((daysCompleted / weeklyGoal) * 100)}%
+                  </div>
+                  <div className="mt-1 text-[10px] text-muted-foreground">
+                    Completion
+                  </div>
+                </div>
+                <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-3 text-center">
+                  <div className="text-xl font-bold text-blue-600">
+                    {thisWeekWorkouts * 45}
+                  </div>
+                  <div className="mt-1 text-[10px] text-muted-foreground">
+                    Active Min
+                  </div>
+                </div>
+                <div className="rounded-lg border border-purple-500/20 bg-purple-500/10 p-3 text-center">
+                  <div className="text-xl font-bold text-purple-600">2,100</div>
+                  <div className="mt-1 text-[10px] text-muted-foreground">
+                    Avg Calories
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
