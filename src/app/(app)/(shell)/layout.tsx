@@ -5,10 +5,10 @@ export default function AppLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="lg:min-h-dvh w-full lg:overflow-hidden bg-background">
-      <div className="flex h-full lg:h-dvh flex-col px-6 py-5">
-        <Navbar />
-        {children}
-      </div>
+      <Navbar />
+      <main className="px-6 pb-5">
+        <div className="mx-auto">{children}</div>
+      </main>
     </div>
   );
 }
