@@ -123,7 +123,7 @@ export function Sidebar({
               </div>
 
               <button
-                onClick={() => router.push("/ai-trainer/new-chat")}
+                onClick={() => router.push("/ai-trainer/chat")}
                 className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   pathname?.startsWith("/ai-trainer")
                     ? "bg-linear-to-r from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/30"

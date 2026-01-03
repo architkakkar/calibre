@@ -57,8 +57,8 @@ export function Navbar() {
   }, [isSidebarOpen]);
 
   return (
-    <>
-      <header className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card/30 px-2 lg:px-4 py-2 shadow-sm backdrop-blur-md lg:mb-5">
+    <header className="px-6 py-5">
+      <div className="flex items-center justify-between rounded-xl border border-border bg-card/30 px-2 lg:px-4 py-2">
         {/* Left Section */}
         <div className="flex items-center gap-2 lg:gap-4">
           {/* Hamburger Menu - Mobile & Tablet */}
@@ -135,7 +135,7 @@ export function Navbar() {
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => router.push("/ai-trainer/new-chat")}
+              onClick={() => router.push("/ai-trainer/chat")}
               className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
                 pathname?.startsWith("/ai-trainer")
                   ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
@@ -186,9 +186,11 @@ export function Navbar() {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-inherit px-2">
-                  <Avatar className="size-7.5">
+                  <Avatar className="size-7">
                     <AvatarImage />
-                    <AvatarFallback className="text-xs">AK</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-primary/90 text-background">
+                      AK
+                    </AvatarFallback>
                   </Avatar>
                   {/* <div
                     className="size-7 cursor-pointer rounded-full bg-linear-to-br from-primary to-secondary ring-2 ring-border/70 transition-all hover:shadow-lg hover:shadow-primary/40 mr-1"
@@ -241,11 +243,11 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-      </header>
+      </div>
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
-    </>
+    </header>
   );
 }
