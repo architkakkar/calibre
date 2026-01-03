@@ -7,7 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 export function Navbar() {
   return (
     <header className="px-6 py-5">
-      <div className="mx-auto rounded-xl border border-border bg-card/30 shadow-sm px-4 py-3 flex items-center justify-between">
+      <div className="mx-auto rounded-xl border border-border bg-card/30 shadow-sm px-2 lg:px-4 py-3 flex items-center justify-between">
         <AppLogo />
         <nav className="flex items-center gap-3">
           <SignedOut>
