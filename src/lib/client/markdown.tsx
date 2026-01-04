@@ -6,15 +6,17 @@ type MarkdownComponentProps = {
 
 export const markdownComponents = {
   h1: ({ children }: MarkdownComponentProps) => (
-    <h1 className="text-xl font-semibold mt-6 mb-3 text-destructive">{children}</h1>
+    <h1 className="text-xl font-semibold mt-6 mb-3">{children}</h1>
   ),
 
   h2: ({ children }: MarkdownComponentProps) => (
-    <h2 className="text-lg font-semibold mt-5 mb-2 text-primary">{children}</h2>
+    <h2 className="text-lg font-semibold mt-5 mb-2">{children}</h2>
   ),
 
   h3: ({ children }: MarkdownComponentProps) => (
-    <h3 className="text-base font-semibold mt-4 mb-2">{children}</h3>
+    <h3 className="text-base font-semibold mt-4 mb-2 text-primary">
+      {children}
+    </h3>
   ),
 
   p: ({ children }: MarkdownComponentProps) => (
@@ -36,7 +38,7 @@ export const markdownComponents = {
   ),
 
   strong: ({ children }: MarkdownComponentProps) => (
-    <strong className="font-semibold text-foreground">{children}</strong>
+    <strong className="font-semibold">{children}</strong>
   ),
 
   blockquote: ({ children }: MarkdownComponentProps) => (
