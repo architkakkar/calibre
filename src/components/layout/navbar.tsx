@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
 import { AppLogo } from "@/components/common/app-logo";
 import { NotificationPopup } from "@/components/layout/notification-popup";
 import { StreakActivityPopup } from "@/components/layout/streak-activity-popup";
@@ -229,13 +230,15 @@ export function Navbar() {
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink
-                        href="/logout"
-                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-all"
-                      >
-                        <HugeiconsIcon icon={Logout01Icon} className="size-4" />
-                        Logout
-                      </NavigationMenuLink>
+                      <SignOutButton>
+                        <div className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-all cursor-pointer">
+                          <HugeiconsIcon
+                            icon={Logout01Icon}
+                            className="size-4"
+                          />
+                          Logout
+                        </div>
+                      </SignOutButton>
                     </li>
                   </ul>
                 </NavigationMenuContent>
