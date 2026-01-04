@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useChatStore } from "@/stores/chat.store";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -86,13 +87,9 @@ const groupChatsByTime = (chats: ChatSession[]) => {
 export function ChatSidebar({
   currentChatId,
   chats = MOCK_CHATS,
-  isSidebarOpen,
-  setIsSidebarOpen,
-}: ChatSidebarProps & {
-  isSidebarOpen: boolean;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}: ChatSidebarProps) {
   const [hoveredChatId, setHoveredChatId] = useState<string | null>(null);
+  const { isSidebarOpen, setSidebarOpen, toggleSidebar } = useChatStore();
 
   const handleDeleteChat = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -110,17 +107,13 @@ export function ChatSidebar({
     <aside
       className={cn(
         "bg-background rounded-xl p-3 flex flex-col gap-3 border border-border",
-
-        // MOBILE + TABLET → floating drawer
+        // Mobile + Tablet → floating drawer
         "absolute inset-y-0 left-0 z-40 w-72 max-w-full transition-transform duration-300 lg:relative lg:inset-auto lg:z-auto",
-
-        // Slide animation (mobile + tablet)
+        // Slide animation (Mobile + Tablet)
         isSidebarOpen ? "translate-x-0" : "-translate-x-full",
-
         // Desktop collapse (lg+ only)
         "lg:translate-x-0",
         isSidebarOpen ? "lg:w-full" : "lg:w-14.5",
-
         // Height only for desktop
         "lg:h-[calc(100dvh-145px)] lg:max-h-[calc(100dvh-145px)]"
       )}
@@ -129,7 +122,7 @@ export function ChatSidebar({
         variant="ghost"
         type="button"
         className="h-8.5 w-8.5 self-start flex"
-        onClick={() => setIsSidebarOpen((prev) => !prev)}
+        onClick={toggleSidebar}
       >
         <HugeiconsIcon
           icon={isSidebarOpen ? SidebarLeft01Icon : SidebarRight01Icon}
@@ -172,11 +165,7 @@ export function ChatSidebar({
                         <Link
                           href={`/ai-trainer/chat/${chat.id}`}
                           className="flex flex-col gap-0.5 text-sm p-2 rounded-lg text-accent-foreground"
-                          onClick={() => {
-                            if (window.innerWidth < 1024) {
-                              setIsSidebarOpen(false);
-                            }
-                          }}
+                          onClick={() => setSidebarOpen(false)}
                         >
                           <span className="truncate pr-6 font-medium">
                             {chat.title}
