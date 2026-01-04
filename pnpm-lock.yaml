@@ -59,6 +59,9 @@ importers:
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.1)
+      markdown-to-jsx:
+        specifier: ^9.5.0
+        version: 9.5.0(react@19.2.1)
       next:
         specifier: 16.0.10
         version: 16.0.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -2763,6 +2766,24 @@ packages:
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
+
+  markdown-to-jsx@9.5.0:
+    resolution: {integrity: sha512-6PhWz9md8btrE52LDM4KHSzXf2HKCG+2oGNVw/eQhMP6h51dfZVHb9mt1zWYvQ7wM+xOK8WWaijzEhjB0qIpUg==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      react: '>= 16.0.0'
+      react-native: '*'
+      solid-js: '>=1.0.0'
+      vue: '>=3.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-native:
+        optional: true
+      solid-js:
+        optional: true
+      vue:
+        optional: true
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -6285,6 +6306,10 @@ snapshots:
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  markdown-to-jsx@9.5.0(react@19.2.1):
+    optionalDependencies:
+      react: 19.2.1
 
   math-intrinsics@1.1.0: {}
 
