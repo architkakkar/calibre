@@ -133,7 +133,7 @@ export function ChatSidebar({
       {isSidebarOpen ? (
         <>
           {/* New Chat Button */}
-          <Link href="/ai-trainer/chat/new">
+          <Link href="/ai-trainer/chat">
             <Button variant="outline" className="w-full" size="sm">
               <HugeiconsIcon icon={Add01Icon} className="size-4 mr-1" />
               New Chat
@@ -195,7 +195,7 @@ export function ChatSidebar({
         </>
       ) : (
         <>
-          <Link href="/ai-trainer/chat/new">
+          <Link href="/ai-trainer/chat">
             <Button variant="outline" className="w-full" size="sm">
               <HugeiconsIcon icon={Add01Icon} className="size-4" />
             </Button>
