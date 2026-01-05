@@ -72,7 +72,7 @@ export function ChatInput({ onSend }: ChatInputProps) {
               handleSubmit(e as React.FormEvent);
             }
           }}
-          className="w-full resize-none bg-transparent text-white border-0 text-sm leading-relaxed focus:outline-none overflow-hidden"
+          className="w-full resize-none bg-transparent text-white border-0 text-sm leading-relaxed focus:outline-none overflow-hidden mb-1"
         />
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
