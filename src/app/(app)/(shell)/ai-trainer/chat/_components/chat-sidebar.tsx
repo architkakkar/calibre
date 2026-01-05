@@ -167,7 +167,7 @@ export function ChatSidebar({
                           className="flex flex-col gap-0.5 text-sm p-2 rounded-lg text-accent-foreground"
                           onClick={() => setSidebarOpen(false)}
                         >
-                          <span className="truncate pr-6 font-medium">
+                          <span className="truncate pr-6 font-medium text-[13px]">
                             {chat.title}
                           </span>
                           <span className="text-[11px] text-muted-foreground">
