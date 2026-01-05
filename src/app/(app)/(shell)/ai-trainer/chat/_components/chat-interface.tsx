@@ -57,8 +57,8 @@ export function ChatInterface({ messages, onSendMessage }: ChatInterfaceProps) {
                         key={`${message.id}-${i}`}
                         className={`max-w-[95%] md:max-w-[90%] lg:max-w-[80%] rounded-xl text-sm leading-relaxed wrap-break-word whitespace-pre-wrap ${
                           message.role === "user"
-                            ? "px-2 py-1 bg-primary/25 text-primary self-end rounded-tr-xs"
-                            : "px-4 py-3 bg-muted text-foreground self-start rounded-tl-xs"
+                            ? "px-2.5 py-1.5 bg-primary/25 text-primary self-end rounded-tr-xs"
+                            : "px-3 py-2 bg-muted text-foreground self-start rounded-tl-xs"
                         }`}
                       >
                         <Markdown options={{ overrides: markdownComponents }}>
