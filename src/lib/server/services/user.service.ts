@@ -59,7 +59,7 @@ export async function onboardUser({
   goals: FitnessGoals;
 }) {
   const userProfileData = {
-    users_id: userId,
+    user_id: userId,
     first_name: profile.firstName,
     last_name: profile.lastName,
     dob: profile.dob,
@@ -70,7 +70,7 @@ export async function onboardUser({
     fitness_level: FITNESS_LEVEL_MAP[profile.fitnessLevel],
   };
   const userGoalsData = {
-    users_id: userId,
+    user_id: userId,
     primary_goals: goals.primaryGoals.map((goal) => PRIMARY_GOAL_MAP[goal]),
     target_weight_kg: goals.targetWeightKg,
     commitment_level: COMMITMENT_LEVEL_MAP[goals.commitmentLevel],
@@ -95,13 +95,13 @@ export async function onboardUser({
     .insert(userProfilesTable)
     .values(userProfileData)
     .onConflictDoUpdate({
-      target: userProfilesTable.users_id,
+      target: userProfilesTable.user_id,
       set: userProfileData,
     });
 
   // insert user fitness goals
   await db.insert(userGoalsTable).values(userGoalsData).onConflictDoUpdate({
-    target: userGoalsTable.users_id,
+    target: userGoalsTable.user_id,
     set: userGoalsData,
   });
 

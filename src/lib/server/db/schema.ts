@@ -27,7 +27,7 @@ export const usersTable = pgTable("users", {
 });
 
 export const userProfilesTable = pgTable("user_profiles", {
-  users_id: varchar({ length: 255 })
+  user_id: varchar({ length: 255 })
     .primaryKey()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   first_name: varchar({ length: 255 }).notNull(),
@@ -42,7 +42,7 @@ export const userProfilesTable = pgTable("user_profiles", {
 });
 
 export const userGoalsTable = pgTable("user_goals", {
-  users_id: varchar({ length: 255 })
+  user_id: varchar({ length: 255 })
     .primaryKey()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   primary_goals: primaryGoalEnum().array().notNull(),
