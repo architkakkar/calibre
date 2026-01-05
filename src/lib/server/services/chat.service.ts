@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { chatsTable, messagesTable } from "@/lib/server/db/schema";
 
@@ -46,4 +46,16 @@ export async function saveMessage({
     .update(chatsTable)
     .set({ updated_at: new Date() })
     .where(eq(chatsTable.id, chatId));
+}
+
+export async function getUserChats({ userId }: { userId: string }) {
+  return db
+    .select({
+      id: chatsTable.id,
+      title: chatsTable.title,
+      updatedAt: chatsTable.updated_at,
+    })
+    .from(chatsTable)
+    .where(eq(chatsTable.user_id, userId))
+    .orderBy(desc(chatsTable.updated_at));
 }
