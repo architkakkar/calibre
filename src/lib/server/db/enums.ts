@@ -63,3 +63,5 @@ export const motivationEnum = pgEnum("motivation", [
   "PREPARE_FOR_EVENT",
   "LIFESTYLE_CHANGE",
 ]);
+
+export const messageRoleEnum = pgEnum("role", ["USER", "ASSISTANT"]);

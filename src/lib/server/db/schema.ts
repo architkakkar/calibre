@@ -2,6 +2,7 @@ import {
   boolean,
   integer,
   pgTable,
+  text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -14,6 +15,7 @@ import {
   commitmentLevelEnum,
   weeklyFrequencyEnum,
   motivationEnum,
+  messageRoleEnum,
 } from "@/lib/server/db/enums";
 
 export const usersTable = pgTable("users", {
@@ -52,4 +54,24 @@ export const userGoalsTable = pgTable("user_goals", {
   motivations: motivationEnum().array().notNull(),
   notes: varchar({ length: 255 }).default(""),
   updated_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const chatsTable = pgTable("chats", {
+  id: varchar({ length: 36 }).primaryKey(),
+  user_id: varchar({ length: 255 })
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  title: varchar({ length: 255 }).notNull(),
+  created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updated_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const messagesTable = pgTable("messages", {
+  id: varchar({ length: 36 }).primaryKey(),
+  chat_id: varchar({ length: 36 })
+    .notNull()
+    .references(() => chatsTable.id, { onDelete: "cascade" }),
+  role: messageRoleEnum().notNull(),
+  content: text().notNull(),
+  created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
