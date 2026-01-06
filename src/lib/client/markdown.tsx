@@ -48,4 +48,48 @@ export const markdownComponents = {
   ),
 
   hr: () => <hr className="my-4 border-muted-foreground/30" />,
+
+  table: ({ children }: MarkdownComponentProps) => (
+    <div className="overflow-x-auto my-4">
+      <table className="min-w-full border-collapse border border-muted-foreground/20">
+        {children}
+      </table>
+    </div>
+  ),
+
+  thead: ({ children }: MarkdownComponentProps) => (
+    <thead className="bg-muted">{children}</thead>
+  ),
+
+  tbody: ({ children }: MarkdownComponentProps) => (
+    <tbody className="divide-y divide-muted-foreground/20">{children}</tbody>
+  ),
+
+  tr: ({ children }: MarkdownComponentProps) => (
+    <tr className="hover:bg-muted/50 transition-colors">{children}</tr>
+  ),
+
+  th: ({ children }: MarkdownComponentProps) => (
+    <th className="border border-muted-foreground/20 px-4 py-2 text-left text-sm font-semibold">
+      {children}
+    </th>
+  ),
+
+  td: ({ children }: MarkdownComponentProps) => (
+    <td className="border border-muted-foreground/20 px-4 py-2 text-sm">
+      {children}
+    </td>
+  ),
+
+  code: ({ children }: MarkdownComponentProps) => (
+    <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">
+      {children}
+    </code>
+  ),
+
+  pre: ({ children }: MarkdownComponentProps) => (
+    <pre className="bg-muted p-4 rounded-lg overflow-x-auto my-3 border border-muted-foreground/20">
+      <code className="text-sm font-mono">{children}</code>
+    </pre>
+  ),
 };
