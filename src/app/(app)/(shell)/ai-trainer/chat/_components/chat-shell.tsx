@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
 import { useChatStore } from "@/stores/chat.store";
 import { ChatSidebar } from "./chat-sidebar";
 import { ChatHeader } from "./chat-header";
 
 export function ChatShell({ children }: { children: React.ReactNode }) {
-  const { isSidebarOpen, setSidebarOpen } = useChatStore();
+  const { isSidebarOpen, setSidebarOpen, fetchChats } = useChatStore();
+
+  useEffect(() => {
+    fetchChats();
+  }, [fetchChats]);
 
   return (
     <section

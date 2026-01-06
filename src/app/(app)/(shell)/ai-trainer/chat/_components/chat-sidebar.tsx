@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useChatStore } from "@/stores/chat.store";
+import { cn, formatRelativeTime, groupChatsByTime } from "@/lib/shared/utils";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   SidebarLeft01Icon,
@@ -10,86 +13,16 @@ import {
   Trash2,
   Add01Icon,
 } from "@hugeicons/core-free-icons";
-import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/shared/utils";
-
-interface ChatSession {
-  id: string;
-  title: string;
-  timestamp: Date;
-}
 
 interface ChatSidebarProps {
   currentChatId?: string;
-  chats?: ChatSession[];
 }
 
-const MOCK_CHATS: ChatSession[] = [
-  {
-    id: "1",
-    title: "Lower back pain during deadlifts",
-    timestamp: new Date(new Date().getTime() - 86400000),
-  },
-  {
-    id: "2",
-    title: "Best workout routine for beginners over 3 days",
-    timestamp: new Date(new Date().getTime() - 172800000),
-  },
-  {
-    id: "3",
-    title: "Diet plan for muscle gain",
-    timestamp: new Date(new Date().getTime() - 259200000),
-  },
-  {
-    id: "4",
-    title: "How to improve flexibility",
-    timestamp: new Date(new Date().getTime() - 345600000),
-  },
-  {
-    id: "5",
-    title: "Morning stretching routine",
-    timestamp: new Date(new Date().getTime() - 432000000),
-  },
-  {
-    id: "6",
-    title: "Morning stretching routine",
-    timestamp: new Date(new Date().getTime() - 832000000),
-  },
-];
-
-// Helper to format relative time
-const formatRelativeTime = (date: Date) => {
-  const diff = Date.now() - date.getTime();
-  const day = 86400000;
-  if (diff < day) return "Today";
-  if (diff < day * 2) return "Yesterday";
-  const days = Math.floor(diff / day);
-  return `${days}d ago`;
-};
-
-// Helper to group chats by time buckets
-const groupChatsByTime = (chats: ChatSession[]) => {
-  const now = Date.now();
-  const day = 86400000;
-
-  return {
-    Today: chats.filter((c) => now - c.timestamp.getTime() < day),
-    "This Week": chats.filter(
-      (c) =>
-        now - c.timestamp.getTime() >= day &&
-        now - c.timestamp.getTime() < day * 7
-    ),
-    Earlier: chats.filter((c) => now - c.timestamp.getTime() >= day * 7),
-  };
-};
-
-export function ChatSidebar({
-  currentChatId,
-  chats = MOCK_CHATS,
-}: ChatSidebarProps) {
+export function ChatSidebar({ currentChatId }: ChatSidebarProps) {
   const [hoveredChatId, setHoveredChatId] = useState<string | null>(null);
-  const { isSidebarOpen, setSidebarOpen, toggleSidebar } = useChatStore();
+  const { isSidebarOpen, setSidebarOpen, toggleSidebar, chats } =
+    useChatStore();
+  const groupedChats = groupChatsByTime(chats);
 
   const handleDeleteChat = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -100,8 +33,6 @@ export function ChatSidebar({
     // TODO: Implement delete chat logic
     console.log("Delete chat:", chatId);
   };
-
-  const groupedChats = groupChatsByTime(chats);
 
   return (
     <aside
@@ -171,7 +102,7 @@ export function ChatSidebar({
                             {chat.title}
                           </span>
                           <span className="text-[11px] text-muted-foreground">
-                            {formatRelativeTime(chat.timestamp)}
+                            {formatRelativeTime(new Date(chat.updatedAt))}
                           </span>
 
                           {hoveredChatId === chat.id && (

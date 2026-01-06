@@ -1,0 +1,8 @@
+import apiClient from "@/lib/client/api-client";
+import API_ROUTES from "@/lib/client/api-routes";
+
+export async function fetchChatsApi() {
+  const response = await apiClient.get(API_ROUTES.chat.history);
+
+  return response.data;
+}

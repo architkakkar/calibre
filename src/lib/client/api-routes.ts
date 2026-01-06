@@ -4,6 +4,9 @@
  */
 const API_ROUTES = {
   onboarding: "/onboarding",
+  chat: {
+    history: "/chat/history",
+  },
 } as const;
 
 export default API_ROUTES;
