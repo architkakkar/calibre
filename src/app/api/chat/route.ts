@@ -10,6 +10,7 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import { openrouter } from "@/lib/server/open-router";
 import { createChat, saveMessage } from "@/lib/server/services/chat.service";
+import { SYSTEM_PROMPT, TITLE_PROMPT } from "@/lib/server/ai-prompts";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -30,12 +31,12 @@ export async function POST(request: NextRequest) {
   }
 
   // first message in the chat
-  if (messages.length === 1) {
+  if (messages.filter((message) => message.role === "assistant").length === 0) {
     const title = await generateText({
       model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
       prompt: `
-        Generate a short and concise title for a chat conversation based on the following message: "${lastUserMessage}". 
-        The title should be around 2-4 words.
+        ${TITLE_PROMPT}
+        User message: ${lastUserMessage}
       `,
     });
 
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest) {
   const result = streamText({
     model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
     messages: await convertToModelMessages(messages),
+    system: `${SYSTEM_PROMPT}`,
     onFinish: async (result) => {
       await saveMessage({
         chatId,
