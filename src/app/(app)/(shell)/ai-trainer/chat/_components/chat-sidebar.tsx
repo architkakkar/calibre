@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useChatStore } from "@/stores/chat.store";
 import { cn, formatRelativeTime, groupChatsByTime } from "@/lib/shared/utils";
 import { Button } from "@/components/ui/button";
@@ -14,15 +15,13 @@ import {
   Add01Icon,
 } from "@hugeicons/core-free-icons";
 
-interface ChatSidebarProps {
-  currentChatId?: string;
-}
-
-export function ChatSidebar({ currentChatId }: ChatSidebarProps) {
+export function ChatSidebar() {
+  const params = useParams();
   const [hoveredChatId, setHoveredChatId] = useState<string | null>(null);
   const { isSidebarOpen, setSidebarOpen, toggleSidebar, chats } =
     useChatStore();
   const groupedChats = groupChatsByTime(chats);
+  const currentChatId = params.chatId as string | undefined;
 
   const handleDeleteChat = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -96,7 +95,12 @@ export function ChatSidebar({ currentChatId }: ChatSidebarProps) {
                         <Link
                           href={`/ai-trainer/chat/${chat.id}`}
                           className="flex flex-col gap-0.5 text-sm p-2 rounded-lg text-accent-foreground"
-                          onClick={() => setSidebarOpen(false)}
+                          onClick={() => {
+                            // Close sidebar only on mobile / tablet
+                            if (window.innerWidth < 1024) {
+                              setSidebarOpen(false);
+                            }
+                          }}
                         >
                           <span className="truncate pr-6 font-medium text-[13px]">
                             {chat.title}
