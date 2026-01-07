@@ -13,8 +13,8 @@ const alanSans = Alan_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Calibre — Fitness, Redefined",
-    template: "%s · Calibre — Fitness, Redefined",
+    default: "Calibre - Fitness, Redefined",
+    template: "%s | Calibre - Fitness, Redefined",
   },
   description:
     "An AI-powered fitness companion offering personalized workout plans, diet guidance, progress tracking, streaks, rewards, and an interactive AI trainer.",
