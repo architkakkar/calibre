@@ -26,9 +26,7 @@ export function ChatShell({ children }: { children: React.ReactNode }) {
         />
       )}
 
-      <div className="col-span-1">
-        <ChatSidebar />
-      </div>
+      <ChatSidebar />
 
       <div className="col-span-4 flex-1 flex flex-col min-h-0 pt-0.5">
         <ChatHeader />
