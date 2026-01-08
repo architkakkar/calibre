@@ -5,6 +5,7 @@
 const API_ROUTES = {
   onboarding: "/onboarding",
   chat: {
+    byId: "/chat/{chatId}",
     history: "/chat/history",
   },
 } as const;

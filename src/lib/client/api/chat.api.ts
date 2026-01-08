@@ -6,3 +6,11 @@ export async function fetchChatsApi() {
 
   return response.data;
 }
+
+export async function fetchChatByIdApi(chatId: string) {
+  const response = await apiClient.get(
+    API_ROUTES.chat.byId.replace("{chatId}", chatId)
+  );
+
+  return response.data;
+}

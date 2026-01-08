@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
-import { desc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { chatsTable, messagesTable } from "@/lib/server/db/schema";
 
@@ -49,7 +49,7 @@ export async function saveMessage({
 }
 
 export async function getUserChats({ userId }: { userId: string }) {
-  return db
+  return await db
     .select({
       id: chatsTable.id,
       title: chatsTable.title,
@@ -58,4 +58,43 @@ export async function getUserChats({ userId }: { userId: string }) {
     .from(chatsTable)
     .where(eq(chatsTable.user_id, userId))
     .orderBy(desc(chatsTable.updated_at));
+}
+
+export async function chatExistsForUser({
+  chatId,
+  userId,
+}: {
+  chatId: string;
+  userId: string;
+}) {
+  const chat = await db.query.chatsTable.findFirst({
+    where: (chats, { eq }) => eq(chats.id, chatId) && eq(chats.user_id, userId),
+  });
+
+  return !!chat;
+}
+
+export async function getChatMessages({ chatId }: { chatId: string }) {
+  const rows = await db
+    .select({
+      id: messagesTable.id,
+      role: messagesTable.role,
+      content: messagesTable.content,
+    })
+    .from(messagesTable)
+    .where(eq(messagesTable.chat_id, chatId))
+    .orderBy(asc(messagesTable.created_at));
+
+  const messages = rows.map((row) => ({
+    id: row.id,
+    role: row.role.toLowerCase(),
+    parts: [
+      {
+        type: "text",
+        text: row.content,
+      },
+    ],
+  }));
+
+  return messages;
 }
