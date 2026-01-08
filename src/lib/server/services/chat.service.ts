@@ -98,3 +98,9 @@ export async function getChatMessages({ chatId }: { chatId: string }) {
 
   return messages;
 }
+
+export async function deleteChat({ chatId }: { chatId: string }) {
+  // delete the chat
+  // also deletes associated messages due to ON DELETE CASCADE constraint
+  await db.delete(chatsTable).where(eq(chatsTable.id, chatId));
+}

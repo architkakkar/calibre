@@ -14,3 +14,11 @@ export async function fetchChatByIdApi(chatId: string) {
 
   return response.data;
 }
+
+export async function deleteChatApi(chatId: string) {
+  const response = await apiClient.delete(
+    API_ROUTES.chat.byId.replace("{chatId}", chatId)
+  );
+
+  return response.data;
+}

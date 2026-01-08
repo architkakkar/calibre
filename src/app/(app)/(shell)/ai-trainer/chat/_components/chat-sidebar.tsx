@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useChatStore } from "@/stores/chat.store";
+import { useGlobalStore } from "@/stores/global.store";
 import { cn, formatRelativeTime, groupChatsByTime } from "@/lib/shared/utils";
+import { showToast } from "@/lib/client/toast";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -16,21 +18,45 @@ import {
 } from "@hugeicons/core-free-icons";
 
 export function ChatSidebar() {
+  const router = useRouter();
   const params = useParams();
   const [hoveredChatId, setHoveredChatId] = useState<string | null>(null);
-  const { isSidebarOpen, setSidebarOpen, toggleSidebar, chats } =
-    useChatStore();
+  const { showLoader, hideLoader } = useGlobalStore.getState();
+  const { isSidebarOpen, setSidebarOpen, toggleSidebar, chats, removeChat } =
+  useChatStore();
   const groupedChats = groupChatsByTime(chats);
   const currentChatId = params.chatId as string | undefined;
 
-  const handleDeleteChat = (
+  const handleDeleteChat = async (
     e: React.MouseEvent<HTMLButtonElement>,
     chatId: string
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: Implement delete chat logic
-    console.log("Delete chat:", chatId);
+
+    showLoader("Deleting chat...");
+
+    try {
+      await removeChat(chatId);
+
+      if (currentChatId === chatId) {
+        router.replace("/ai-trainer/chat");
+      }
+
+      showToast({
+        type: "success",
+        message: "Chat deleted successfully",
+      });
+    } catch (error) {
+      console.error("Delete chat failed:", error);
+
+      showToast({
+        type: "error",
+        message: "Failed to delete chat. Please try again.",
+      });
+    } finally {
+      hideLoader();
+    }
   };
 
   return (
