@@ -81,7 +81,7 @@ export function WorkoutEmptyState() {
         backgroundPosition: "0 0",
       }}
     >
-      <section className="relative flex flex-col items-center justify-center p-12 max-w-4xl gap-12 h-full">
+      <section className="relative flex flex-col items-center justify-center p-12 max-w-5xl gap-12 h-full">
         <header className="text-center space-y-3 relative z-10">
           <h2 className="text-4xl font-bold tracking-tight">
             Build Your{" "}
