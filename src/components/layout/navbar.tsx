@@ -106,7 +106,7 @@ export function Navbar() {
                     <ul className="flex flex-col gap-1 min-w-44 w-auto">
                       <li>
                         <NavigationMenuLink
-                          href="/plans/workout-plans"
+                          href="/plans/workout"
                           className="flex items-center gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
                         >
                           <HugeiconsIcon
@@ -118,14 +118,14 @@ export function Navbar() {
                       </li>
                       <li>
                         <NavigationMenuLink
-                          href="/plans/diet-plans"
+                          href="/plans/nutrition"
                           className="flex items-center gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
                         >
                           <HugeiconsIcon
                             icon={Apple01Icon}
                             className="size-4"
                           />
-                          Diet Plans
+                          Nutrition Plans
                         </NavigationMenuLink>
                       </li>
                     </ul>
