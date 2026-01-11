@@ -37,7 +37,7 @@ function Card({ card }: { card: CardData }) {
   const IconComponent = card.icon;
 
   return (
-    <article className="group relative rounded-2xl border border-border bg-background hover:border-primary/30 hover:shadow-lg transition-all duration-300 min-w-xs">
+    <article className="group relative rounded-2xl border border-border bg-background hover:border-primary/30 hover:shadow-lg transition-all duration-300 sm:min-w-xs">
       <div className="absolute inset-0 rounded-2xl bg-primary/5 blur-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
       <div className="p-5 relative">
         <div className="flex items-center gap-3 mb-5">
@@ -74,14 +74,14 @@ function Card({ card }: { card: CardData }) {
 export function NutritionEmptyState() {
   return (
     <div
-      className="h-full w-full overflow-auto md:overflow-hidden relative flex items-center justify-center"
+      className="h-full w-full overflow-auto md:overflow-hidden relative flex items-start md:items-center justify-center"
       style={{
         background: `radial-gradient(circle, color-mix(in srgb, oklch(0.4346 0.0238 41.6194) 25%, transparent) 1.5px, transparent 1.5px)`,
         backgroundSize: "25px 25px",
         backgroundPosition: "0 0",
       }}
     >
-      <section className="relative flex flex-col items-center justify-center p-12 max-w-5xl gap-12 h-full">
+      <section className="relative flex flex-col items-center justify-start p-6 md:p-12 max-w-5xl gap-12">
         <header className="text-center space-y-3 relative z-10">
           <h2 className="text-4xl font-bold tracking-tight">
             Build Your{" "}
