@@ -22,9 +22,9 @@ export function FeaturesGrid() {
     },
     {
       icon: SpoonAndKnifeIcon,
-      title: "Diet Plans",
+      title: "Nutrition Plans",
       description:
-        "Personalized diet guidance aligned with your workout routine.",
+        "Personalized nutrition guidance aligned with your workout routine.",
       badges: ["Load-aware macros", "Adaptive meals"],
       visual: <DietVisual />,
     },
