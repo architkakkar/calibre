@@ -102,7 +102,7 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           required: true,
           defaultValue: "gym",
           ui: {
-            component: "card_grid",
+            component: "radio_group",
           },
           options: [
             {
@@ -337,10 +337,29 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
             component: "dropdown",
           },
           options: [
-            { label: "None", value: "none" },
-            { label: "HIIT (Intervals)", value: "hiit" },
-            { label: "LISS (Steady State)", value: "liss" },
-            { label: "Cooldown / Mobility", value: "cooldown" },
+            {
+              label: "None",
+              value: "none",
+              description: "No dedicated cardio sessions will be added.",
+            },
+            {
+              label: "HIIT (Intervals)",
+              value: "hiit",
+              description:
+                "Short, high-intensity bursts with rest periods. Time-efficient but demanding.",
+            },
+            {
+              label: "LISS (Steady State)",
+              value: "liss",
+              description:
+                "Low-intensity, longer-duration cardio like walking, cycling, or jogging.",
+            },
+            {
+              label: "Cooldown / Mobility",
+              value: "cooldown",
+              description:
+                "Light cardio and mobility work to aid recovery and improve movement quality.",
+            },
           ],
           aiHint:
             "Integrate this cardio style without compromising recovery or the primary training goal.",
