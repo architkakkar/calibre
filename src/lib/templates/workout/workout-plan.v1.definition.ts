@@ -28,6 +28,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           required: true,
           ui: {
             component: "card_grid",
+            min: 1,
+            max: 3,
           },
           options: [
             { label: "Build Muscle", value: "build_muscle" },
@@ -140,6 +142,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           ui: {
             component: "tags",
             helpText: "Select everything you have available.",
+            min: 1,
+            max: 100, // practically unlimited
           },
           visibility: {
             dependsOn: "training_environment",
@@ -169,6 +173,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           ui: {
             component: "tags",
             helpText: "Select all pairs you have.",
+            min: 1,
+            max: 100, // practically unlimited
           },
           visibility: {
             dependsOn: "equipment_available",
@@ -309,6 +315,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           ui: {
             component: "tags",
             helpText: "We'll add accessory work for these areas.",
+            min: 0,
+            max: 3,
           },
           options: [
             { label: "Chest", value: "chest" },
@@ -355,6 +363,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           type: "multi_select",
           ui: {
             component: "tags",
+            min: 0,
+            max: 3,
           },
           options: [
             { label: "Lower Back", value: "lower_back" },
@@ -378,6 +388,8 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
           ui: {
             component: "tags",
             helpText: "We will filter out exercises that match these patterns.",
+            min: 0,
+            max: 3,
           },
           options: [
             { label: "No Jumping (Low Impact)", value: "no_jumping" },
