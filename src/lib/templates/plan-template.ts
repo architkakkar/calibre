@@ -61,7 +61,6 @@ export type FieldDefinition = {
       | "input"
       | "textarea"
       | "slider"
-      | "stepper"
 
       // FOR (type: 'date')
       | "date_picker"
