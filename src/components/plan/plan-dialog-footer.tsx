@@ -25,7 +25,6 @@ export function PlanDialogFooter({
           Back
         </Button>
       )}
-
       <div className="flex items-center gap-3">
         {!isLastStep && (
           <Button
@@ -35,7 +34,6 @@ export function PlanDialogFooter({
             Next
           </Button>
         )}
-
         {isLastStep && (
           <Button
             onClick={onSubmit}
