@@ -1,5 +1,5 @@
 import { PlanTemplate } from "@/lib/templates/plan-template";
-import { FieldRenderer } from "./field-renderer";
+import { FieldRenderer } from "@/components/plan/field-renderer";
 
 type PlanRendererProps = {
   plan: PlanTemplate;
@@ -18,7 +18,6 @@ export function PlanRenderer({ plan, stepIndex }: PlanRendererProps) {
           No fields defined for this step yet.
         </div>
       )}
-
       <div className="space-y-10">
         {step.fields.map((field) => (
           <FieldRenderer key={field.key} field={field} />
