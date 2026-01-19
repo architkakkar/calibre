@@ -10,7 +10,14 @@ type FieldRendererProps = {
 
 export function FieldRenderer({ field, form }: FieldRendererProps) {
   const value = form.getValue(field.key);
+  const error = form.getError(field.key);
   const typeRegistry = FIELD_REGISTRY[field.type];
+
+  const isVisible = form.isFieldVisible?.(field) ?? true;
+
+  if (!isVisible) {
+    return null;
+  }
 
   const FieldComponent =
     typeRegistry && field.ui?.component
@@ -31,13 +38,18 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
           <p className="text-xs text-muted-foreground">{field.description}</p>
         )}
       </div>
-      <div className="col-span-7">
+      <div className="col-span-7 flex flex-col gap-y-1">
         <FieldComponent
           field={field}
           value={value}
           onChange={(v) => form.setValue(field.key, v)}
           disabled={form.isFieldDisabled?.(field) ?? false}
         />
+        {error && (
+          <p className="text-xs text-destructive leading-tight">
+            {error}
+          </p>
+        )}
       </div>
     </section>
   );

@@ -8,15 +8,23 @@ import type { FieldDefinition } from "@/lib/templates/plan-template";
 export type PlanFormValues = Record<string, unknown>;
 export type PlanFormErrors = Record<string, string | undefined>;
 export type PlanFormApi = {
+  // values
   getValue: (key: string) => unknown;
   setValue: (key: string, value: unknown) => void;
+  reset: (nextValues?: PlanFormValues) => void;
 
-  // getAllValues: () => Record<string, unknown>;
+  // errors
+  getError: (key: string) => string | undefined;
+  hasError: (key: string) => boolean;
+  clearError: (key: string) => void;
+  getAllErrors: () => PlanFormErrors;
 
+  // validation
+  validate: () => boolean;
+
+  // visibility / disabling (next phase)
   isFieldVisible?: (field: FieldDefinition) => boolean;
   isFieldDisabled?: (field: FieldDefinition) => boolean;
-
-  validate?: () => boolean;
 };
 
 type UsePlanFormOptions = {
@@ -36,21 +44,60 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
   const getValue = useCallback((key: string) => values[key], [values]);
 
   /**
-   * Write a field value by key
-   * Clears existing error for that field
+   * Determine if a field is visible based on its visibility rules
    */
-  const setValue = useCallback((key: string, value: unknown) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const isFieldVisible = useCallback(
+    (field: FieldDefinition): boolean => {
+      if (!field.visibility) return true;
 
+      const { dependsOn, showWhen } = field.visibility;
+      const dependencyValue = values[dependsOn];
+
+      if (dependencyValue == null) return false;
+
+      // Multi-select dependency
+      if (Array.isArray(dependencyValue)) {
+        return dependencyValue.some((v) => showWhen.includes(v));
+      }
+
+      // Single-select dependency
+      return showWhen.includes(dependencyValue as never);
+    },
+    [values],
+  );
+
+  /**
+   * Error helpers
+   */
+  const getError = useCallback((key: string) => errors[key], [errors]);
+
+  const hasError = useCallback((key: string) => Boolean(errors[key]), [errors]);
+
+  const clearError = useCallback((key: string) => {
     setErrors((prev) => {
       if (!prev[key]) return prev;
       const { [key]: _, ...rest } = prev;
       return rest;
     });
   }, []);
+
+  const getAllErrors = useCallback(() => errors, [errors]);
+
+  /**
+   * Write a field value by key
+   * Clears existing error for that field
+   */
+  const setValue = useCallback(
+    (key: string, value: unknown) => {
+      setValues((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+
+      clearError(key);
+    },
+    [clearError],
+  );
 
   /**
    * Reset all values (optionally to new defaults)
@@ -64,24 +111,47 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
    * Validate form values
    */
   const validate = useCallback((): boolean => {
-    // v1: no validation logic yet
-    // Zod will plug in here
-    setErrors({});
+    setErrors((prev) => {
+      const next: PlanFormErrors = {};
+
+      for (const key in prev) {
+        const field = fields.find((f) => f.key === key);
+        if (!field || isFieldVisible(field)) {
+          next[key] = prev[key];
+        }
+      }
+
+      return next;
+    });
+
     return true;
-  }, []);
+  }, [fields, isFieldVisible]);
 
   /**
    * Memoized API exposed to consumers
    */
   return useMemo(
     () => ({
-      values,
-      errors,
       getValue,
       setValue,
       reset,
+      getError,
+      hasError,
+      clearError,
+      getAllErrors,
       validate,
+      isFieldVisible,
     }),
-    [values, errors, getValue, setValue, reset, validate],
+    [
+      getValue,
+      setValue,
+      reset,
+      getError,
+      hasError,
+      clearError,
+      getAllErrors,
+      validate,
+      isFieldVisible,
+    ],
   );
 }
