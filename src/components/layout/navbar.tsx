@@ -58,7 +58,7 @@ export function Navbar() {
   }, [isSidebarOpen]);
 
   return (
-    <header className="px-6 py-5">
+    <header className="px-2 py-2 md:px-4 md:py-4">
       <div className="flex items-center justify-between rounded-xl border border-border bg-card/30 px-2 lg:px-4 py-2 min-h-15">
         {/* Left Section */}
         <div className="flex items-center gap-2 lg:gap-4">

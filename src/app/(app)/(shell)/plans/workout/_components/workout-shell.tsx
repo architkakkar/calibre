@@ -6,7 +6,7 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div>
-      <header className="flex justify-between px-1 -mt-1">
+      <header className="flex justify-between px-1">
         <div>
           <h1 className="text-3xl font-bold text-primary">Workout Plans</h1>
           <p className="text-muted-foreground text-sm mt-1">
@@ -21,7 +21,7 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
           </Button>
         )}
       </header>
-      <main className="h-[calc(100dvh-192px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
+      <main className="h-[calc(100dvh-184px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
         {hasPlans ? <>{children}</> : <WorkoutEmptyState />}
       </main>
     </div>

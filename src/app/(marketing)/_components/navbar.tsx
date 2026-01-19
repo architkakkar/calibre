@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 export function Navbar() {
   return (
-    <header className="px-6 py-5">
+    <header className="px-2 py-2 md:px-4 md:py-4">
       <div className="mx-auto rounded-xl border border-border bg-card/30 shadow-sm px-2 lg:px-4 py-3 flex items-center justify-between">
         <AppLogo />
         <nav className="flex items-center gap-3">

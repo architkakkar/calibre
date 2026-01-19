@@ -7,7 +7,7 @@ export default function MarketingLayout({
   return (
     <div className="lg:min-h-dvh w-full lg:overflow-hidden bg-background">
       <Navbar />
-      <main className="px-6 pb-5">
+      <main className="px-2 pb-2 md:px-4 md:pb-4">
         <div className="mx-auto">{children}</div>
       </main>
     </div>

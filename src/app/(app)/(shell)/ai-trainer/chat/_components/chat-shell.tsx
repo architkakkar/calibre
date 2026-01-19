@@ -14,7 +14,7 @@ export function ChatShell({ children }: { children: React.ReactNode }) {
 
   return (
     <section
-      className={`relative overflow-hidden h-full w-full lg:gap-x-3 p-3 ${
+      className={`relative overflow-hidden h-full w-full lg:gap-x-2 p-1.5 md:p-2 ${
         isSidebarOpen ? "grid grid-cols-1 lg:grid-cols-5" : "flex"
       }`}
     >

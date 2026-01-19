@@ -31,7 +31,7 @@ export function DietVisual() {
       <div className="absolute top-4 right-10 w-20 h-20 rounded-full bg-secondary/15 blur-2xl" />
       <div className="absolute bottom-6 left-8 w-16 h-16 rounded-full bg-primary/10 blur-xl" />
 
-      <div className="relative h-full w-full flex mt-2 ml-10">
+      <div className="relative h-full w-full flex items-center justify-center -mt-2">
         <div className="relative w-40 h-40">
           {/* Outer glow ring */}
           <div className="absolute inset-0 rounded-full bg-emerald-500/5 blur-xl shimmer" />
@@ -159,23 +159,6 @@ export function DietVisual() {
                 <HugeiconsIcon icon={RiceBowl01Icon} />
               </div>
             </div>
-          </div>
-        </div>
-        <div className="absolute flex flex-col font-stretch-100% gap-1.5 mt-8 right-24 text-center">
-          <div className="px-2 pb-0.5 rounded-full bg-secondary/15 border border-primary/30">
-            <span className="text-[10px] text-primary/90 font-medium">
-              Protein 120g
-            </span>
-          </div>
-          <div className="px-2 pb-0.5 rounded-full bg-secondary/15 border border-primary/30">
-            <span className="text-[10px] text-primary/90 font-medium">
-              Carbs 145g
-            </span>
-          </div>
-          <div className="px-2 pb-0.5 rounded-full bg-secondary/15 border border-primary/30">
-            <span className="text-[10px] text-primary/90 font-medium">
-              Fats 55g
-            </span>
           </div>
         </div>
       </div>

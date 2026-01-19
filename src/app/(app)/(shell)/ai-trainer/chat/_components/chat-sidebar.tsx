@@ -71,7 +71,7 @@ export function ChatSidebar() {
         "lg:translate-x-0",
         isSidebarOpen ? "lg:w-full" : "lg:w-14.5",
         // Height only for desktop
-        "lg:h-[calc(100dvh-145px)] lg:max-h-[calc(100dvh-145px)]"
+        "lg:h-[calc(100dvh-125px)] lg:max-h-[calc(100dvh-125px)]"
       )}
     >
       <Button

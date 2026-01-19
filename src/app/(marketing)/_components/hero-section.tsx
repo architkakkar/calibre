@@ -23,7 +23,7 @@ export function HeroSection() {
         }}
       />
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-black/28 via-black/10 to-transparent" />
-      <CardContent className="relative z-10 flex h-full flex-col justify-between gap-8 px-8 py-10 md:px-12 md:py-12">
+      <CardContent className="relative z-10 flex h-full flex-col justify-between gap-8 px-6 py-4 md:px-10 md:py-10">
         <div className="space-y-5">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3.5 py-1.5 text-[12px] font-medium text-primary animate-bounce">
             <span className="size-2 rounded-full bg-primary" />
@@ -53,7 +53,7 @@ export function HeroSection() {
                     href="/register"
                     className={cn(
                       buttonVariants({ variant: "default" }),
-                      "h-8 w-24 font-bold"
+                      "h-8 w-24 font-bold",
                     )}
                   >
                     Get Started
@@ -64,7 +64,7 @@ export function HeroSection() {
                     href="/login"
                     className={cn(
                       buttonVariants({ variant: "secondary" }),
-                      "h-8 w-16 border border-secondary"
+                      "h-8 w-16 border border-secondary",
                     )}
                   >
                     Login

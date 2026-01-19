@@ -47,7 +47,7 @@ export function FeaturesGrid() {
   ];
 
   return (
-    <div className="col-span-6 row-span-2 grid grid-cols-2 grid-rows-2 gap-4">
+    <div className="col-span-6 row-span-4 xs:row-span-2 grid grid-cols-1 xs:grid-cols-2 grid-rows-4 xs:grid-rows-2 gap-2 md:gap-4">
       {features.map((feature) => (
         <FlipCard
           key={feature.title}
