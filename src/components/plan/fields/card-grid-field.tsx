@@ -61,7 +61,7 @@ export function CardGridField({
               "min-h-9 rounded-md border px-4 py-2  text-sm font-medium transition-colors",
               "hover:bg-muted",
               option.description ? "text-left" : "text-center",
-              isSelected ? "border-primary bg-primary/5" : "border-border",
+              isSelected ? "border-secondary bg-secondary/50" : "border-border",
               isDisabled && "opacity-50 cursor-not-allowed",
             )}
           >

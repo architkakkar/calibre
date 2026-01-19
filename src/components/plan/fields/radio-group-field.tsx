@@ -42,7 +42,7 @@ export function RadioGroupField({
               "flex items-start gap-3 rounded-md border px-3 py-2 text-left transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isSelected
-                ? "border-secondary bg-secondary/40"
+                ? "border-secondary bg-secondary/50"
                 : "border-border hover:bg-muted/50"
             )}
           >
@@ -54,7 +54,7 @@ export function RadioGroupField({
               )}
             >
               {isSelected && (
-                <span className="h-2 w-2 rounded-full bg-secondary" />
+                <span className="h-2 w-2 rounded-full bg-primary" />
               )}
             </span>
 

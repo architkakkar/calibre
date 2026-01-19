@@ -41,7 +41,7 @@ export function SegmentedControlField({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               "border-r border-border last:border-r-0",
               isSelected
-                ? "bg-secondary text-secondary-foreground"
+                ? "bg-secondary/50 text-secondary-foreground"
                 : "bg-transparent text-muted-foreground hover:bg-muted/50 hover:text-foreground",
             )}
           >

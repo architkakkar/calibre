@@ -47,7 +47,7 @@ export function TagListField({
               "inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isSelected
-                ? "bg-secondary text-secondary-foreground border-secondary"
+                ? "bg-secondary/50 text-secondary-foreground border-secondary"
                 : "bg-transparent text-muted-foreground border-border hover:bg-muted hover:text-foreground"
             )}
           >
