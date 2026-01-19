@@ -43,8 +43,8 @@ export function HeroSection() {
           </div>
           <div className="flex flex-wrap items-center gap-4 pt-3">
             <ClerkLoading>
-              <Skeleton className="h-8 w-24 rounded-md" />
-              <Skeleton className="h-8 w-16 rounded-md" />
+              <Skeleton className="h-9 w-24 rounded-md" />
+              <Skeleton className="h-9 w-16 rounded-md" />
             </ClerkLoading>
             <ClerkLoaded>
               <SignedOut>
@@ -53,7 +53,7 @@ export function HeroSection() {
                     href="/register"
                     className={cn(
                       buttonVariants({ variant: "default" }),
-                      "h-8 w-24 font-bold",
+                      "h-9 w-24 font-bold",
                     )}
                   >
                     Get Started
@@ -64,7 +64,7 @@ export function HeroSection() {
                     href="/login"
                     className={cn(
                       buttonVariants({ variant: "secondary" }),
-                      "h-8 w-16 border border-secondary",
+                      "h-9 w-16 border border-secondary",
                     )}
                   >
                     Login
