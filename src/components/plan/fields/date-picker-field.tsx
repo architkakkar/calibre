@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,19 +11,14 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
-type DatePickerFieldProps = {
-  field: FieldDefinition;
-  value?: Date;
-  onChange?: (value: Date | undefined) => void;
-  disabled?: boolean;
-};
-
 export function DatePickerField({
   field,
   value,
-  onChange = () => {},
+  onChange,
   disabled = false,
-}: DatePickerFieldProps) {
+}: BaseFieldProps) {
+  const selectedDate = value instanceof Date ? value : undefined;
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -32,12 +27,12 @@ export function DatePickerField({
           disabled={disabled}
           className={cn(
             "w-full justify-start text-left font-normal",
-            !value && "text-muted-foreground"
+            !selectedDate && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value
-            ? format(value, "PPP")
+          {selectedDate
+            ? format(selectedDate, "PPP")
             : field.ui?.placeholder ?? "Pick a date"}
         </Button>
       </PopoverTrigger>
@@ -45,8 +40,8 @@ export function DatePickerField({
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={value}
-          onSelect={onChange}
+          selected={selectedDate}
+          onSelect={(date) => onChange(date)}
           captionLayout="dropdown"
         />
       </PopoverContent>

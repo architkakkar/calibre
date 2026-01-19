@@ -1,4 +1,4 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import {
   Select,
   SelectContent,
@@ -7,19 +7,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type DropdownFieldProps = {
-  field: FieldDefinition;
-  value?: string | number;
-  onChange?: (value: string | number) => void;
-  disabled?: boolean;
-};
-
 export function DropdownField({
   field,
   value,
-  onChange = () => {},
+  onChange,
   disabled = false,
-}: DropdownFieldProps) {
+}: BaseFieldProps) {
+  const selectedValue =
+    typeof value === "string" || typeof value === "number"
+      ? String(value)
+      : undefined;
+
   if (!field.options || field.options.length === 0) {
     return (
       <div className="text-sm text-muted-foreground italic">
@@ -31,7 +29,7 @@ export function DropdownField({
   return (
     <Select
       disabled={disabled}
-      value={value !== undefined ? String(value) : undefined}
+      value={selectedValue}
       onValueChange={(val) => onChange(val)}
     >
       <SelectTrigger className="w-full h-auto! text-left">

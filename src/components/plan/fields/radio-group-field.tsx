@@ -1,19 +1,17 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
-
-type RadioGroupFieldProps = {
-  field: FieldDefinition;
-  selectedValue?: string | number;
-  onChange?: (value: string | number) => void;
-  disabled?: boolean;
-};
 
 export function RadioGroupField({
   field,
-  selectedValue,
-  onChange = () => {},
+  value,
+  onChange,
   disabled = false,
-}: RadioGroupFieldProps) {
+}: BaseFieldProps) {
+  const selectedValue =
+    typeof value === "string" || typeof value === "number"
+      ? value
+      : undefined;
+
   if (!field.options || field.options.length === 0) {
     return (
       <div className="text-sm text-muted-foreground italic">
@@ -36,7 +34,10 @@ export function RadioGroupField({
           <button
             key={option.value}
             type="button"
-            onClick={() => onChange(option.value)}
+            onClick={() => {
+              if (disabled) return;
+              onChange(option.value);
+            }}
             className={cn(
               "flex items-start gap-3 rounded-md border px-3 py-2 text-left transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

@@ -1,19 +1,25 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
-
-type CardGridProps = {
-  field: FieldDefinition;
-  selectedValues?: Array<string | number>;
-  onOptionClick?: (value: string | number) => void;
-  disabled?: boolean;
-};
 
 export function CardGridField({
   field,
-  selectedValues = [],
-  onOptionClick = () => {},
+  value,
+  onChange,
   disabled = false,
-}: CardGridProps) {
+}: BaseFieldProps) {
+  const isMultiSelect = field.type === "multi_select";
+
+  const selectedValues: Array<string | number> = isMultiSelect
+    ? Array.isArray(value)
+      ? value
+      : []
+    : typeof value === "string" || typeof value === "number"
+      ? [value]
+      : [];
+
+  const min = field.ui?.min;
+  const max = field.ui?.max;
+
   if (!field.options || field.options.length === 0) {
     return (
       <div className="text-sm text-muted-foreground italic">
@@ -33,13 +39,30 @@ export function CardGridField({
             key={option.value}
             type="button"
             disabled={isDisabled}
-            onClick={() => onOptionClick(option.value)}
+            onClick={() => {
+              if (disabled) return;
+
+              if (!isMultiSelect) {
+                onChange(option.value);
+                return;
+              }
+
+              const exists = selectedValues.includes(option.value);
+              const next = exists
+                ? selectedValues.filter((v) => v !== option.value)
+                : [...selectedValues, option.value];
+
+              if (min !== undefined && next.length < min) return;
+              if (max !== undefined && next.length > max) return;
+
+              onChange(next);
+            }}
             className={cn(
               "min-h-9 rounded-md border px-4 py-2  text-sm font-medium transition-colors",
               "hover:bg-muted",
               option.description ? "text-left" : "text-center",
               isSelected ? "border-primary bg-primary/5" : "border-border",
-              isDisabled && "opacity-50 cursor-not-allowed"
+              isDisabled && "opacity-50 cursor-not-allowed",
             )}
           >
             <div className="flex flex-col gap-0.5">

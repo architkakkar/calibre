@@ -1,25 +1,19 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
 import { Slider } from "@/components/ui/slider";
-
-type SliderFieldProps = {
-  field: FieldDefinition;
-  value?: number;
-  onChange?: (value: number) => void;
-  disabled?: boolean;
-};
 
 export function SliderField({
   field,
   value,
-  onChange = () => {},
+  onChange,
   disabled = false,
-}: SliderFieldProps) {
+}: BaseFieldProps) {
   const min = field.ui?.min ?? 0;
   const max = field.ui?.max ?? 100;
   const step = field.ui?.step ?? 1;
 
-  const effectiveValue = typeof value === "number" ? value : min;
+  const effectiveValue =
+    typeof value === "number" ? value : min;
 
   const displayValue = `${field.ui?.prefix ?? ""}${effectiveValue}${
     field.ui?.suffix ?? ""
@@ -56,7 +50,13 @@ export function SliderField({
           min={min}
           max={max}
           step={step}
-          onValueChange={(vals) => onChange(vals[0])}
+          disabled={disabled}
+          onValueChange={(vals) => {
+            const next = vals[0];
+            if (typeof next === "number") {
+              onChange(next);
+            }
+          }}
         />
       </div>
 

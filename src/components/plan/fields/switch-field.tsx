@@ -1,23 +1,18 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { Switch } from "@/components/ui/switch";
 
-type SwitchFieldProps = {
-  field: FieldDefinition;
-  value?: boolean;
-  onChange?: (value: boolean) => void;
-  disabled?: boolean;
-};
-
 export function SwitchField({
-  value = false,
-  onChange = () => {},
+  value,
+  onChange,
   disabled = false,
-}: SwitchFieldProps) {
+}: BaseFieldProps) {
+  const checked = Boolean(value);
+
   return (
     <Switch
-      checked={value}
+      checked={checked}
       disabled={disabled}
-      onCheckedChange={(checked) => onChange(Boolean(checked))}
+      onCheckedChange={(next) => onChange(Boolean(next))}
     />
   );
 }

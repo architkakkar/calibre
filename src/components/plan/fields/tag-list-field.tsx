@@ -1,19 +1,12 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
-
-type TagListFieldProps = {
-  field: FieldDefinition;
-  selectedValues?: Array<string | number>;
-  onOptionClick?: (value: string | number) => void;
-  disabled?: boolean;
-};
 
 export function TagListField({
   field,
-  selectedValues = [],
-  onOptionClick = () => {},
+  value,
+  onChange,
   disabled = false,
-}: TagListFieldProps) {
+}: BaseFieldProps) {
   if (!field.options || field.options.length === 0) {
     return (
       <div className="text-[13px] text-muted-foreground italic">
@@ -21,6 +14,10 @@ export function TagListField({
       </div>
     );
   }
+
+  const selectedValues: Array<string | number> = Array.isArray(value)
+    ? value
+    : [];
 
   return (
     <div
@@ -36,7 +33,16 @@ export function TagListField({
           <button
             key={option.value}
             type="button"
-            onClick={() => onOptionClick(option.value)}
+            onClick={() => {
+              if (disabled) return;
+
+              const exists = selectedValues.includes(option.value);
+              const next = exists
+                ? selectedValues.filter((v) => v !== option.value)
+                : [...selectedValues, option.value];
+
+              onChange(next);
+            }}
             className={cn(
               "inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

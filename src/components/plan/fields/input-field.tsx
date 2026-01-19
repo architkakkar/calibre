@@ -1,21 +1,19 @@
-import { FieldDefinition } from "@/lib/templates/plan-template";
+import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
 import { Input } from "@/components/ui/input";
-
-type InputFieldProps = {
-  field: FieldDefinition;
-  value?: string | number;
-  onChange?: (value: string | number) => void;
-  disabled?: boolean;
-};
 
 export function InputField({
   field,
   value,
-  onChange = () => {},
+  onChange,
   disabled = false,
-}: InputFieldProps) {
+}: BaseFieldProps) {
   const isNumber = field.type === "number";
+
+  const inputValue =
+    typeof value === "string" || typeof value === "number"
+      ? value
+      : "";
 
   return (
     <div className="relative">
@@ -28,19 +26,21 @@ export function InputField({
 
       <Input
         type={isNumber ? "number" : "text"}
-        value={value ?? ""}
+        value={inputValue}
         disabled={disabled}
         placeholder={field.ui?.placeholder}
         min={isNumber ? field.ui?.min : undefined}
         max={isNumber ? field.ui?.max : undefined}
         step={isNumber ? field.ui?.step : undefined}
-        onChange={(e) =>
-          onChange(
-            isNumber && e.target.value !== ""
-              ? Number(e.target.value)
-              : e.target.value
-          )
-        }
+        onChange={(e) => {
+          const raw = e.target.value;
+
+          if (isNumber) {
+            onChange(raw === "" ? undefined : Number(raw));
+          } else {
+            onChange(raw);
+          }
+        }}
         className={cn(
           field.ui?.prefix && "pl-8",
           field.ui?.suffix && "pr-8",
