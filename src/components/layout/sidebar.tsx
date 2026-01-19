@@ -99,9 +99,9 @@ export function Sidebar({
                   Plans
                 </div>
                 <button
-                  onClick={() => router.push("/plans/workout-plans")}
+                  onClick={() => router.push("/plans/workout")}
                   className={`flex items-center gap-3 w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    pathname === "/plans/workout-plans"
+                    pathname === "/plans/workout"
                       ? "bg-primary/10 text-primary"
                       : "text-foreground hover:bg-white/5"
                   }`}
@@ -110,15 +110,15 @@ export function Sidebar({
                   Workout Plans
                 </button>
                 <button
-                  onClick={() => router.push("/plans/diet-plans")}
+                  onClick={() => router.push("/plans/nutrition")}
                   className={`flex items-center gap-3 w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    pathname === "/plans/diet-plans"
+                    pathname === "/plans/nutrition"
                       ? "bg-primary/10 text-primary"
                       : "text-foreground hover:bg-white/5"
                   }`}
                 >
                   <HugeiconsIcon icon={Apple01Icon} className="size-4" />
-                  Diet Plans
+                  Nutrition Plans
                 </button>
               </div>
 
