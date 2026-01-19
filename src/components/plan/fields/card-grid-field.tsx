@@ -52,7 +52,6 @@ export function CardGridField({
                 ? selectedValues.filter((v) => v !== option.value)
                 : [...selectedValues, option.value];
 
-              if (min !== undefined && next.length < min) return;
               if (max !== undefined && next.length > max) return;
 
               onChange(next);
@@ -62,7 +61,7 @@ export function CardGridField({
               "hover:bg-muted",
               option.description ? "text-left" : "text-center",
               isSelected ? "border-secondary bg-secondary/50" : "border-border",
-              isDisabled && "opacity-50 cursor-not-allowed",
+              isDisabled && "opacity-50 cursor-not-allowed hover:bg-transparent",
             )}
           >
             <div className="flex flex-col gap-0.5">
