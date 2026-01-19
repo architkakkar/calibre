@@ -181,7 +181,7 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
             showWhen: ["dumbbells"],
           },
           options: [
-            { label: "Adjustable Set (All)", value: "adjustable" },
+            { label: "Adjustable Set (All)", value: "all" },
             { label: "1-3 kg", value: "light_1_3" },
             { label: "5 kg", value: "5" },
             { label: "7.5 kg", value: "7.5" },
@@ -194,7 +194,7 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
             { label: "30 kg+", value: "heavy_30_plus" },
           ],
           aiHint:
-            "CRITICAL: Only program exercises using these exact weight increments. If 'adjustable' is chosen, assume full range access.",
+            "CRITICAL: Only program exercises using these exact weight increments. If 'all' is chosen, assume full range access.",
         },
         {
           key: "session_duration",
