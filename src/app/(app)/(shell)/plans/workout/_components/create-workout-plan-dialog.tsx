@@ -52,6 +52,17 @@ export function CreateWorkoutPlanDialog({
   };
 
   const handleSubmit = () => {
+    for (let i = 0; i < ACTIVE_WORKOUT_PLAN.steps.length; i++) {
+      const step = ACTIVE_WORKOUT_PLAN.steps[i];
+      const isValid = form.validateFields(step.fields);
+
+      if (!isValid) {
+        setCurrentStep(i);
+        return;
+      }
+    }
+
+    // All steps valid → submit
     alert("Workout Plan Generated!");
     onOpenChange(false);
   };
@@ -64,10 +75,7 @@ export function CreateWorkoutPlanDialog({
       form.isFieldVisible?.(f),
     );
 
-    const { isValid } = runValidation(
-      visibleFields,
-      form.getAllValues(),
-    );
+    const { isValid } = runValidation(visibleFields, form.getAllValues());
 
     return !isValid;
   })();
