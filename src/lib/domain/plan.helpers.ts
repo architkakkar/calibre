@@ -1,8 +1,5 @@
 import { PlanTemplate, FieldDefinition } from "@/lib/templates/plan-template";
 
-/**
- * Build API payload from form values & plan schema
- */
 export function buildWorkoutPlanPayload(
   plan: PlanTemplate,
   values: Record<string, unknown>,
@@ -27,9 +24,6 @@ export function buildWorkoutPlanPayload(
   return payload;
 }
 
-/**
- * Derive initial form values from a plan template
- */
 export function deriveInitialValues(
   plan: PlanTemplate,
 ): Record<string, unknown> {
