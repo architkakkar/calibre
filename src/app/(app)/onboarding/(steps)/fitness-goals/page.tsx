@@ -27,7 +27,7 @@ import {
   getCommitmentOptions,
   getWeeklyFrequencyOptions,
   getMotivationOptions,
-} from "@/lib/shared/helpers";
+} from "@/lib/domain/onboarding.helpers";
 
 export default function FitnessGoalsPage() {
   const router = useRouter();
@@ -73,8 +73,8 @@ export default function FitnessGoalsPage() {
 
   return (
     <form onSubmit={handleFinishSetup} className="flex flex-col h-full">
-      <header className="mb-8 flex flex-col items-start justify-between">
-        <p className="text-sm text-muted-foreground self-end mb-2">
+      <header className="flex flex-col items-start justify-between mb-8">
+        <p className="self-end mb-2 text-sm text-muted-foreground">
           Step 3 of 3
         </p>
         <div className="space-y-2">
@@ -86,7 +86,7 @@ export default function FitnessGoalsPage() {
           </p>
         </div>
       </header>
-      <main className="space-y-8 mb-5">
+      <main className="mb-5 space-y-8">
         {/* Goals overview section  */}
         <section aria-labelledby="goals-overview-title" className="space-y-6">
           <div className="space-y-1">
@@ -106,7 +106,7 @@ export default function FitnessGoalsPage() {
                 (Select up to 3 goals that matter most to you)
               </span>
             </Label>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
               {getGoalOptions().map((option) => {
                 const isSelected = (goals.primaryGoals ?? []).includes(
                   option.value as FitnessGoals["primaryGoals"][number]
@@ -162,7 +162,7 @@ export default function FitnessGoalsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="targetWeight">
                 Target Weight <Required />
@@ -183,7 +183,7 @@ export default function FitnessGoalsPage() {
                   className="h-9 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   required
                 />
-                <div className="flex h-9 items-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">
+                <div className="flex items-center px-3 text-sm font-medium border rounded-md h-9 border-input bg-muted text-muted-foreground">
                   kg
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function FitnessGoalsPage() {
                   })
                 }
               >
-                <SelectTrigger className="h-9 w-full">
+                <SelectTrigger className="w-full h-9">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -244,7 +244,7 @@ export default function FitnessGoalsPage() {
                 (Choose a frequency you can realistically maintain)
               </span>
             </Label>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
               {getWeeklyFrequencyOptions().map((option) => {
                 const isSelected = goals.weeklyFrequency === option.value;
                 return (
@@ -277,7 +277,7 @@ export default function FitnessGoalsPage() {
                 (Select up to 3 reasons that motivate you to stay consistent)
               </span>
             </Label>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
               {getMotivationOptions().map((option) => {
                 const isSelected = (goals.motivations ?? []).includes(
                   option.value as FitnessGoals["motivations"][number]
@@ -334,7 +334,7 @@ export default function FitnessGoalsPage() {
           />
         </section>
       </main>
-      <footer className="sticky bottom-0 mt-auto -mx-6 md:-mx-10 border-t border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 px-6 md:px-10 py-4">
+      <footer className="sticky bottom-0 px-6 py-4 mt-auto -mx-6 border-t md:-mx-10 border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 md:px-10">
         <Button
           disabled={!isFitnessGoalsComplete}
           type="submit"
@@ -347,7 +347,7 @@ export default function FitnessGoalsPage() {
             className="ml-2"
           />
         </Button>
-        <p className="mt-2 text-center text-xs text-muted-foreground">
+        <p className="mt-2 text-xs text-center text-muted-foreground">
           You can also update this later from account settings
         </p>
       </footer>

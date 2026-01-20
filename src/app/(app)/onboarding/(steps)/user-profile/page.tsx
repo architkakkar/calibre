@@ -10,7 +10,7 @@ import {
   getGenderOptions,
   getActivityLevelOptions,
   getFitnessLevelOptions,
-} from "@/lib/shared/helpers";
+} from "@/lib/domain/onboarding.helpers";
 import { Required } from "@/components/common/required";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon, Calendar03Icon } from "@hugeicons/core-free-icons";
@@ -52,8 +52,8 @@ export default function UserProfilePage() {
 
   return (
     <form onSubmit={handleFormSubmit} className="flex flex-col h-full">
-      <header className="mb-8 flex flex-col items-start justify-between">
-        <p className="text-sm text-muted-foreground self-end mb-2">
+      <header className="flex flex-col items-start justify-between mb-8">
+        <p className="self-end mb-2 text-sm text-muted-foreground">
           Step 2 of 3
         </p>
         <div className="space-y-2">
@@ -65,7 +65,7 @@ export default function UserProfilePage() {
           </p>
         </div>
       </header>
-      <main className="space-y-8 mb-4">
+      <main className="mb-4 space-y-8">
         {/* Personal details section */}
         <section aria-labelledby="personal-details-title" className="space-y-6">
           <div className="space-y-1">
@@ -131,7 +131,7 @@ export default function UserProfilePage() {
                     onSelect={(d) =>
                       updateProfile({ dobIso: d ? d.toISOString() : undefined })
                     }
-                    className="rounded-md border shadow-sm"
+                    className="border rounded-md shadow-sm"
                     captionLayout="dropdown"
                     disabled={(date) => date > new Date()}
                   />
@@ -199,7 +199,7 @@ export default function UserProfilePage() {
                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   required
                 />
-                <div className="flex h-9 items-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">
+                <div className="flex items-center px-3 text-sm font-medium border rounded-md h-9 border-input bg-muted text-muted-foreground">
                   cm
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function UserProfilePage() {
                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   required
                 />
-                <div className="flex h-9 items-center rounded-md border border-input bg-muted px-3 text-sm font-medium text-muted-foreground">
+                <div className="flex items-center px-3 text-sm font-medium border rounded-md h-9 border-input bg-muted text-muted-foreground">
                   kg
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function UserProfilePage() {
           </div>
         </section>
       </main>
-      <footer className="sticky bottom-0 mt-auto -mx-6 md:-mx-10 border-t border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 px-6 md:px-10 py-4">
+      <footer className="sticky bottom-0 px-6 py-4 mt-auto -mx-6 border-t md:-mx-10 border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 md:px-10">
         <Button
           type="submit"
           disabled={!isUserProfileComplete}
@@ -312,10 +312,10 @@ export default function UserProfilePage() {
           <HugeiconsIcon
             icon={ArrowRight01Icon}
             strokeWidth={2.5}
-            className="h-4 w-4"
+            className="w-4 h-4"
           />
         </Button>
-        <p className="mt-2 text-center text-xs text-muted-foreground">
+        <p className="mt-2 text-xs text-center text-muted-foreground">
           You can also update this later from account settings
         </p>
       </footer>

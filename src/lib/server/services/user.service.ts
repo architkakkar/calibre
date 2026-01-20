@@ -20,7 +20,7 @@ import {
   COMMITMENT_LEVEL_MAP,
   WEEKLY_FREQUENCY_MAP,
   MOTIVATION_MAP,
-} from "@/lib/shared/helpers";
+} from "@/lib/domain/onboarding.helpers";
 
 export async function createUser({ id, email }: { id: string; email: string }) {
   if (!id || !email) {
@@ -76,7 +76,7 @@ export async function onboardUser({
     commitment_level: COMMITMENT_LEVEL_MAP[goals.commitmentLevel],
     weekly_frequency: WEEKLY_FREQUENCY_MAP[goals.weeklyFrequency],
     motivations: goals.motivations.map(
-      (motivation) => MOTIVATION_MAP[motivation]
+      (motivation) => MOTIVATION_MAP[motivation],
     ),
     notes: goals.notes ?? null,
   };
