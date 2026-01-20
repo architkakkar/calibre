@@ -87,11 +87,11 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
     },
 
     /* -------------------------------------------------- */
-    /* STEP 2 — TRAINING SETUP                            */
+    /* STEP 2 — SETUP                                     */
     /* -------------------------------------------------- */
     {
       step: 2,
-      label: "Training Setup",
+      label: "Setup",
       description: "Define your environment and time constraints.",
       fields: [
         {
