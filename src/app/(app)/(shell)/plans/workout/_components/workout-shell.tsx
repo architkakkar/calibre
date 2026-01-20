@@ -6,10 +6,10 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div>
-      <header className="flex justify-between px-1">
+      <header className="flex justify-between px-1 mt-1">
         <div>
           <h1 className="text-3xl font-bold text-primary">Workout Plans</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="mt-1 text-sm text-muted-foreground">
             {hasPlans
               ? "Track your progress, crush your goals, and evolve your fitness journey with every workout."
               : "Transform your fitness with AI-powered workout plans that adapt to your goals, schedule, and available equipment."}

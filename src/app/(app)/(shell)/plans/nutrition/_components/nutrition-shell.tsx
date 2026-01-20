@@ -6,10 +6,10 @@ export function NutritionShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div>
-      <header className="flex justify-between px-1">
+      <header className="flex justify-between px-1 mt-1">
         <div>
           <h1 className="text-3xl font-bold text-primary">Nutrition Plans</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="mt-1 text-sm text-muted-foreground">
             {hasPlans
               ? "Track your progress, crush your goals, and evolve your nutrition journey with every meal."
               : "Transform your health with AI-powered nutrition plans tailored to your goals, preferences, and lifestyle."}
