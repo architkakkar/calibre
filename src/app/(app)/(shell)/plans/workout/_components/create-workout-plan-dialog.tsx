@@ -8,6 +8,10 @@ import { PlanRenderer } from "@/components/plan/plan-renderer";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import { validateFields as runValidation } from "@/lib/validators/plan.validator";
+import {
+  buildWorkoutPlanPayload,
+  deriveInitialValues,
+} from "@/lib/domain/plan.helpers";
 
 type CreateWorkoutPlanDialogProps = {
   open: boolean;
@@ -26,17 +30,7 @@ export function CreateWorkoutPlanDialog({
   }));
 
   const form = usePlanForm({
-    initialValues: ACTIVE_WORKOUT_PLAN.steps.reduce(
-      (acc, step) => {
-        step.fields.forEach((field) => {
-          if (field.defaultValue !== undefined) {
-            acc[field.key] = field.defaultValue;
-          }
-        });
-        return acc;
-      },
-      {} as Record<string, unknown>,
-    ),
+    initialValues: deriveInitialValues(ACTIVE_WORKOUT_PLAN),
   });
 
   const handleBack = () => {
@@ -62,8 +56,20 @@ export function CreateWorkoutPlanDialog({
       }
     }
 
-    // All steps valid → submit
-    alert("Workout Plan Generated!");
+    const payload = buildWorkoutPlanPayload(
+      ACTIVE_WORKOUT_PLAN,
+      form.getAllValues(),
+      (field) => form.isFieldVisible?.(field) ?? true,
+    );
+
+    // TEMP: inspect payload
+    console.log("Workout Plan Payload:", payload);
+
+    // TODO: send payload to API
+    // await createWorkoutPlan(payload);
+
+    form.reset(deriveInitialValues(ACTIVE_WORKOUT_PLAN));
+    setCurrentStep(0);
     onOpenChange(false);
   };
 
