@@ -6,6 +6,7 @@ type PlanDialogFooterProps = {
   onBack: () => void;
   onNext: () => void;
   onSubmit: () => void;
+  isNextDisabled?: boolean;
 };
 
 export function PlanDialogFooter({
@@ -14,6 +15,7 @@ export function PlanDialogFooter({
   onBack,
   onNext,
   onSubmit,
+  isNextDisabled = false,
 }: PlanDialogFooterProps) {
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === totalSteps - 1;
@@ -29,6 +31,7 @@ export function PlanDialogFooter({
         {!isLastStep && (
           <Button
             onClick={onNext}
+            disabled={isNextDisabled}
             className="w-36 px-5 bg-linear-to-r from-primary to-primary/90 hover:shadow-lg transition-shadow"
           >
             Next
