@@ -1,30 +1,15 @@
 import { useMemo } from "react";
 import { PlanTemplate } from "@/lib/templates/plan-template";
 import { FieldRenderer } from "@/components/plan/field-renderer";
-import { usePlanForm } from "@/hooks/use-plan-form";
+import type { PlanFormApi } from "@/hooks/use-plan-form";
 
 type PlanRendererProps = {
   plan: PlanTemplate;
   stepIndex: number;
+  form: PlanFormApi;
 };
 
-export function PlanRenderer({ plan, stepIndex }: PlanRendererProps) {
-  const initialValues = useMemo(() => {
-    const values: Record<string, unknown> = {};
-
-    for (const step of plan.steps) {
-      for (const field of step.fields) {
-        if (field.defaultValue !== undefined) {
-          values[field.key] = field.defaultValue;
-        }
-      }
-    }
-
-    return values;
-  }, [plan]);
-
-  const form = usePlanForm({ initialValues });
-
+export function PlanRenderer({ plan, stepIndex, form }: PlanRendererProps) {
   const step = useMemo(() => plan.steps[stepIndex], [plan, stepIndex]);
   if (!step) return null;
 
