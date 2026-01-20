@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function mapToDbEnum<
   TInput extends readonly string[],
-  TEnum extends readonly string[]
+  TEnum extends readonly string[],
 >(input: TInput, enumValues: TEnum): Record<TInput[number], TEnum[number]> {
   const map = {} as Record<TInput[number], TEnum[number]>;
 
@@ -20,7 +20,7 @@ export function mapToDbEnum<
 
     if (!enumValues.includes(normalized)) {
       throw new Error(
-        `Enum mismatch: "${value}" → "${normalized}" not in DB enum`
+        `Enum mismatch: "${value}" → "${normalized}" not in DB enum`,
       );
     }
 
@@ -30,18 +30,21 @@ export function mapToDbEnum<
   return map;
 }
 
-export const formatRelativeTime = (date: Date) => {
+export function formatRelativeTime(date: Date) {
   const diff = Date.now() - date.getTime();
   const day = 86400000;
+
   if (diff < day) return "Today";
   if (diff < day * 2) return "Yesterday";
-  const days = Math.floor(diff / day);
-  return `${days}d ago`;
-};
 
-export const groupChatsByTime = (
-  chats: { id: string; title: string | null; updatedAt: string }[]
-) => {
+  const days = Math.floor(diff / day);
+
+  return `${days}d ago`;
+}
+
+export function groupChatsByTime(
+  chats: { id: string; title: string | null; updatedAt: string }[],
+) {
   const now = Date.now();
   const day = 86400000;
 
@@ -50,10 +53,10 @@ export const groupChatsByTime = (
     "This Week": chats.filter(
       (c) =>
         now - new Date(c.updatedAt).getTime() >= day &&
-        now - new Date(c.updatedAt).getTime() < day * 7
+        now - new Date(c.updatedAt).getTime() < day * 7,
     ),
     Earlier: chats.filter(
-      (c) => now - new Date(c.updatedAt).getTime() >= day * 7
+      (c) => now - new Date(c.updatedAt).getTime() >= day * 7,
     ),
   };
-};
+}
