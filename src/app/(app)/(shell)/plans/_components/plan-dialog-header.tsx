@@ -1,4 +1,4 @@
-import { PlanStepper } from "@/components/plan/plan-stepper";
+import { PlanStepper } from "./plan-stepper";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 type PlanDialogHeaderProps = {
@@ -15,12 +15,12 @@ export function PlanDialogHeader({
   currentStep,
 }: PlanDialogHeaderProps) {
   return (
-    <header className="relative bg-linear-to-r from-primary/10 via-primary/5 to-transparent px-6 py-4 border-b border-border/50">
+    <header className="relative px-6 py-4 border-b bg-linear-to-r from-primary/10 via-primary/5 to-transparent border-border/50">
       <div className="mb-4">
         <DialogTitle className="text-2xl font-bold tracking-tight">
           {title}
         </DialogTitle>
-        <DialogDescription className="text-sm text-muted-foreground mt-1">
+        <DialogDescription className="mt-1 text-sm text-muted-foreground">
           {description}
         </DialogDescription>
       </div>

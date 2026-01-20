@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PlanTemplate } from "@/lib/templates/plan-template";
-import { FieldRenderer } from "@/components/plan/field-renderer";
+import { FieldRenderer } from "./field-renderer";
 import type { PlanFormApi } from "@/hooks/use-plan-form";
 
 type PlanRendererProps = {
@@ -16,7 +16,7 @@ export function PlanRenderer({ plan, stepIndex, form }: PlanRendererProps) {
   return (
     <section className="px-6 space-y-6 h-[50dvh] max-h-[50dvh] overflow-y-auto">
       {step.fields.length === 0 && (
-        <div className="text-sm text-muted-foreground italic">
+        <div className="text-sm italic text-muted-foreground">
           No fields defined for this step yet.
         </div>
       )}

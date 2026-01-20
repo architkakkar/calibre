@@ -1,6 +1,6 @@
 import { PlanFormApi } from "@/hooks/use-plan-form";
-import { FIELD_REGISTRY } from "@/components/plan/field-registry";
-import { PlaceholderField } from "@/components/plan/fields";
+import { FIELD_REGISTRY } from "./field-registry";
+import { PlaceholderField } from "./fields";
 import { FieldDefinition } from "@/lib/templates/plan-template";
 
 type FieldRendererProps = {
@@ -25,8 +25,8 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
       : PlaceholderField;
 
   return (
-    <section className="flex flex-col gap-y-3 lg:grid grid-cols-12 space-x-8">
-      <div className="col-span-5 gap-y-1 flex flex-col">
+    <section className="flex flex-col grid-cols-12 space-x-8 gap-y-3 lg:grid">
+      <div className="flex flex-col col-span-5 gap-y-1">
         <label
           htmlFor={field.key}
           className="text-sm font-medium text-foreground"
@@ -38,7 +38,7 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
           <p className="text-xs text-muted-foreground">{field.description}</p>
         )}
       </div>
-      <div className="col-span-7 flex flex-col gap-y-1">
+      <div className="flex flex-col col-span-7 gap-y-1">
         <FieldComponent
           field={field}
           value={value}
@@ -46,9 +46,7 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
           disabled={form.isFieldDisabled?.(field) ?? false}
         />
         {error && (
-          <p className="text-xs text-destructive leading-tight">
-            {error}
-          </p>
+          <p className="text-xs leading-tight text-destructive">{error}</p>
         )}
       </div>
     </section>

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { usePlanForm } from "@/hooks/use-plan-form";
-import { PlanDialogHeader } from "@/components/plan/plan-dialog-header";
-import { PlanDialogFooter } from "@/components/plan/plan-dialog-footer";
-import { PlanRenderer } from "@/components/plan/plan-renderer";
+import { PlanDialogHeader } from "@/app/(app)/(shell)/plans/_components/plan-dialog-header";
+import { PlanDialogFooter } from "@/app/(app)/(shell)/plans/_components/plan-dialog-footer";
+import { PlanRenderer } from "@/app/(app)/(shell)/plans/_components/plan-renderer";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import { validateFields as runValidation } from "@/lib/validators/plan.validator";

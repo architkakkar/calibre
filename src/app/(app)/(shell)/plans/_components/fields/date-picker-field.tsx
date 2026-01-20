@@ -1,4 +1,3 @@
-import * as React from "react";
 import { BaseFieldProps } from "@/lib/client/types";
 import { cn } from "@/lib/shared/utils";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ export function DatePickerField({
             !selectedDate && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <CalendarIcon className="w-4 h-4 mr-2" />
           {selectedDate
             ? format(selectedDate, "PPP")
             : field.ui?.placeholder ?? "Pick a date"}

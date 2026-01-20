@@ -10,7 +10,7 @@ import {
   DatePickerField,
   CheckboxField,
   SwitchField,
-} from "@/components/plan/fields";
+} from "./fields";
 
 export const FIELD_REGISTRY = {
   single_select: {
