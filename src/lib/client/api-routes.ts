@@ -8,6 +8,9 @@ const API_ROUTES = {
     byId: "/chat/{chatId}",
     history: "/chat/history",
   },
+  plans: {
+    workout: "plans/workout",
+  },
 } as const;
 
 export default API_ROUTES;

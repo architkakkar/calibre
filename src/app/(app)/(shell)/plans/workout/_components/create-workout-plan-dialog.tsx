@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePlanForm } from "@/hooks/use-plan-form";
+import { createWorkoutPlanApi } from "@/lib/client/api/workout-plan.api";
 import { PlanDialogHeader } from "@/app/(app)/(shell)/plans/_components/plan-dialog-header";
 import { PlanDialogFooter } from "@/app/(app)/(shell)/plans/_components/plan-dialog-footer";
 import { PlanRenderer } from "@/app/(app)/(shell)/plans/_components/plan-renderer";
@@ -45,7 +46,7 @@ export function CreateWorkoutPlanDialog({
     setCurrentStep((s) => Math.min(steps.length - 1, s + 1));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     for (let i = 0; i < ACTIVE_WORKOUT_PLAN.steps.length; i++) {
       const step = ACTIVE_WORKOUT_PLAN.steps[i];
       const isValid = form.validateFields(step.fields);
@@ -62,11 +63,10 @@ export function CreateWorkoutPlanDialog({
       (field) => form.isFieldVisible?.(field) ?? true,
     );
 
-    // TEMP: inspect payload
-    console.log("Workout Plan Payload:", payload);
-
-    // TODO: send payload to API
-    // await createWorkoutPlan(payload);
+    await createWorkoutPlanApi({
+      planVersion: ACTIVE_WORKOUT_PLAN.version,
+      answers: payload,
+    });
 
     form.reset(deriveInitialValues(ACTIVE_WORKOUT_PLAN));
     setCurrentStep(0);
