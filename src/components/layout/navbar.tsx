@@ -19,6 +19,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   CoinsDollarIcon,
@@ -32,6 +39,7 @@ import {
   User02Icon,
   Logout01Icon,
   Menu01Icon,
+  ArrowDown01FreeIcons,
 } from "@hugeicons/core-free-icons";
 
 export function Navbar() {
@@ -59,7 +67,7 @@ export function Navbar() {
 
   return (
     <header className="px-2 py-2 md:px-4 md:py-4">
-      <div className="flex items-center justify-between rounded-xl border border-border bg-card/30 px-2 lg:px-4 py-2 min-h-15">
+      <div className="flex items-center justify-between px-2 py-2 border rounded-xl border-border bg-card/30 lg:px-4 min-h-15">
         {/* Left Section */}
         <div className="flex items-center gap-2 lg:gap-4">
           {/* Hamburger Menu - Mobile & Tablet */}
@@ -67,7 +75,7 @@ export function Navbar() {
             variant="ghost"
             size="icon-sm"
             onClick={() => setIsSidebarOpen(true)}
-            className="size-8 rounded-lg text-foreground hover:bg-white/10 lg:hidden"
+            className="rounded-lg size-8 text-foreground hover:bg-white/10 lg:hidden"
           >
             <HugeiconsIcon icon={Menu01Icon} className="size-5" />
           </Button>
@@ -75,7 +83,7 @@ export function Navbar() {
           <AppLogo />
 
           {/* Desktop Navigation - Only on Desktop (1024px+) */}
-          <nav className="hidden lg:flex items-center gap-2 rounded-xl bg-card/60 ring-1 ring-border/60 p-1">
+          <nav className="items-center hidden gap-2 p-1 lg:flex rounded-xl bg-card/60 ring-1 ring-border/60">
             <Button
               size="sm"
               variant="ghost"
@@ -103,7 +111,7 @@ export function Navbar() {
                     Plans
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="flex flex-col gap-1 min-w-44 w-auto">
+                    <ul className="flex flex-col w-auto gap-1 min-w-44">
                       <li>
                         <NavigationMenuLink
                           href="/plans/workout"
@@ -162,7 +170,7 @@ export function Navbar() {
           </Badge>
 
           {/* Streak & Coins - Tablet & Desktop (hidden on mobile) */}
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="items-center hidden gap-2 sm:flex">
             <StreakActivityPopup />
             <div className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground transition-all flex items-center justify-center">
               <HugeiconsIcon
@@ -179,72 +187,62 @@ export function Navbar() {
           {/* Separator - Tablet & Desktop */}
           <Separator
             orientation="vertical"
-            className="hidden sm:block h-8 w-px bg-border"
+            className="hidden w-px h-8 sm:block bg-border"
           />
 
           {/* Avatar Dropdown - All Screens */}
-          <NavigationMenu className={"border border-primary/10 rounded-xl"}>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-inherit px-2">
-                  <Avatar className="size-7">
-                    <AvatarImage />
-                    <AvatarFallback className="text-xs bg-primary/90 text-background">
-                      AK
-                    </AvatarFallback>
-                  </Avatar>
-                  {/* <div
-                    className="size-7 cursor-pointer rounded-full bg-linear-to-br from-primary to-secondary ring-2 ring-border/70 transition-all hover:shadow-lg hover:shadow-primary/40 mr-1"
-                    aria-label="Open profile menu"
-                  /> */}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="flex flex-col gap-1 p-0 min-w-44 w-auto">
-                    <li className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold text-foreground">
-                      Hello, {firstName}
-                    </li>
-                    <Separator className="my-1 bg-border h-px" />
-                    <li>
-                      <NavigationMenuLink
-                        href="/account"
-                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
-                      >
-                        <HugeiconsIcon icon={User02Icon} className="size-4" />
-                        Accounts
-                      </NavigationMenuLink>
-                    </li>
-                    {/* Notifications - Mobile Only */}
-                    <li className="sm:hidden">
-                      <NavigationMenuLink
-                        href="/notifications"
-                        className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-all"
-                      >
-                        <div className="relative">
-                          <HugeiconsIcon
-                            icon={Notification01Icon}
-                            className="size-4"
-                          />
-                          <span className="absolute -right-0.5 -top-0.5 size-1.5 rounded-full bg-orange-500" />
-                        </div>
-                        Notifications
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <SignOutButton>
-                        <div className="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-all cursor-pointer">
-                          <HugeiconsIcon
-                            icon={Logout01Icon}
-                            className="size-4"
-                          />
-                          Logout
-                        </div>
-                      </SignOutButton>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex items-center gap-1 px-2 py-1 transition-all border cursor-pointer border-primary/10 rounded-xl bg-inherit hover:bg-primary/5">
+                <Avatar className="size-7">
+                  <AvatarImage />
+                  <AvatarFallback className="text-xs bg-primary/90 text-background">
+                    AK
+                  </AvatarFallback>
+                </Avatar>
+                <HugeiconsIcon icon={ArrowDown01FreeIcons} size={16} />
+              </div>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="p-1.5 min-w-44"
+            >
+              <div className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold text-foreground">
+                Hello, {firstName}
+              </div>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => router.push("/account")}
+                className="flex items-center gap-2"
+              >
+                <HugeiconsIcon icon={User02Icon} className="size-4" />
+                Account
+              </DropdownMenuItem>
+
+              {/* Notifications - Mobile Only */}
+              <DropdownMenuItem
+                onClick={() => router.push("/notifications")}
+                className="flex items-center gap-2 sm:hidden"
+              >
+                <HugeiconsIcon icon={Notification01Icon} className="size-4" />
+                Notifications
+              </DropdownMenuItem>
+
+              <SignOutButton>
+                <DropdownMenuItem
+                  className="flex items-center gap-2"
+                  variant="destructive"
+                >
+                  <HugeiconsIcon icon={Logout01Icon} className="size-4" />
+                  Logout
+                </DropdownMenuItem>
+              </SignOutButton>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <Sidebar
