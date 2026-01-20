@@ -111,6 +111,7 @@ export async function onboardUser({
     type: "publicMetadata",
     metadata: {
       onboardingStatus: 1, // 0: PENDING, 1: COMPLETED
+      username: `${profile.firstName} ${profile.lastName}`,
     },
   });
 }
