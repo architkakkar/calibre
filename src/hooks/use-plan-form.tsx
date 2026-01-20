@@ -1,3 +1,4 @@
+import { validateFields as runValidation } from "@/lib/validators/plan.validator";
 import { useCallback, useMemo, useState } from "react";
 import type { FieldDefinition } from "@/lib/templates/plan-template";
 
@@ -10,6 +11,7 @@ export type PlanFormErrors = Record<string, string | undefined>;
 export type PlanFormApi = {
   // values
   getValue: (key: string) => unknown;
+  getAllValues: () => PlanFormValues;
   setValue: (key: string, value: unknown) => void;
   reset: (nextValues?: PlanFormValues) => void;
 
@@ -21,6 +23,8 @@ export type PlanFormApi = {
 
   // validation
   validate: () => boolean;
+
+  validateFields: (fields: FieldDefinition[]) => boolean;
 
   // visibility / disabling (next phase)
   isFieldVisible?: (field: FieldDefinition) => boolean;
@@ -42,6 +46,8 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
    * Read a field value by key
    */
   const getValue = useCallback((key: string) => values[key], [values]);
+
+  const getAllValues = useCallback(() => values, [values]);
 
   /**
    * Determine if a field is visible based on its visibility rules
@@ -128,11 +134,32 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
   }, [fields, isFieldVisible]);
 
   /**
+   * Validate a set of fields, honoring visibility, using validator
+   */
+  const validateFields = useCallback(
+    (fieldsToValidate: FieldDefinition[]): boolean => {
+      const visibleFields = fieldsToValidate.filter((f) =>
+        isFieldVisible(f),
+      );
+
+      const { isValid, errors: nextErrors } = runValidation(
+        visibleFields,
+        values,
+      );
+
+      setErrors(nextErrors);
+      return isValid;
+    },
+    [values, isFieldVisible],
+  );
+
+  /**
    * Memoized API exposed to consumers
    */
   return useMemo(
     () => ({
       getValue,
+      getAllValues,
       setValue,
       reset,
       getError,
@@ -140,10 +167,12 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
       clearError,
       getAllErrors,
       validate,
+      validateFields,
       isFieldVisible,
     }),
     [
       getValue,
+      getAllValues,
       setValue,
       reset,
       getError,
@@ -151,6 +180,7 @@ export function usePlanForm(options: UsePlanFormOptions = {}): PlanFormApi {
       clearError,
       getAllErrors,
       validate,
+      validateFields,
       isFieldVisible,
     ],
   );
