@@ -88,7 +88,7 @@ export function Navbar() {
               size="sm"
               variant="ghost"
               onClick={() => router.push("/dashboard")}
-              className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+              className={`h-8 rounded-lg px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
                 pathname === "/dashboard"
                   ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                   : "text-foreground hover:bg-white/10 hover:text-primary"
@@ -101,7 +101,7 @@ export function Navbar() {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
-                    className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all ${
+                    className={`h-8 rounded-lg px-3 py-1 text-sm font-semibold gap-1.5 transition-all ${
                       pathname?.startsWith("/plans")
                         ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                         : "text-foreground/80 bg-inherit hover:text-primary hover:bg-white/5"
@@ -145,7 +145,7 @@ export function Navbar() {
               size="sm"
               variant="ghost"
               onClick={() => router.push("/ai-trainer/chat")}
-              className={`h-8 rounded-xl px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
+              className={`h-8 rounded-lg px-3 py-1 text-sm font-semibold gap-1.5 transition-all duration-200 flex items-center ${
                 pathname?.startsWith("/ai-trainer")
                   ? "bg-linear-to-r! from-primary! to-primary/90! text-primary-foreground! shadow-lg! shadow-primary/30! !hover:bg-linear-to-r !hover:from-primary !hover:to-primary/90 !hover:text-primary-foreground"
                   : "text-foreground hover:bg-white/10 hover:text-primary"
