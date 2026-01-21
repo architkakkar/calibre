@@ -1,6 +1,6 @@
 import { PlanTemplate, FieldDefinition } from "@/lib/templates/plan-template";
 
-export function buildWorkoutPlanPayload(
+export function buildPlanPayload(
   plan: PlanTemplate,
   values: Record<string, unknown>,
   isFieldVisible: (field: FieldDefinition) => boolean,
@@ -9,12 +9,10 @@ export function buildWorkoutPlanPayload(
 
   for (const step of plan.steps) {
     for (const field of step.fields) {
-      // Skip hidden fields
       if (!isFieldVisible(field)) continue;
 
       const value = values[field.key];
 
-      // Skip undefined values
       if (value === undefined) continue;
 
       payload[field.key] = value;

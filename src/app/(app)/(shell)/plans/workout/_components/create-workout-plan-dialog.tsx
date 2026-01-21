@@ -10,7 +10,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import { validateFields as runValidation } from "@/lib/validators/plan.validator";
 import {
-  buildWorkoutPlanPayload,
+  buildPlanPayload,
   deriveInitialValues,
 } from "@/lib/domain/plan.helpers";
 
@@ -57,7 +57,7 @@ export function CreateWorkoutPlanDialog({
       }
     }
 
-    const payload = buildWorkoutPlanPayload(
+    const payload = buildPlanPayload(
       ACTIVE_WORKOUT_PLAN,
       form.getAllValues(),
       (field) => form.isFieldVisible?.(field) ?? true,
