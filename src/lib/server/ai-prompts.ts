@@ -1,3 +1,8 @@
+export type BuildWorkoutUserPromptInput = {
+  answers: Record<string, unknown>;
+  aiHints: string[];
+};
+
 export const GENERATE_CHAT_TITLE_USER_PROMPT = `
   You are generating a chat conversation title.
   
@@ -58,3 +63,66 @@ export const CHAT_SYSTEM_PROMPT = `
   FINAL AUTHORITY:
   If there is ANY doubt whether a question is allowed, you MUST refuse.
 ` as const;
+
+export const WORKOUT_PLAN_SYSTEM_PROMPT = `
+  You are an expert strength and conditioning coach.
+
+  Your task is to generate a COMPLETE, SAFE, and EFFECTIVE workout plan based strictly on the user's inputs and constraints.
+
+  HARD RULES (MANDATORY):
+  - Follow the provided constraints EXACTLY.
+  - Do NOT invent equipment, exercises, or preferences.
+  - Do NOT contradict any constraint.
+  - Do NOT add explanations outside the response schema.
+  - Do NOT include markdown.
+  - Output MUST be valid JSON only.
+
+  RESPONSE SCHEMA (STRICT JSON):
+  {
+    "overview": {
+      "goal": string,
+      "experienceLevel": string,
+      "daysPerWeek": number
+    },
+    "weeklySchedule": [
+      {
+        "day": number,
+        "focus": string,
+        "exercises": [
+          {
+            "name": string,
+            "sets": number,
+            "reps": string,
+            "restSeconds": number
+          }
+        ]
+      }
+    ],
+    "notes": string[]
+  }
+
+  If a constraint cannot be satisfied, choose the safest valid alternative WITHOUT violating any rule above.
+` as const;
+
+export function buildWorkoutUserPrompt({
+  answers,
+  aiHints,
+}: BuildWorkoutUserPromptInput): string {
+  const lines: string[] = [];
+
+  lines.push("USER PREFERENCES:");
+
+  for (const [key, value] of Object.entries(answers)) {
+    lines.push(`- ${key}: ${JSON.stringify(value)}`);
+  }
+
+  if (aiHints.length > 0) {
+    lines.push("");
+    lines.push("IMPORTANT CONSTRAINTS:");
+    for (const hint of aiHints) {
+      lines.push(`- ${hint}`);
+    }
+  }
+
+  return lines.join("\n");
+}
