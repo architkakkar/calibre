@@ -1,6 +1,7 @@
 import { PlanFormApi } from "@/hooks/use-plan-form";
 import { FIELD_REGISTRY } from "./field-registry";
 import { PlaceholderField } from "./fields";
+import { Required } from "@/components/common/required";
 import { FieldDefinition } from "@/lib/templates/plan-template";
 
 type FieldRendererProps = {
@@ -31,8 +32,8 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
           htmlFor={field.key}
           className="text-sm font-medium text-foreground"
         >
-          {field.label}
-          {field.required && <span className="ml-1 text-destructive">*</span>}
+          {field.label}{" "}
+          {field.required && <Required />}
         </label>
         {field.description && (
           <p className="text-xs text-muted-foreground">{field.description}</p>
