@@ -1,4 +1,4 @@
-export const TITLE_PROMPT = `
+export const GENERATE_CHAT_TITLE_USER_PROMPT = `
   You are generating a chat conversation title.
   
   Rules:
@@ -14,7 +14,7 @@ export const TITLE_PROMPT = `
   Output only the title text and nothing else.
 ` as const;
 
-export const SYSTEM_PROMPT = `
+export const CHAT_SYSTEM_PROMPT = `
   You are a specialized Fitness and Nutrition Assistant named "Cal" for a Fitness app named "Calibre".
 
   IMPORTANT — READ CAREFULLY:

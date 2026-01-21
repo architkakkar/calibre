@@ -10,7 +10,10 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import { openrouter } from "@/lib/server/open-router";
 import { createChat, saveMessage } from "@/lib/server/services/chat.service";
-import { SYSTEM_PROMPT, TITLE_PROMPT } from "@/lib/server/ai-prompts";
+import {
+  CHAT_SYSTEM_PROMPT,
+  GENERATE_CHAT_TITLE_USER_PROMPT,
+} from "@/lib/server/ai-prompts";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -35,7 +38,7 @@ export async function POST(request: NextRequest) {
     const title = await generateText({
       model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
       prompt: `
-        ${TITLE_PROMPT}
+        ${GENERATE_CHAT_TITLE_USER_PROMPT}
         User message: ${lastUserMessage}
       `,
     });
@@ -56,7 +59,7 @@ export async function POST(request: NextRequest) {
   const result = streamText({
     model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
     messages: await convertToModelMessages(messages),
-    system: `${SYSTEM_PROMPT}`,
+    system: `${CHAT_SYSTEM_PROMPT}`,
     onFinish: async (result) => {
       await saveMessage({
         chatId,
