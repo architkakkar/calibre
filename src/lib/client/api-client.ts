@@ -20,7 +20,7 @@ export type ApiErrorType =
 const apiClient: AxiosInstance = axios.create({
   baseURL: "/api",
   withCredentials: true,
-  timeout: 15000,
+  timeout: 120000,
   headers: {
     "Content-Type": "application/json",
   },
