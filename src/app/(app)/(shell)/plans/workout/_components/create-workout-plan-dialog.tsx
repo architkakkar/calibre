@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePlanForm } from "@/hooks/use-plan-form";
+import { useGlobalStore } from "@/stores/global.store";
 import { createWorkoutPlanApi } from "@/lib/client/api/workout-plan.api";
 import { PlanDialogHeader } from "@/app/(app)/(shell)/plans/_components/plan-dialog-header";
 import { PlanDialogFooter } from "@/app/(app)/(shell)/plans/_components/plan-dialog-footer";
@@ -13,6 +14,7 @@ import {
   buildPlanPayload,
   deriveInitialValues,
 } from "@/lib/domain/plan.helpers";
+import { showToast } from "@/lib/client/toast";
 
 type CreateWorkoutPlanDialogProps = {
   open: boolean;
@@ -24,6 +26,7 @@ export function CreateWorkoutPlanDialog({
   onOpenChange,
 }: CreateWorkoutPlanDialogProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const { showLoader, hideLoader } = useGlobalStore.getState();
 
   const steps = ACTIVE_WORKOUT_PLAN.steps.map((step) => ({
     key: String(step.step),
@@ -47,6 +50,8 @@ export function CreateWorkoutPlanDialog({
   };
 
   const handleSubmit = async () => {
+    showLoader("Generating your workout plan...");
+
     for (let i = 0; i < ACTIVE_WORKOUT_PLAN.steps.length; i++) {
       const step = ACTIVE_WORKOUT_PLAN.steps[i];
       const isValid = form.validateFields(step.fields);
@@ -63,10 +68,24 @@ export function CreateWorkoutPlanDialog({
       (field) => form.isFieldVisible?.(field) ?? true,
     );
 
-    await createWorkoutPlanApi({
-      planVersion: ACTIVE_WORKOUT_PLAN.version,
-      answers: payload,
-    });
+    try {
+      await createWorkoutPlanApi({
+        planVersion: ACTIVE_WORKOUT_PLAN.version,
+        answers: payload,
+      });
+      showToast({
+        type: "success",
+        message: "Workout plan created successfully",
+      });
+    } catch (error) {
+      console.error("Error creating workout plan:", error);
+      showToast({
+        type: "error",
+        message: "Failed to create workout plan",
+      });
+    } finally {
+      hideLoader();
+    }
 
     form.reset(deriveInitialValues(ACTIVE_WORKOUT_PLAN));
     setCurrentStep(0);
