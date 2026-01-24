@@ -42,7 +42,7 @@ export const markdownComponents = {
   ),
 
   blockquote: ({ children }: MarkdownComponentProps) => (
-    <blockquote className="border-l-2 border-primary/40 pl-3 italic text-sm text-muted-foreground my-3">
+    <blockquote className="border-l-2 border-primary/40 px-3 italic text-sm text-muted-foreground my-3 bg-background/80">
       {children}
     </blockquote>
   ),
