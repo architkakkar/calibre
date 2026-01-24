@@ -149,8 +149,8 @@ export const WORKOUT_PLAN_SYSTEM_PROMPT = `
   - Do NOT add fields that are not defined in the schema.
 
   USE OF SCHEMA FIELDS (IMPORTANT):
-  - "programName": Create a concise, descriptive name for the program.
-  - "programDescription": Summarize the program's purpose and approach in 1-2 sentences.
+  - "programName": Generate a concise, professional program name (2–5 words) that clearly reflects the training focus, experience level, or structure. The name must be timeless, neutral, and suitable to be permanently used as "{programName} Program" or "{programName} Plan". Avoid hype words, slang, emojis, or promises.
+  - "programDescription": Write a clear, coach-style description in 1–2 sentences explaining who the program is for, its primary training focus, and how it is structured. The tone should be confident, practical, and informative — not promotional.
 
   FINAL CHECK BEFORE OUTPUT:
   - The program must be internally consistent
