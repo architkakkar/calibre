@@ -2,15 +2,12 @@ import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import {
+  assertPlanVersion,
   validateAnswersAgainstPlan,
   sanitizeAnswers,
-  extractAiHints,
-  assertPlanVersion,
+  buildUserPrompt,
 } from "@/lib/domain/plan.helpers";
-import {
-  buildWorkoutUserPrompt,
-  WORKOUT_PLAN_SYSTEM_PROMPT,
-} from "@/lib/server/ai-prompts";
+import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai-prompts";
 
 export async function createWorkoutPlan({
   userId,
@@ -21,16 +18,13 @@ export async function createWorkoutPlan({
   planVersion: string;
   answers: Record<string, unknown>;
 }) {
-  assertPlanVersion(ACTIVE_WORKOUT_PLAN, planVersion);
+  assertPlanVersion({ plan: ACTIVE_WORKOUT_PLAN, planVersion });
+  validateAnswersAgainstPlan({ plan: ACTIVE_WORKOUT_PLAN, answers });
 
-  validateAnswersAgainstPlan(ACTIVE_WORKOUT_PLAN, answers);
-
-  const sanitized = sanitizeAnswers(ACTIVE_WORKOUT_PLAN, answers);
-  const aiHints = extractAiHints(ACTIVE_WORKOUT_PLAN, sanitized);
-
-  const userPrompt = buildWorkoutUserPrompt({
+  const sanitized = sanitizeAnswers({ plan: ACTIVE_WORKOUT_PLAN, answers });
+  const userPrompt = buildUserPrompt({
+    plan: ACTIVE_WORKOUT_PLAN,
     answers: sanitized,
-    aiHints,
   });
 
   const plan = await generateText({
