@@ -40,16 +40,25 @@ export function deriveInitialValues(
   return initialValues;
 }
 
-export function assertPlanVersion(plan: PlanTemplate, planVersion: string) {
+export function assertPlanVersion({
+  plan,
+  planVersion,
+}: {
+  plan: PlanTemplate;
+  planVersion: string;
+}) {
   if (plan.version !== planVersion) {
     throw new Error("Unsupported plan version");
   }
 }
 
-export function validateAnswersAgainstPlan(
-  plan: PlanTemplate,
-  answers: Record<string, unknown>,
-) {
+export function validateAnswersAgainstPlan({
+  plan,
+  answers,
+}: {
+  plan: PlanTemplate;
+  answers: Record<string, unknown>;
+}) {
   const errors: Record<string, string> = {};
 
   for (const step of plan.steps) {
@@ -116,10 +125,13 @@ export function validateAnswersAgainstPlan(
   }
 }
 
-export function sanitizeAnswers(
-  plan: PlanTemplate,
-  answers: Record<string, unknown>,
-) {
+export function sanitizeAnswers({
+  plan,
+  answers,
+}: {
+  plan: PlanTemplate;
+  answers: Record<string, unknown>;
+}): Record<string, unknown> {
   const allowedKeys = new Set(
     plan.steps.flatMap((step) => step.fields.map((f) => f.key)),
   );
@@ -133,10 +145,13 @@ export function sanitizeAnswers(
   return sanitized;
 }
 
-export function extractAiHints(
-  plan: PlanTemplate,
-  answers: Record<string, unknown>,
-) {
+export function extractAiHints({
+  plan,
+  answers,
+}: {
+  plan: PlanTemplate;
+  answers: Record<string, unknown>;
+}): string[] {
   const hints: string[] = [];
 
   for (const step of plan.steps) {
@@ -148,4 +163,31 @@ export function extractAiHints(
   }
 
   return hints;
+}
+
+export function buildUserPrompt({
+  plan,
+  answers,
+}: {
+  plan: PlanTemplate;
+  answers: Record<string, unknown>;
+}): string {
+  const aiHints = extractAiHints({ plan, answers });
+  const lines: string[] = [];
+
+  lines.push("USER PREFERENCES:");
+
+  for (const [key, value] of Object.entries(answers)) {
+    lines.push(`- ${key}: ${JSON.stringify(value)}`);
+  }
+
+  if (aiHints.length > 0) {
+    lines.push("");
+    lines.push("COACHING RULES:");
+    for (const hint of aiHints) {
+      lines.push(`- ${hint}`);
+    }
+  }
+
+  return lines.join("\n");
 }
