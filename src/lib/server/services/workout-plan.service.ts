@@ -7,6 +7,7 @@ import {
   sanitizeAnswers,
   buildUserPrompt,
 } from "@/lib/domain/plan.helpers";
+import { validateWorkoutPlanJSON } from "@/lib/validators/workout-plan.validator";
 import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai-prompts";
 
 export async function createWorkoutPlan({
@@ -27,15 +28,27 @@ export async function createWorkoutPlan({
     answers: sanitized,
   });
 
-  const plan = await generateText({
+  const { output } = await generateText({
     model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
     prompt: userPrompt,
     system: WORKOUT_PLAN_SYSTEM_PROMPT,
   });
 
+  const raw = output.trim();
+  console.log("Generated workout plan JSON:", raw);
+
+  const validation = validateWorkoutPlanJSON(raw);
+
+  if (validation.status === "invalid") {
+    console.error("Workout plan JSON validation error:", validation.error);
+    throw new Error(
+      `Generated workout plan JSON is invalid: ${validation.error}`,
+    );
+  }
+
   return {
     status: "generated",
-    plan,
+    plan: validation.plan,
     userId,
   };
 }
