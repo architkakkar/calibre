@@ -2,7 +2,8 @@ import apiClient from "@/lib/client/api-client";
 import API_ROUTES from "../api-routes";
 
 type CreateWorkoutPlanPayload = {
-  planVersion: string;
+  planTemplateId: string;
+  planTemplateVersion: string;
   answers: Record<string, unknown>;
 };
 

@@ -40,14 +40,14 @@ export function deriveInitialValues(
   return initialValues;
 }
 
-export function assertPlanVersion({
+export function assertPlanTemplateVersion({
   plan,
-  planVersion,
+  planTemplateVersion,
 }: {
   plan: PlanTemplate;
-  planVersion: string;
+  planTemplateVersion: string;
 }) {
-  if (plan.version !== planVersion) {
+  if (plan.version !== planTemplateVersion) {
     throw new Error("Unsupported plan version");
   }
 }

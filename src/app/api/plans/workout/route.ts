@@ -10,11 +10,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { planVersion, answers } = body;
+    const { planTemplateId, planTemplateVersion, answers } = body;
 
-    if (!planVersion || typeof planVersion !== "string") {
+    if (!planTemplateVersion || typeof planTemplateVersion !== "string") {
       return NextResponse.json(
-        { error: "Invalid or missing planVersion" },
+        { error: "Invalid or missing planTemplateVersion" },
         { status: 400 },
       );
     }
@@ -28,7 +28,8 @@ export async function POST(request: NextRequest) {
 
     const result = await createWorkoutPlan({
       userId,
-      planVersion,
+      planTemplateId,
+      planTemplateVersion,
       answers,
     });
 

@@ -2,7 +2,7 @@ import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import {
-  assertPlanVersion,
+  assertPlanTemplateVersion,
   validateAnswersAgainstPlan,
   buildUserPrompt,
 } from "@/lib/domain/plan.helpers";
@@ -14,14 +14,16 @@ import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai-prompts";
 
 export async function createWorkoutPlan({
   userId,
-  planVersion,
+  planTemplateId,
+  planTemplateVersion,
   answers,
 }: {
   userId: string;
-  planVersion: string;
+  planTemplateId: string;
+  planTemplateVersion: string;
   answers: Record<string, unknown>;
 }) {
-  assertPlanVersion({ plan: ACTIVE_WORKOUT_PLAN, planVersion });
+  assertPlanTemplateVersion({ plan: ACTIVE_WORKOUT_PLAN, planTemplateVersion });
   validateAnswersAgainstPlan({ plan: ACTIVE_WORKOUT_PLAN, answers });
 
   const userPrompt = buildUserPrompt({ plan: ACTIVE_WORKOUT_PLAN, answers });

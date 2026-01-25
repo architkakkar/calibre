@@ -70,7 +70,8 @@ export function CreateWorkoutPlanDialog({
 
     try {
       await createWorkoutPlanApi({
-        planVersion: ACTIVE_WORKOUT_PLAN.version,
+        planTemplateId: ACTIVE_WORKOUT_PLAN.id,
+        planTemplateVersion: ACTIVE_WORKOUT_PLAN.version,
         answers: payload,
       });
       showToast({
