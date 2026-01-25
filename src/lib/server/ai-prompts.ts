@@ -72,14 +72,14 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
         "dayLabel": string,
         "focus": string,
         "isRestDay": boolean,
-        "sessionIntent": string
+        "sessionIntent": string,
         "totalDurationMinutes": number,
         "warmup": [
           {
             "name": string,
             "durationMinutes": number,
             "focus": string,
-            "notes": string
+            "notes": string,
           }
         ],
         "workout": [
@@ -92,10 +92,10 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
             "restSeconds": number,
             "intensityGuidance": {
               "type": "percentage" | "rpe" | "rir" | "bodyweight",
-              "value": string
+              "value": string,
             },
             "tempo": string,
-            "notes": string
+            "notes": string,
           }
         ],
         "cooldown": [
@@ -103,7 +103,7 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
             "name": string,
             "durationMinutes": number,
             "focus": string,
-            "notes": string
+            "notes": string,
           }
         ]
       }
@@ -114,24 +114,24 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
       "progressionRules": {
         "increaseLoad": boolean,
         "increaseReps": boolean,
-        "increaseSets": boolean
+        "increaseSets": boolean,
       },
-      "deloadGuidelines": string
+      "deloadGuidelines": string,
     }
     "substitutions": [
       {
         "exercise": string,
         "movementPattern": string,
-        "alternatives": string[]
+        "alternatives": string[],
       }
     ],
     "recoveryGuidance": {
       "recommendedRestDays": number,
       "sorenessExpectations": string,
-      "mobilityFocus": string[]
+      "mobilityFocus": string[],
     },
     "safetyNotes": string[],
-    "generalNotes": string[]
+    "generalNotes": string[],
   }
 `;
 
