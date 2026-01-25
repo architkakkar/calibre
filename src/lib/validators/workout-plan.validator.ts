@@ -139,3 +139,5 @@ export function validateWorkoutPlanJSON(rawText: string) {
     };
   }
 }
+
+export type WorkoutPlan = z.infer<typeof WorkoutPlanSchema>;

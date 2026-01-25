@@ -4,10 +4,12 @@ import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import {
   assertPlanVersion,
   validateAnswersAgainstPlan,
-  sanitizeAnswers,
   buildUserPrompt,
 } from "@/lib/domain/plan.helpers";
-import { validateWorkoutPlanJSON } from "@/lib/validators/workout-plan.validator";
+import {
+  validateWorkoutPlanJSON,
+  WorkoutPlan,
+} from "@/lib/validators/workout-plan.validator";
 import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai-prompts";
 
 export async function createWorkoutPlan({
@@ -22,12 +24,37 @@ export async function createWorkoutPlan({
   assertPlanVersion({ plan: ACTIVE_WORKOUT_PLAN, planVersion });
   validateAnswersAgainstPlan({ plan: ACTIVE_WORKOUT_PLAN, answers });
 
-  const sanitized = sanitizeAnswers({ plan: ACTIVE_WORKOUT_PLAN, answers });
-  const userPrompt = buildUserPrompt({
-    plan: ACTIVE_WORKOUT_PLAN,
-    answers: sanitized,
-  });
+  const userPrompt = buildUserPrompt({ plan: ACTIVE_WORKOUT_PLAN, answers });
 
+  const MAX_RETRIES = 2;
+  let attempt = 1;
+  let plan: WorkoutPlan | undefined;
+
+  while (attempt <= MAX_RETRIES) {
+    try {
+      plan = await generateWorkoutPlan({ userPrompt });
+      break;
+    } catch (error) {
+      console.error(
+        `Attempt ${attempt} to generate workout plan failed:`,
+        error,
+      );
+      attempt++;
+      if (attempt > MAX_RETRIES) {
+        throw new Error(
+          "Failed to generate a valid workout plan after multiple attempts.",
+        );
+      }
+    }
+  }
+
+  return {
+    status: "generated",
+    plan: plan!,
+  };
+}
+
+async function generateWorkoutPlan({ userPrompt }: { userPrompt: string }) {
   const { output } = await generateText({
     model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
     prompt: userPrompt,
@@ -35,20 +62,13 @@ export async function createWorkoutPlan({
   });
 
   const raw = output.trim();
-  console.log("Generated workout plan JSON:", raw);
-
   const validation = validateWorkoutPlanJSON(raw);
 
   if (validation.status === "invalid") {
-    console.error("Workout plan JSON validation error:", validation.error);
     throw new Error(
       `Generated workout plan JSON is invalid: ${validation.error}`,
     );
   }
 
-  return {
-    status: "generated",
-    plan: validation.plan,
-    userId,
-  };
+  return validation.plan;
 }
