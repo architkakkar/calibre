@@ -6,7 +6,6 @@ import {
   timestamp,
   varchar,
   jsonb,
-  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import {
   onboardingStatusEnum,
@@ -107,7 +106,7 @@ export const workoutPlansTable = pgTable("workout_plans", {
   fitness_level: varchar({ length: 36 }).notNull(),
   weekly_frequency: varchar({ length: 20 }).notNull(),
   training_environment: varchar({ length: 100 }).notNull(),
-  status: planStatusEnum().notNull().default("GENERATED"),
+  plan_status: planStatusEnum().notNull().default("GENERATED"),
   is_active: boolean().notNull().default(false),
   plan_start_date: timestamp({ withTimezone: true }),
   schema_version: varchar({ length: 20 }).notNull(),
@@ -131,14 +130,6 @@ export const workoutPlanDaysTable = pgTable("workout_plan_days", {
   total_duration_minutes: integer().notNull(),
 });
 
-export const workoutPlanDaysUniqueIndex = uniqueIndex(
-  "workout_plan_days_unique",
-).on(
-  workoutPlanDaysTable.plan_id,
-  workoutPlanDaysTable.week_number,
-  workoutPlanDaysTable.day_number,
-);
-
 export const workoutDayActivitiesTable = pgTable("workout_day_activities", {
   id: varchar({ length: 36 }).primaryKey(),
   plan_day_id: varchar({ length: 36 })
@@ -147,7 +138,7 @@ export const workoutDayActivitiesTable = pgTable("workout_day_activities", {
   user_id: varchar({ length: 255 })
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
-  status: planActivityStatusEnum().notNull().default("PENDING"),
+  plan_activity_status: planActivityStatusEnum().notNull().default("PENDING"),
   completed_at: timestamp({ withTimezone: true }),
   notes: text(),
   created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
