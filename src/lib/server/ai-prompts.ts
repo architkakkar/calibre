@@ -98,7 +98,7 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
                   "reps": string,
                   "restSeconds": number,
                   "intensityGuidance": {
-                    "type": "percentage" | "rpe" | "rir" | "bodyweight",
+                    "type": string,
                     "value": string
                   },
                   "tempo": string,
@@ -134,8 +134,8 @@ const WORKOUT_PLAN_RESPONSE_SCHEMA = `
         "mobilityFocus": string[]
       },
       notes: {
-        "safetyNotes": string[],
-        "generalNotes": string[]
+        "safety": string[],
+        "general": string[]
       }
     }
   }
