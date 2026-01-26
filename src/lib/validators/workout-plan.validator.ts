@@ -38,7 +38,7 @@ const WorkoutExerciseSchema = z
   })
   .strict();
 
-const WeeklySessionSchema = z
+const DaySchema = z
   .object({
     day: z.number().nonnegative(),
     dayLabel: z.string(),
@@ -46,23 +46,26 @@ const WeeklySessionSchema = z
     isRestDay: z.boolean(),
     sessionIntent: z.string(),
     totalDurationMinutes: z.number().nonnegative(),
-
     warmup: z.array(WarmupCooldownSchema),
     workout: z.array(WorkoutExerciseSchema),
     cooldown: z.array(WarmupCooldownSchema),
   })
   .strict();
 
-const ProgressionPlanSchema = z
+const WeekSchema = z
+  .object({
+    week: z.number().nonnegative(),
+    weekLabel: z.string(),
+    focus: z.string(),
+    isDeloadWeek: z.boolean(),
+    days: z.array(DaySchema).nonempty(),
+  })
+  .strict();
+
+const ProgressionSummarySchema = z
   .object({
     strategy: z.string(),
-    weeklyGuidelines: z.array(z.string()),
-    progressionRules: z.object({
-      increaseLoad: z.boolean(),
-      increaseReps: z.boolean(),
-      increaseSets: z.boolean(),
-    }),
-    deloadGuidelines: z.string(),
+    notes: z.array(z.string()),
   })
   .strict();
 
@@ -82,25 +85,33 @@ const RecoveryGuidanceSchema = z
   })
   .strict();
 
+const NoteSchema = z.object({
+  safety: z.array(z.string()),
+  general: z.array(z.string()),
+});
+
+const PlanSchema = z
+  .object({
+    schedule: z.array(WeekSchema).nonempty(),
+    progressionSummary: ProgressionSummarySchema,
+    substitutions: z.array(SubstitutionSchema),
+    recoveryGuidance: RecoveryGuidanceSchema,
+    notes: NoteSchema,
+  })
+  .strict();
+
 const MetaSchema = z
   .object({
-    programName: z.string(),
-    programDescription: z.string(),
-    programDurationWeeks: z.number().nonnegative(),
+    planName: z.string(),
+    planDescription: z.string(),
+    planDurationWeeks: z.number().nonnegative(),
   })
   .strict();
 
 export const WorkoutPlanSchema = z
   .object({
     meta: MetaSchema,
-
-    weeklySchedule: z.array(WeeklySessionSchema).nonempty(),
-
-    progressionPlan: ProgressionPlanSchema,
-    substitutions: z.array(SubstitutionSchema),
-    recoveryGuidance: RecoveryGuidanceSchema,
-    safetyNotes: z.array(z.string()),
-    generalNotes: z.array(z.string()),
+    plan: PlanSchema,
   })
   .strict();
 
