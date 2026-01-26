@@ -11,7 +11,7 @@ export function Loader() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/40 backdrop-blur-xs">
       <div
-        className={`flex flex-col items-center gap-4 rounded-xl bg-primary/80 px-6 py-6 text-center border border-border shadow-2xl ${
+        className={`flex flex-col items-center gap-4 rounded-xl bg-primary px-6 py-6 text-center border border-border shadow-2xl ${
           loaderMessage ? "w-40" : "w-20"
         }`}
       >
