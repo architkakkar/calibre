@@ -1,3 +1,5 @@
+import { WORKOUT_PLAN_RESPONSE_SCHEMA } from "./schema";
+
 export const GENERATE_CHAT_TITLE_USER_PROMPT = `
   You are generating a short, clear title for a fitness-related chat conversation.
 
@@ -58,88 +60,6 @@ export const CHAT_SYSTEM_PROMPT = `
   FINAL AUTHORITY:
   When a request is clearly and entirely outside the allowed scope, you MUST refuse.
 ` as const;
-
-const WORKOUT_PLAN_RESPONSE_SCHEMA = `
-  {
-    "meta": {
-      "planName": string,
-      "planDescription": string,
-      "planDurationWeeks": number
-    },
-    plan: {
-      "schedule": [
-        {
-          week: number,
-          weekLabel: string,
-          focus: string,
-          isDeloadWeek: boolean,
-          days: [
-            {
-              "day": number,
-              "dayLabel": string,
-              "focus": string,
-              "isRestDay": boolean,
-              "sessionIntent": string,
-              "totalDurationMinutes": number,
-              "warmup": [
-                {
-                  "name": string,
-                  "durationMinutes": number,
-                  "focus": string,
-                  "notes": string
-                }
-              ],
-              "workout": [
-                {
-                  "exercise": string,
-                  "movementPattern": "squat" | "hinge" | "push" | "pull" | "carry" | "core" | "locomotion",
-                  "role": "main_lift" | "secondary" | "accessory" | "finisher",
-                  "sets": number,
-                  "reps": string,
-                  "restSeconds": number,
-                  "intensityGuidance": {
-                    "type": string,
-                    "value": string
-                  },
-                  "tempo": string,
-                  "notes": string
-                }
-              ],
-              "cooldown": [
-                {
-                  "name": string,
-                  "durationMinutes": number,
-                  "focus": string,
-                  "notes": string
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "progressionSummary": {
-        "strategy": string,
-        "notes": string[]
-      },
-      "substitutions": [
-        {
-          "exercise": string,
-          "movementPattern": string,
-          "alternatives": string[]
-        }
-      ],
-      "recoveryGuidance": {
-        "recommendedRestDays": number,
-        "sorenessExpectations": string,
-        "mobilityFocus": string[]
-      },
-      notes: {
-        "safety": string[],
-        "general": string[]
-      }
-    }
-  }
-`;
 
 export const WORKOUT_PLAN_SYSTEM_PROMPT = `
   You are an expert strength and conditioning coach with proven experience designing safe, effective training plans for diverse fitness levels.

@@ -13,7 +13,7 @@ import { createChat, saveMessage } from "@/lib/server/services/chat.service";
 import {
   CHAT_SYSTEM_PROMPT,
   GENERATE_CHAT_TITLE_USER_PROMPT,
-} from "@/lib/server/ai-prompts";
+} from "@/lib/server/ai/ai-prompts";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
