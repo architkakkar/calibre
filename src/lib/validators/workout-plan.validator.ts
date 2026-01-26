@@ -137,11 +137,11 @@ function normalizeAIJson(raw: string): unknown {
 export function validateWorkoutPlanJSON(rawText: string) {
   try {
     const normalized = normalizeAIJson(rawText);
-    const plan = WorkoutPlanSchema.parse(normalized);
+    const result = WorkoutPlanSchema.parse(normalized);
 
     return {
       status: "valid" as const,
-      plan,
+      result,
     };
   } catch (error) {
     return {
