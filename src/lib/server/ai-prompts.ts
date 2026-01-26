@@ -28,7 +28,7 @@ export const CHAT_SYSTEM_PROMPT = `
   PRIMARY SCOPE (HARD RULE):
   You may ONLY provide information related to:
   - Fitness and exercise
-  - Gym workouts and training programs
+  - Gym workouts and training plans
   - Diet, nutrition, supplements, and hydration
   - Human anatomy and physiology
   - Mental well-being as it directly relates to physical health, fitness performance, recovery, or lifestyle habits (e.g., sleep, stress, motivation for training)
@@ -62,83 +62,89 @@ export const CHAT_SYSTEM_PROMPT = `
 const WORKOUT_PLAN_RESPONSE_SCHEMA = `
   {
     "meta": {
-      "programName": string,
-      "programDescription": string,
-      "programDurationWeeks": number,
+      "planName": string,
+      "planDescription": string,
+      "planDurationWeeks": number
     },
-    "weeklySchedule": [
-      {
-        "day": number,
-        "dayLabel": string,
-        "focus": string,
-        "isRestDay": boolean,
-        "sessionIntent": string,
-        "totalDurationMinutes": number,
-        "warmup": [
-          {
-            "name": string,
-            "durationMinutes": number,
-            "focus": string,
-            "notes": string,
-          }
-        ],
-        "workout": [
-          {
-            "exercise": string,
-            "movementPattern": "squat" | "hinge" | "push" | "pull" | "carry" | "core" | "locomotion",
-            "role": "main_lift" | "secondary" | "accessory" | "finisher",
-            "sets": number,
-            "reps": string,
-            "restSeconds": number,
-            "intensityGuidance": {
-              "type": "percentage" | "rpe" | "rir" | "bodyweight",
-              "value": string,
-            },
-            "tempo": string,
-            "notes": string,
-          }
-        ],
-        "cooldown": [
-          {
-            "name": string,
-            "durationMinutes": number,
-            "focus": string,
-            "notes": string,
-          }
-        ]
-      }
-    ],
-    "progressionPlan": {
-      "strategy": string,
-      "weeklyGuidelines": string[],
-      "progressionRules": {
-        "increaseLoad": boolean,
-        "increaseReps": boolean,
-        "increaseSets": boolean,
+    plan: {
+      "schedule": [
+        {
+          week: number,
+          weekLabel: string,
+          focus: string,
+          isDeloadWeek: boolean,
+          days: [
+            {
+              "day": number,
+              "dayLabel": string,
+              "focus": string,
+              "isRestDay": boolean,
+              "sessionIntent": string,
+              "totalDurationMinutes": number,
+              "warmup": [
+                {
+                  "name": string,
+                  "durationMinutes": number,
+                  "focus": string,
+                  "notes": string
+                }
+              ],
+              "workout": [
+                {
+                  "exercise": string,
+                  "movementPattern": "squat" | "hinge" | "push" | "pull" | "carry" | "core" | "locomotion",
+                  "role": "main_lift" | "secondary" | "accessory" | "finisher",
+                  "sets": number,
+                  "reps": string,
+                  "restSeconds": number,
+                  "intensityGuidance": {
+                    "type": "percentage" | "rpe" | "rir" | "bodyweight",
+                    "value": string
+                  },
+                  "tempo": string,
+                  "notes": string
+                }
+              ],
+              "cooldown": [
+                {
+                  "name": string,
+                  "durationMinutes": number,
+                  "focus": string,
+                  "notes": string
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progressionSummary": {
+        "strategy": string,
+        "notes": string[]
       },
-      "deloadGuidelines": string,
-    }
-    "substitutions": [
-      {
-        "exercise": string,
-        "movementPattern": string,
-        "alternatives": string[],
+      "substitutions": [
+        {
+          "exercise": string,
+          "movementPattern": string,
+          "alternatives": string[]
+        }
+      ],
+      "recoveryGuidance": {
+        "recommendedRestDays": number,
+        "sorenessExpectations": string,
+        "mobilityFocus": string[]
+      },
+      notes: {
+        "safetyNotes": string[],
+        "generalNotes": string[]
       }
-    ],
-    "recoveryGuidance": {
-      "recommendedRestDays": number,
-      "sorenessExpectations": string,
-      "mobilityFocus": string[],
-    },
-    "safetyNotes": string[],
-    "generalNotes": string[],
+    }
   }
 `;
 
 export const WORKOUT_PLAN_SYSTEM_PROMPT = `
-  You are an expert strength and conditioning coach with proven experience designing safe, effective training programs for diverse fitness levels.
+  You are an expert strength and conditioning coach with proven experience designing safe, effective training plans for diverse fitness levels.
 
-  Your task is to create a COMPLETE, personalized workout program that is safe, practical, and tailored to the user's goals, experience, available equipment, time constraints, and any other stated requirements.
+  Your task is to create a COMPLETE, personalized workout plan that is safe, practical, and tailored to the user's goals, experience, available equipment, time constraints, and any other stated requirements.
 
   MANDATORY REQUIREMENTS:
   - Adhere strictly to all user constraints and preferences.
@@ -149,12 +155,13 @@ export const WORKOUT_PLAN_SYSTEM_PROMPT = `
   - Exclude any fields not defined in the schema.
 
   SCHEMA FIELD GUIDANCE:
-  - "programName": Create a concise, professional name (2–5 words) that reflects the training focus and experience level. Use timeless, neutral language suitable for permanent reference as "{programName} Program" or "{programName} Plan". Avoid slang, hype, emojis, or exaggerated claims.
-  - "programDescription": Write a 1–2 sentence coach-style summary explaining the program's target audience, primary training focus, and structure. Use a confident, practical tone.
-  - "weeklySchedule": Plan all 7 days of the week. If the user requests fewer weekly sessions, designate the remaining days as rest days.
+  - "planName": Create a concise, professional name (2–5 words) that reflects the training focus and experience level. Use timeless, neutral language suitable for permanent reference as "{planName} Program" or "{planName} Plan". Avoid slang, hype, emojis, or exaggerated claims.
+  - "planDescription": Write a 1–2 sentence coach-style summary explaining the plan's target audience, primary training focus, and structure. Use a confident, practical tone.
+  - "schedule": Plan all 7 days of each week for the entire plan duration. If the user requests fewer weekly sessions, designate the remaining days as rest days.
+  - "weeks": Weeks must be sequential starting from 1 with no gaps.
 
   QUALITY ASSURANCE:
-  - Ensure the program is internally consistent and coherent.
+  - Ensure the plan is internally consistent and coherent.
   - Verify all sessions are realistic and completable within the specified timeframe.
   - Design the plan as a professional coach would, not as a templated response.
 
