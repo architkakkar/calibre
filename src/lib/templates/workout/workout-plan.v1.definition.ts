@@ -21,7 +21,7 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
       description: "Define the core objective.",
       fields: [
         {
-          key: "primary_goal",
+          key: "primary_goals",
           label: "Primary Goals",
           description: "Select up to 3 goals to focus on.",
           type: "multi_select",
