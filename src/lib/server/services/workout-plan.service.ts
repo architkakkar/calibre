@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
@@ -5,12 +6,34 @@ import {
   assertPlanTemplateVersion,
   validateAnswersAgainstPlan,
   buildUserPrompt,
+  sanitizeAnswers,
 } from "@/lib/domain/plan.helpers";
 import {
   validateWorkoutPlanJSON,
   WorkoutPlan,
 } from "@/lib/validators/workout-plan.validator";
-import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai-prompts";
+import { db } from "@/lib/server/db/drizzle";
+import {
+  workoutPlanRequestsTable,
+  workoutPlansTable,
+  workoutPlanDaysTable,
+} from "@/lib/server/db/schema";
+import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai/ai-prompts";
+import { WORKOUT_PLAN_RESPONSE_SCHEMA_VERSION } from "@/lib/server/ai/schema";
+import { and, eq } from "drizzle-orm";
+
+type PlanDaysType = {
+  id: string;
+  plan_id: string;
+  week_number: number;
+  week_label: string;
+  day_number: number;
+  day_label: string;
+  day_focus: string;
+  is_rest_day: boolean;
+  session_intent: string;
+  total_duration_minutes: number;
+};
 
 export async function createWorkoutPlan({
   userId,
@@ -24,17 +47,28 @@ export async function createWorkoutPlan({
   answers: Record<string, unknown>;
 }) {
   assertPlanTemplateVersion({ plan: ACTIVE_WORKOUT_PLAN, planTemplateVersion });
-  validateAnswersAgainstPlan({ plan: ACTIVE_WORKOUT_PLAN, answers });
 
-  const userPrompt = buildUserPrompt({ plan: ACTIVE_WORKOUT_PLAN, answers });
+  const sanitizedAnswers = sanitizeAnswers({
+    plan: ACTIVE_WORKOUT_PLAN,
+    answers,
+  });
+  validateAnswersAgainstPlan({
+    plan: ACTIVE_WORKOUT_PLAN,
+    answers: sanitizedAnswers,
+  });
+
+  const userPrompt = buildUserPrompt({
+    plan: ACTIVE_WORKOUT_PLAN,
+    answers: sanitizedAnswers,
+  });
 
   const MAX_RETRIES = 2;
   let attempt = 1;
-  let plan: WorkoutPlan | undefined;
+  let response: { raw: string; parsed: WorkoutPlan } | undefined;
 
   while (attempt <= MAX_RETRIES) {
     try {
-      plan = await generateWorkoutPlan({ userPrompt });
+      response = await generateWorkoutPlan({ userPrompt });
       break;
     } catch (error) {
       console.error(
@@ -50,13 +84,48 @@ export async function createWorkoutPlan({
     }
   }
 
+  let planId: string;
+  try {
+    planId = await saveWorkoutPlanToDB({
+      userId,
+      planTemplateId,
+      planTemplateVersion,
+      answers: sanitizedAnswers,
+      aiResponse: response!,
+    });
+  } catch (error) {
+    console.error("Error saving workout plan to DB:", error);
+    throw new Error(
+      "Failed to save workout plan to the database.",
+      error as Error,
+    );
+  }
+
+  try {
+    const isFirstPlan = await checkIfFirstPlanForUser({ userId });
+
+    if (isFirstPlan) {
+      await activateWorkoutPlan({
+        userId,
+        planId,
+      });
+    }
+  } catch (error) {
+    console.error("Error activating workout plan:", error);
+    throw new Error("Failed to activate workout plan.", error as Error);
+  }
+
   return {
     status: "generated",
-    plan: plan!,
+    plan: response!.parsed,
   };
 }
 
-async function generateWorkoutPlan({ userPrompt }: { userPrompt: string }) {
+export async function generateWorkoutPlan({
+  userPrompt,
+}: {
+  userPrompt: string;
+}) {
   const { output } = await generateText({
     model: openrouter(process.env.OPEN_ROUTER_AI_MODEL!),
     prompt: userPrompt,
@@ -72,5 +141,118 @@ async function generateWorkoutPlan({ userPrompt }: { userPrompt: string }) {
     );
   }
 
-  return validation.plan;
+  return {
+    raw,
+    parsed: validation.result,
+  };
+}
+
+export async function saveWorkoutPlanToDB({
+  userId,
+  planTemplateId,
+  planTemplateVersion,
+  answers,
+  aiResponse,
+}: {
+  userId: string;
+  planTemplateId: string;
+  planTemplateVersion: string;
+  answers: Record<string, unknown>;
+  aiResponse: { raw: string; parsed: WorkoutPlan };
+}) {
+  const { raw, parsed } = aiResponse;
+
+  const requestId = nanoid();
+  const planId = nanoid();
+  const planDays: Array<PlanDaysType> = [];
+
+  for (const week of parsed.plan.schedule) {
+    for (const day of week.days) {
+      planDays.push({
+        id: nanoid(),
+        plan_id: planId,
+        week_number: week.week,
+        week_label: week.weekLabel,
+        day_number: day.day,
+        day_label: day.dayLabel,
+        day_focus: day.focus,
+        is_rest_day: day.isRestDay,
+        session_intent: day.sessionIntent,
+        total_duration_minutes: day.totalDurationMinutes,
+      });
+    }
+  }
+
+  await db.insert(workoutPlanRequestsTable).values({
+    id: requestId,
+    user_id: userId,
+    plan_template_id: planTemplateId,
+    plan_template_version: planTemplateVersion,
+    answers,
+  });
+
+  await db.insert(workoutPlansTable).values({
+    id: planId,
+    user_id: userId,
+    request_id: requestId,
+    plan_name: parsed.meta.planName,
+    plan_description: parsed.meta.planDescription,
+    plan_duration_weeks: parsed.meta.planDurationWeeks,
+    session_duration_minutes: (answers.session_duration as number) ?? 0,
+    primary_goals: (answers.primary_goal as string[]) ?? [],
+    fitness_level: (answers.fitness_level as string) ?? "",
+    weekly_frequency: (answers.weekly_frequency as string) ?? "",
+    training_environment: (answers.training_environment as string) ?? "",
+    plan_status: "GENERATED",
+    is_active: false,
+    schema_version: WORKOUT_PLAN_RESPONSE_SCHEMA_VERSION,
+    raw_ai_json: raw,
+    parsed_plan: parsed,
+  });
+
+  if (planDays.length > 0) {
+    await db.insert(workoutPlanDaysTable).values(planDays);
+  }
+
+  return planId;
+}
+
+export async function activateWorkoutPlan({
+  userId,
+  planId,
+}: {
+  userId: string;
+  planId: string;
+}) {
+  // deactivate any currently active plan for the user
+  await db
+    .update(workoutPlansTable)
+    .set({
+      is_active: false,
+      plan_status: "ARCHIVED",
+    })
+    .where(
+      and(
+        eq(workoutPlansTable.user_id, userId),
+        eq(workoutPlansTable.is_active, true),
+      ),
+    );
+
+  // activate the selected plan
+  await db
+    .update(workoutPlansTable)
+    .set({
+      is_active: true,
+      plan_start_date: new Date(),
+    })
+    .where(eq(workoutPlansTable.id, planId));
+}
+
+export async function checkIfFirstPlanForUser({ userId }: { userId: string }) {
+  const result = await db
+    .select()
+    .from(workoutPlansTable)
+    .where(eq(workoutPlansTable.user_id, userId));
+
+  return result.length === 0;
 }
