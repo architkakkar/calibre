@@ -172,13 +172,12 @@ export function buildUserPrompt({
   plan: PlanTemplate;
   answers: Record<string, unknown>;
 }): string {
-  const sanitized = sanitizeAnswers({ plan, answers });
-  const aiHints = extractAiHints({ plan, answers: sanitized });
+  const aiHints = extractAiHints({ plan, answers });
   const lines: string[] = [];
 
   lines.push("USER PREFERENCES:");
 
-  for (const [key, value] of Object.entries(sanitized)) {
+  for (const [key, value] of Object.entries(answers)) {
     lines.push(`- ${key}: ${JSON.stringify(value)}`);
   }
 
