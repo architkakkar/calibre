@@ -9,7 +9,7 @@ const API_ROUTES = {
     history: "/chat/history",
   },
   plans: {
-    workout: "plans/workout",
+    workout: "/plans/workout",
   },
 } as const;
 

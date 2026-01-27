@@ -256,3 +256,23 @@ export async function checkIfFirstPlanForUser({ userId }: { userId: string }) {
 
   return result.length === 0;
 }
+
+export async function getWorkoutPlansForUser({ userId }: { userId: string }) {
+  const plans = await db
+    .select({
+      id: workoutPlansTable.id,
+      name: workoutPlansTable.plan_name,
+      description: workoutPlansTable.plan_description,
+      durationWeeks: workoutPlansTable.plan_duration_weeks,
+      isActive: workoutPlansTable.is_active,
+      primaryGoals: workoutPlansTable.primary_goals,
+      fitnessLevel: workoutPlansTable.fitness_level,
+      weeklyFrequency: workoutPlansTable.weekly_frequency,
+      sessionDurationMinutes: workoutPlansTable.session_duration_minutes,
+      trainingEnvironment: workoutPlansTable.training_environment,
+    })
+    .from(workoutPlansTable)
+    .where(eq(workoutPlansTable.user_id, userId));
+
+  return plans;
+}

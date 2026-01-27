@@ -1,6 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { createWorkoutPlan } from "@/lib/server/services/workout-plan.service";
+import {
+  createWorkoutPlan,
+  getWorkoutPlansForUser,
+} from "@/lib/server/services/workout-plan.service";
+
+export async function GET() {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const plans = await getWorkoutPlansForUser({ userId });
+
+    return NextResponse.json(plans);
+  } catch (error) {
+    console.error("Failed to fetch workout plans:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
