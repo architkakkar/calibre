@@ -2,16 +2,16 @@
 
 import { useWorkoutPlanStore } from "@/stores/workout-plan.store";
 import { cn } from "@/lib/shared/utils";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Calendar,
-  Clock,
-  Target,
+  Calendar03Icon,
+  Clock01Icon,
+  Target01Icon,
   TrendingUp,
-  MapPin,
-  Zap,
-  Pointer,
-  Sparkles,
-} from "lucide-react";
+  Location01Icon,
+  ZapIcon,
+  Tap06Icon,
+} from "@hugeicons/core-free-icons";
 
 export function WorkoutPlanList() {
   const { plans, selectPlan, fetchPlanDetails, activePlanId } =
@@ -51,7 +51,6 @@ export function WorkoutPlanList() {
                 : "border-l-4 border-l-muted/50 shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
             )}
           >
-            {/* Active Glow Effect */}
             {isActive && (
               <>
                 <div className="absolute inset-0 bg-linear-to-r from-green-500/5 via-transparent to-transparent pointer-events-none" />
@@ -59,11 +58,9 @@ export function WorkoutPlanList() {
               </>
             )}
 
-            {/* Main Content - Responsive Layout */}
             <div className="flex flex-col md:flex-row items-stretch min-h-70 h-full">
               {/* Left: Hero Circle Section */}
               <div className="flex flex-row md:flex-col items-center justify-around md:gap-0 p-4 md:p-6 bg-muted/50 min-h-50">
-                {/* Duration Circle */}
                 <div
                   className={cn(
                     "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
@@ -79,18 +76,15 @@ export function WorkoutPlanList() {
                     Week Program
                   </div>
                 </div>
-
-                {/* Total Workouts */}
                 <div className="md:mt-5 text-center space-y-2.5 md:flex-none flex flex-col justify-center">
                   <div>
                     <div className="text-xl font-bold text-foreground">
                       {totalWorkouts}
                     </div>
                     <div className="text-[10px] text-muted-foreground uppercase tracking-wide mt-0.5">
-                      Total Workouts
+                      Total Sessions
                     </div>
                   </div>
-
                   {isActive && (
                     <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm">
                       <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
@@ -104,19 +98,6 @@ export function WorkoutPlanList() {
 
               {/* Right: Content Section */}
               <div className="flex-1 flex flex-col p-4 md:p-5 space-y-3 md:space-y-4 relative">
-                {/* Top-Right Badge Area */}
-                {index === 0 && !isActive && (
-                  <div className="absolute top-0 right-0">
-                    <div className="flex items-center gap-1.5 rounded-bl-xl rounded-tr-2xl bg-linear-to-br from-secondary/20 to-secondary/10 border-l border-b border-secondary/30 px-3.5 py-2 backdrop-blur-sm shadow-lg">
-                      <Sparkles className="h-3.5 w-3.5 text-secondary" />
-                      <span className="text-xs font-bold text-secondary uppercase tracking-wide">
-                        Featured
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Header */}
                 <div className="space-y-1.5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
@@ -130,11 +111,13 @@ export function WorkoutPlanList() {
                   </div>
                 </div>
 
-                {/* Stats Bar - Responsive */}
                 <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center lg:items-start xl:items-stretch gap-2 sm:gap-3.5 lg:gap-3.5 xl:gap-2 py-2.5 px-3.5 rounded-lg bg-background/50 border border-border/40 shadow-inner shadow-black/5 transition-all duration-300 group-hover:border-border/60">
                   <div className="flex items-center gap-2 flex-1">
                     <div className="p-1.5 rounded-lg bg-cyan-500/10 transition-all duration-300 group-hover:bg-cyan-500/20">
-                      <Zap className="h-3.5 w-3.5 text-cyan-500 shrink-0 transition-transform duration-300" />
+                      <HugeiconsIcon
+                        icon={ZapIcon}
+                        className="h-3.5 w-3.5 text-cyan-500 shrink-0 transition-transform duration-300"
+                      />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -145,15 +128,16 @@ export function WorkoutPlanList() {
                       </div>
                     </div>
                   </div>
-
                   <div className="hidden sm:block lg:hidden xl:block h-8 w-px bg-border" />
-
                   <div
                     className="flex items-center gap-2 flex-1"
                     style={{ transitionDelay: "50ms" }}
                   >
                     <div className="p-1.5 rounded-lg bg-amber-500/10 transition-all duration-300 group-hover:bg-amber-500/20">
-                      <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0 transition-transform duration-300" />
+                      <HugeiconsIcon
+                        icon={Clock01Icon}
+                        className="h-3.5 w-3.5 text-amber-500 shrink-0 transition-transform duration-300"
+                      />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -164,15 +148,16 @@ export function WorkoutPlanList() {
                       </div>
                     </div>
                   </div>
-
                   <div className="hidden sm:block lg:hidden xl:block h-8 w-px bg-border" />
-
                   <div
                     className="flex items-center gap-2 flex-1"
                     style={{ transitionDelay: "100ms" }}
                   >
                     <div className="p-1.5 rounded-lg bg-purple-500/10 transition-all duration-300 group-hover:bg-purple-500/20">
-                      <MapPin className="h-3.5 w-3.5 text-purple-500 shrink-0 transition-transform duration-300" />
+                      <HugeiconsIcon
+                        icon={Location01Icon}
+                        className="h-3.5 w-3.5 text-purple-500 shrink-0 transition-transform duration-300"
+                      />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -185,11 +170,13 @@ export function WorkoutPlanList() {
                   </div>
                 </div>
 
-                {/* Tags */}
                 <div className="flex flex-wrap items-center gap-2">
                   {plan.fitnessLevel && (
                     <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 text-[11px] font-semibold text-emerald-400 transition-all duration-300 hover:bg-emerald-500/25 hover:scale-105">
-                      <TrendingUp className="h-3.5 w-3.5" />
+                      <HugeiconsIcon
+                        icon={TrendingUp}
+                        className="h-3.5 w-3.5"
+                      />
                       <span className="capitalize">{plan.fitnessLevel}</span>
                     </div>
                   )}
@@ -200,7 +187,10 @@ export function WorkoutPlanList() {
                         key={idx}
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/15 text-[11px] font-semibold text-blue-400 transition-all duration-300 hover:bg-blue-500/25 hover:scale-105"
                       >
-                        <Target className="h-3.5 w-3.5" />
+                        <HugeiconsIcon
+                          icon={Target01Icon}
+                          className="h-3.5 w-3.5"
+                        />
                         <span className="capitalize">
                           {goal.replace(/_/g, " ")}
                         </span>
@@ -208,12 +198,13 @@ export function WorkoutPlanList() {
                     ))}
                 </div>
 
-                {/* Footer - Spacer and Actions */}
                 <div className="flex-1" />
-
                 <div className="flex items-center justify-between pt-2.5 border-t border-border/80">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Calendar className="h-3.5 w-3.5" />
+                    <HugeiconsIcon
+                      icon={Calendar03Icon}
+                      className="h-3.5 w-3.5"
+                    />
                     <span>
                       {"Created "}
                       {new Date(plan.createdAt).toLocaleDateString("en-US", {
@@ -223,10 +214,12 @@ export function WorkoutPlanList() {
                       })}
                     </span>
                   </div>
-
                   <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                     <span>{isActive ? "Continue" : "View Plan"}</span>
-                    <Pointer className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <HugeiconsIcon
+                      icon={Tap06Icon}
+                      className="h-4 w-4 transition-transform group-hover:scale-110"
+                    />
                   </div>
                 </div>
               </div>
