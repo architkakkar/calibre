@@ -29,7 +29,7 @@ export function WorkoutPlanList() {
   });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 overflow-y-auto max-h-full">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 overflow-y-auto max-h-full">
       {sortedPlans.map((plan, index) => {
         const isActive = plan.id === activePlanId;
         const totalWorkouts =
