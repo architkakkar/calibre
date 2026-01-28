@@ -20,7 +20,7 @@ export type ApiErrorType =
 const apiClient: AxiosInstance = axios.create({
   baseURL: "/api",
   withCredentials: true,
-  timeout: 120000,
+  timeout: 300000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,7 +31,7 @@ apiClient.interceptors.request.use(
   (config) => {
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Response interceptor
@@ -56,7 +56,7 @@ apiClient.interceptors.response.use(
       errorType;
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;
