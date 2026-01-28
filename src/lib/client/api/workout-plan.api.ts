@@ -12,19 +12,6 @@ type CreateWorkoutPlanResponse = {
   status: "queued" | "generated";
 };
 
-type GetWorkoutPlanResponse = {
-  id: string;
-  name: string;
-  description: string;
-  durationWeeks: number;
-  isActive: boolean;
-  primaryGoals: string[];
-  fitnessLevel: string;
-  weeklyFrequency: string;
-  sessionDurationMinutes: number;
-  trainingEnvironment: string;
-};
-
 export async function createWorkoutPlanApi(
   payload: CreateWorkoutPlanPayload,
 ): Promise<CreateWorkoutPlanResponse> {
@@ -33,7 +20,7 @@ export async function createWorkoutPlanApi(
   return response.data;
 }
 
-export async function getWorkoutPlansApi(): Promise<GetWorkoutPlanResponse[]> {
+export async function getWorkoutPlansApi() {
   const response = await apiClient.get(API_ROUTES.plans.workout);
 
   return response.data;
