@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useWorkoutPlanStore } from "@/stores/workout-plan.store";
 import { cn } from "@/lib/shared/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -12,10 +13,12 @@ import {
   ZapIcon,
   Tap06Icon,
 } from "@hugeicons/core-free-icons";
+import WorkoutPlanViewDialog from "./workout-plan-view-dialog";
 
 export function WorkoutPlanList() {
   const { plans, selectPlan, fetchPlanDetails, activePlanId } =
     useWorkoutPlanStore();
+  const [open, setOpen] = useState(false);
 
   if (plans.length === 0) {
     return null;
@@ -42,6 +45,7 @@ export function WorkoutPlanList() {
             onClick={() => {
               selectPlan(plan.id);
               fetchPlanDetails(plan.id);
+              setOpen(true);
             }}
             style={{ animationDelay: `${index * 100}ms` }}
             className={cn(
@@ -206,7 +210,9 @@ export function WorkoutPlanList() {
                       className="h-3.5 w-3.5"
                     />
                     <span>
-                      {plan.isActive && plan.startDate ? "Started " : "Created "}
+                      {plan.isActive && plan.startDate
+                        ? "Started "
+                        : "Created "}
                       {new Date(
                         plan.isActive && plan.startDate
                           ? plan.startDate
@@ -231,6 +237,7 @@ export function WorkoutPlanList() {
           </div>
         );
       })}
+      <WorkoutPlanViewDialog open={open} onOpenChange={setOpen} />
     </div>
   );
 }
