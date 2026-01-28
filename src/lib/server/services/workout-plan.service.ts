@@ -270,6 +270,8 @@ export async function getWorkoutPlansForUser({ userId }: { userId: string }) {
       weeklyFrequency: workoutPlansTable.weekly_frequency,
       sessionDurationMinutes: workoutPlansTable.session_duration_minutes,
       trainingEnvironment: workoutPlansTable.training_environment,
+      startDate: workoutPlansTable.plan_start_date,
+      createdAt: workoutPlansTable.created_at,
     })
     .from(workoutPlansTable)
     .where(eq(workoutPlansTable.user_id, userId));
