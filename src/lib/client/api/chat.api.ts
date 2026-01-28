@@ -16,9 +16,8 @@ export async function fetchChatByIdApi(chatId: string) {
 }
 
 export async function deleteChatApi(chatId: string) {
-  const response = await apiClient.delete(
-    API_ROUTES.chat.byId.replace("{chatId}", chatId)
-  );
+  const url = API_ROUTES.chat.byId.replace("[chatId]", chatId);
+  const response = await apiClient.delete(url);
 
   return response.data;
 }
