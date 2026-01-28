@@ -206,8 +206,12 @@ export function WorkoutPlanList() {
                       className="h-3.5 w-3.5"
                     />
                     <span>
-                      {"Created "}
-                      {new Date(plan.createdAt).toLocaleDateString("en-US", {
+                      {plan.isActive && plan.startDate ? "Started " : "Created "}
+                      {new Date(
+                        plan.isActive && plan.startDate
+                          ? plan.startDate
+                          : plan.createdAt,
+                      ).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
