@@ -63,17 +63,17 @@ export function WorkoutPlanList() {
                 {/* Duration Circle */}
                 <div
                   className={cn(
-                    "relative flex h-24 w-24 md:h-32 md:w-32 flex-col items-center justify-center rounded-full border-[3px] bg-card shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3 shrink-0",
+                    "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
                     isActive
                       ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
-                      : "border-card group-hover:border-primary/50 group-hover:shadow-primary/20",
+                      : "border-background/50 group-hover:border-primary/50 group-hover:shadow-primary/20",
                   )}
                 >
                   <div className="text-3xl md:text-4xl font-black text-foreground">
                     {plan.durationWeeks}
                   </div>
                   <div className="text-[9px] md:text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
-                    Week Plan
+                    Week Program
                   </div>
                 </div>
 
@@ -128,10 +128,10 @@ export function WorkoutPlanList() {
                 </div>
 
                 {/* Stats Bar - Responsive */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3.5 py-2.5 px-3.5 rounded-lg bg-muted/40 border border-border/40 shadow-inner shadow-black/5 transition-all duration-300 group-hover:bg-muted/50 group-hover:border-border/60">
-                  <div className="flex items-center gap-1.5 flex-1">
+                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center lg:items-start xl:items-stretch gap-2 sm:gap-3.5 lg:gap-3.5 xl:gap-2 py-2.5 px-3.5 rounded-lg bg-background/50 border border-border/40 shadow-inner shadow-black/5 transition-all duration-300 group-hover:border-border/60">
+                  <div className="flex items-center gap-2 flex-1">
                     <div className="p-1.5 rounded-lg bg-cyan-500/10 transition-all duration-300 group-hover:bg-cyan-500/20">
-                      <Zap className="h-3.5 w-3.5 text-cyan-500 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
+                      <Zap className="h-3.5 w-3.5 text-cyan-500 shrink-0 transition-transform duration-300" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -143,14 +143,14 @@ export function WorkoutPlanList() {
                     </div>
                   </div>
 
-                  <div className="hidden sm:block h-8 w-px bg-border" />
+                  <div className="hidden sm:block lg:hidden xl:block h-8 w-px bg-border" />
 
                   <div
-                    className="flex items-center gap-1.5 flex-1"
+                    className="flex items-center gap-2 flex-1"
                     style={{ transitionDelay: "50ms" }}
                   >
                     <div className="p-1.5 rounded-lg bg-amber-500/10 transition-all duration-300 group-hover:bg-amber-500/20">
-                      <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0 transition-transform duration-300 group-hover:-rotate-12" />
+                      <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0 transition-transform duration-300" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -162,14 +162,14 @@ export function WorkoutPlanList() {
                     </div>
                   </div>
 
-                  <div className="hidden sm:block h-8 w-px bg-border" />
+                  <div className="hidden sm:block lg:hidden xl:block h-8 w-px bg-border" />
 
                   <div
-                    className="flex items-center gap-1.5 flex-1"
+                    className="flex items-center gap-2 flex-1"
                     style={{ transitionDelay: "100ms" }}
                   >
                     <div className="p-1.5 rounded-lg bg-purple-500/10 transition-all duration-300 group-hover:bg-purple-500/20">
-                      <MapPin className="h-3.5 w-3.5 text-purple-500 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                      <MapPin className="h-3.5 w-3.5 text-purple-500 shrink-0 transition-transform duration-300" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
@@ -185,13 +185,13 @@ export function WorkoutPlanList() {
                 {/* Tags */}
                 <div className="flex flex-wrap items-center gap-2">
                   {plan.fitnessLevel && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted text-xs font-medium text-foreground transition-all duration-300 hover:bg-muted/80 hover:scale-105">
+                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 text-[11px] font-semibold text-emerald-400 transition-all duration-300 hover:bg-emerald-500/25 hover:scale-105">
                       <TrendingUp className="h-3 w-3" />
                       <span className="capitalize">{plan.fitnessLevel}</span>
                     </div>
                   )}
                   {plan.primaryGoals && plan.primaryGoals.length > 0 && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted text-xs font-medium text-foreground transition-all duration-300 hover:bg-muted/80 hover:scale-105">
+                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/15 text-[11px] font-semibold text-blue-400 transition-all duration-300 hover:bg-blue-500/25 hover:scale-105">
                       <Target className="h-3 w-3" />
                       <span className="capitalize">
                         {plan.primaryGoals[0].replace(/_/g, " ")}
@@ -207,7 +207,7 @@ export function WorkoutPlanList() {
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>
-                      {isActive ? "Started " : "Created "}
+                      Created{": "}
                       {new Date(plan.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
