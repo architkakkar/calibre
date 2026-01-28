@@ -278,3 +278,27 @@ export async function getWorkoutPlansForUser({ userId }: { userId: string }) {
 
   return plans;
 }
+
+export async function getWorkoutPlanDetailsById({
+  userId,
+  planId,
+}: {
+  userId: string;
+  planId: string;
+}) {
+  const plan = await db
+    .select({
+      plan: workoutPlansTable.parsed_plan,
+    })
+    .from(workoutPlansTable)
+    .where(
+      and(
+        eq(workoutPlansTable.id, planId),
+        eq(workoutPlansTable.user_id, userId),
+      ),
+    )
+    .limit(1)
+    .then((results) => results[0]);
+
+  return plan.plan || null;
+}

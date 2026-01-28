@@ -10,6 +10,7 @@ const API_ROUTES = {
   },
   plans: {
     workout: "/plans/workout",
+    workoutById: "/plans/workout/[planId]",
   },
 } as const;
 
