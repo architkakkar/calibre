@@ -199,7 +199,7 @@ export async function saveWorkoutPlanToDB({
     plan_description: parsed.meta.planDescription,
     plan_duration_weeks: parsed.meta.planDurationWeeks,
     session_duration_minutes: (answers.session_duration as number) ?? 0,
-    primary_goals: (answers.primary_goal as string[]) ?? [],
+    primary_goals: (answers.primary_goals as string[]) ?? [],
     fitness_level: (answers.fitness_level as string) ?? "",
     weekly_frequency: (answers.weekly_frequency as string) ?? "",
     training_environment: (answers.training_environment as string) ?? "",
