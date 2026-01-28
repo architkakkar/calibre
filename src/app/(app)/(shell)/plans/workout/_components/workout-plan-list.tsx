@@ -45,7 +45,7 @@ export function WorkoutPlanList() {
               "group relative rounded-2xl transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden hover:-translate-y-1 min-h-80",
               isActive
                 ? "border-l-4 border-l-green-500 shadow-xl shadow-green-500/5 hover:shadow-2xl hover:shadow-green-500/10"
-                : "border-l-4 border-l-transparent shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
+                : "border-l-4 border-l-muted/50 shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
             )}
           >
             {/* Active Glow Effect */}
@@ -56,29 +56,29 @@ export function WorkoutPlanList() {
               </>
             )}
 
-            {/* Main Content - Horizontal Layout */}
-            <div className="flex items-stretch min-h-70">
+            {/* Main Content - Responsive Layout */}
+            <div className="flex flex-col md:flex-row items-stretch min-h-70 h-full">
               {/* Left: Hero Circle Section */}
-              <div className="flex flex-col items-center justify-center p-6 bg-muted/50 min-h-50">
+              <div className="flex flex-row md:flex-col items-center justify-around md:gap-0 p-4 md:p-6 bg-muted/50 min-h-50">
                 {/* Duration Circle */}
                 <div
                   className={cn(
-                    "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-card shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3",
+                    "relative flex h-24 w-24 md:h-32 md:w-32 flex-col items-center justify-center rounded-full border-[3px] bg-card shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3 shrink-0",
                     isActive
                       ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
-                      : "border-border/60 group-hover:border-primary/50 group-hover:shadow-primary/20",
+                      : "border-card group-hover:border-primary/50 group-hover:shadow-primary/20",
                   )}
                 >
-                  <div className="text-4xl font-black text-foreground">
+                  <div className="text-3xl md:text-4xl font-black text-foreground">
                     {plan.durationWeeks}
                   </div>
-                  <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
+                  <div className="text-[9px] md:text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
                     Week Plan
                   </div>
                 </div>
 
                 {/* Total Workouts */}
-                <div className="mt-5 text-center space-y-2.5">
+                <div className="md:mt-5 text-center space-y-2.5 md:flex-none flex flex-col justify-center">
                   <div>
                     <div className="text-xl font-bold text-foreground">
                       {totalWorkouts}
@@ -89,8 +89,8 @@ export function WorkoutPlanList() {
                   </div>
 
                   {isActive && (
-                    <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm">
-                      <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+                    <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm animate-pulse">
+                      <span className="h-2 w-2 rounded-full bg-green-400" />
                       <span className="text-[10px] font-bold text-green-400 uppercase tracking-wide">
                         Active
                       </span>
@@ -100,7 +100,7 @@ export function WorkoutPlanList() {
               </div>
 
               {/* Right: Content Section */}
-              <div className="flex-1 flex flex-col p-5 space-y-4 relative">
+              <div className="flex-1 flex flex-col p-4 md:p-5 space-y-3 md:space-y-4 relative">
                 {/* Top-Right Badge Area */}
                 {index === 0 && !isActive && (
                   <div className="absolute top-0 right-0">
@@ -117,19 +117,19 @@ export function WorkoutPlanList() {
                 <div className="space-y-1.5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-bold text-foreground leading-tight mb-1.5 line-clamp-1 pr-20">
+                      <h3 className="text-lg md:text-xl font-bold text-foreground leading-tight mb-1.5  pr-12 md:pr-20">
                         {plan.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {plan.description}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Stats Bar - Horizontal */}
-                <div className="flex items-center gap-3.5 py-2.5 px-3.5 rounded-lg bg-muted/20 border border-border/40 shadow-inner shadow-black/5 transition-all duration-300 group-hover:bg-muted/30 group-hover:border-border/60">
-                  <div className="flex items-center gap-1.5 flex-1 transition-transform duration-300 group-hover:scale-105">
+                {/* Stats Bar - Responsive */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3.5 py-2.5 px-3.5 rounded-lg bg-muted/40 border border-border/40 shadow-inner shadow-black/5 transition-all duration-300 group-hover:bg-muted/50 group-hover:border-border/60">
+                  <div className="flex items-center gap-1.5 flex-1">
                     <div className="p-1.5 rounded-lg bg-cyan-500/10 transition-all duration-300 group-hover:bg-cyan-500/20">
                       <Zap className="h-3.5 w-3.5 text-cyan-500 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
                     </div>
@@ -143,10 +143,10 @@ export function WorkoutPlanList() {
                     </div>
                   </div>
 
-                  <div className="h-8 w-px bg-border" />
+                  <div className="hidden sm:block h-8 w-px bg-border" />
 
                   <div
-                    className="flex items-center gap-1.5 flex-1 transition-transform duration-300 group-hover:scale-105"
+                    className="flex items-center gap-1.5 flex-1"
                     style={{ transitionDelay: "50ms" }}
                   >
                     <div className="p-1.5 rounded-lg bg-amber-500/10 transition-all duration-300 group-hover:bg-amber-500/20">
@@ -162,14 +162,14 @@ export function WorkoutPlanList() {
                     </div>
                   </div>
 
-                  <div className="h-8 w-px bg-border" />
+                  <div className="hidden sm:block h-8 w-px bg-border" />
 
                   <div
-                    className="flex items-center gap-1.5 flex-1 transition-transform duration-300 group-hover:scale-105"
+                    className="flex items-center gap-1.5 flex-1"
                     style={{ transitionDelay: "100ms" }}
                   >
-                    <div className="p-1.5 rounded-lg bg-primary/10 transition-all duration-300 group-hover:bg-primary/20">
-                      <MapPin className="h-3.5 w-3.5 text-primary shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                    <div className="p-1.5 rounded-lg bg-purple-500/10 transition-all duration-300 group-hover:bg-purple-500/20">
+                      <MapPin className="h-3.5 w-3.5 text-purple-500 shrink-0 transition-transform duration-300 group-hover:scale-110" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">
