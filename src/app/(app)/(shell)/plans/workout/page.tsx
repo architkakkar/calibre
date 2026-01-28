@@ -1,7 +1,5 @@
+import { WorkoutPlanList } from "./_components/workout-plan-list";
+
 export default function WorkoutPlansPage() {
-  return (
-    <div>
-      {/* plans list here */}
-    </div>
-  );
+  return <WorkoutPlanList />;
 }
