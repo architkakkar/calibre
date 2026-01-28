@@ -48,11 +48,12 @@ export default function WorkoutPlanViewDialog({
   if (!planDetails) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="p-0 overflow-hidden w-[95vw] max-w-7xl border border-border/50 shadow-2xl">
-          <div className="p-6 space-y-6">
+        <DialogContent className="p-0 overflow-hidden min-w-[70dvw] h-[90dvh] max-w-7xl border border-border/50 shadow-2xl">
+            <DialogTitle hidden></DialogTitle>
+          <div className="p-6 space-y-6 flex flex-col">
             <Skeleton className="h-8 w-1/2" />
             <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-64 w-full rounded-xl" />
+            <Skeleton className="h-64 w-full rounded-xl flex-1" />
           </div>
         </DialogContent>
       </Dialog>
@@ -102,7 +103,7 @@ export default function WorkoutPlanViewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 overflow-hidden min-w-[70vw] max-w-7xl border border-border/50 shadow-2xl text-primary">
+      <DialogContent className="p-0 overflow-hidden min-w-[70dvw] max-h-[90dvh] max-w-7xl border border-border/50 shadow-2xl text-primary">
         {/* ================= HEADER ================= */}
         <header className="relative px-6 py-5 border-b border-border/50 bg-linear-to-r from-primary/10 via-primary/5 to-transparent">
           <div className="flex items-start justify-between gap-6">
