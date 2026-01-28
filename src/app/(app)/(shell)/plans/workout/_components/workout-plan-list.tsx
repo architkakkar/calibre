@@ -1,7 +1,6 @@
 "use client";
 
 import { useWorkoutPlanStore } from "@/stores/workout-plan.store";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/shared/utils";
 import {
   Calendar,
@@ -10,7 +9,7 @@ import {
   TrendingUp,
   MapPin,
   Zap,
-  ArrowRight,
+  Pointer,
   Sparkles,
 } from "lucide-react";
 
@@ -40,9 +39,13 @@ export function WorkoutPlanList() {
         return (
           <div
             key={plan.id}
+            onClick={() => {
+              selectPlan(plan.id);
+              fetchPlanDetails(plan.id);
+            }}
             style={{ animationDelay: `${index * 100}ms` }}
             className={cn(
-              "group relative rounded-2xl transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden hover:-translate-y-1 min-h-80",
+              "group relative rounded-2xl transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden hover:-translate-y-1 min-h-80 cursor-pointer",
               isActive
                 ? "border-l-4 border-l-green-500 shadow-xl shadow-green-500/5 hover:shadow-2xl hover:shadow-green-500/10"
                 : "border-l-4 border-l-muted/50 shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
@@ -89,8 +92,8 @@ export function WorkoutPlanList() {
                   </div>
 
                   {isActive && (
-                    <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm animate-pulse">
-                      <span className="h-2 w-2 rounded-full bg-green-400" />
+                    <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm">
+                      <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
                       <span className="text-[10px] font-bold text-green-400 uppercase tracking-wide">
                         Active
                       </span>
@@ -176,7 +179,7 @@ export function WorkoutPlanList() {
                         Location
                       </div>
                       <div className="text-sm font-bold text-foreground capitalize line-clamp-1">
-                        {plan.trainingEnvironment}
+                        {plan.trainingEnvironment.replace(/_/g, " ")}
                       </div>
                     </div>
                   </div>
@@ -186,28 +189,33 @@ export function WorkoutPlanList() {
                 <div className="flex flex-wrap items-center gap-2">
                   {plan.fitnessLevel && (
                     <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 text-[11px] font-semibold text-emerald-400 transition-all duration-300 hover:bg-emerald-500/25 hover:scale-105">
-                      <TrendingUp className="h-3 w-3" />
+                      <TrendingUp className="h-3.5 w-3.5" />
                       <span className="capitalize">{plan.fitnessLevel}</span>
                     </div>
                   )}
-                  {plan.primaryGoals && plan.primaryGoals.length > 0 && (
-                    <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/15 text-[11px] font-semibold text-blue-400 transition-all duration-300 hover:bg-blue-500/25 hover:scale-105">
-                      <Target className="h-3 w-3" />
-                      <span className="capitalize">
-                        {plan.primaryGoals[0].replace(/_/g, " ")}
-                      </span>
-                    </div>
-                  )}
+                  {plan.primaryGoals &&
+                    plan.primaryGoals.length > 0 &&
+                    plan.primaryGoals.map((goal, idx) => (
+                      <div
+                        key={idx}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/15 text-[11px] font-semibold text-blue-400 transition-all duration-300 hover:bg-blue-500/25 hover:scale-105"
+                      >
+                        <Target className="h-3.5 w-3.5" />
+                        <span className="capitalize">
+                          {goal.replace(/_/g, " ")}
+                        </span>
+                      </div>
+                    ))}
                 </div>
 
                 {/* Footer - Spacer and Actions */}
                 <div className="flex-1" />
 
-                <div className="flex items-center justify-between pt-2.5 border-t border-border/50">
+                <div className="flex items-center justify-between pt-2.5 border-t border-border/80">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>
-                      Created{": "}
+                      {"Created "}
                       {new Date(plan.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -216,23 +224,10 @@ export function WorkoutPlanList() {
                     </span>
                   </div>
 
-                  <Button
-                    onClick={() => {
-                      selectPlan(plan.id);
-                      fetchPlanDetails(plan.id);
-                    }}
-                    size="default"
-                    className={cn(
-                      "gap-2 font-semibold group/btn relative overflow-hidden px-6 py-2.5",
-                      isActive && "bg-green-600 hover:bg-green-700",
-                    )}
-                  >
-                    <span className="relative z-10">
-                      {isActive ? "Continue" : "View Plan"}
-                    </span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1 relative z-10" />
-                    <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/20 to-transparent" />
-                  </Button>
+                  <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                    <span>{isActive ? "Continue" : "View Plan"}</span>
+                    <Pointer className="h-4 w-4 transition-transform group-hover:scale-110" />
+                  </div>
                 </div>
               </div>
             </div>
