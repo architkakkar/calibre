@@ -225,7 +225,7 @@ export function WorkoutPlanList() {
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                    <span>{isActive ? "Continue" : "View Plan"}</span>
+                    <span>View Plan</span>
                     <HugeiconsIcon
                       icon={Tap06Icon}
                       className="h-4 w-4 transition-transform group-hover:scale-110"
