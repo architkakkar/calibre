@@ -42,15 +42,18 @@ export function WorkoutPlanList() {
             key={plan.id}
             style={{ animationDelay: `${index * 100}ms` }}
             className={cn(
-              "group relative rounded-2xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden",
+              "group relative rounded-2xl transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden hover:-translate-y-1",
               isActive
-                ? "border-l-4 border-l-green-500 shadow-xl shadow-green-500/5"
-                : "border-l-4 border-l-transparent shadow-lg hover:shadow-xl",
+                ? "border-l-4 border-l-green-500 shadow-xl shadow-green-500/5 hover:shadow-2xl hover:shadow-green-500/10"
+                : "border-l-4 border-l-transparent shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
             )}
           >
             {/* Active Glow Effect */}
             {isActive && (
-              <div className="absolute inset-0 bg-linear-to-r from-green-500/5 via-transparent to-transparent pointer-events-none" />
+              <>
+                <div className="absolute inset-0 bg-linear-to-r from-green-500/5 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-b from-transparent to-green-500/5 pointer-events-none" />
+              </>
             )}
 
             {/* Main Content - Horizontal Layout */}
@@ -61,10 +64,10 @@ export function WorkoutPlanList() {
                   {/* Duration Circle */}
                   <div
                     className={cn(
-                      "relative flex h-36 w-36 flex-col items-center justify-center rounded-full border-4 bg-card shadow-lg transition-all",
+                      "relative flex h-36 w-36 flex-col items-center justify-center rounded-full border-4 bg-card shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:rotate-3",
                       isActive
-                        ? "border-green-500/60 shadow-green-500/20"
-                        : "border-border/50",
+                        ? "border-green-500/60 shadow-green-500/20 group-hover:shadow-green-500/40"
+                        : "border-border/50 group-hover:border-primary/40 group-hover:shadow-primary/20",
                     )}
                   >
                     <div className="text-5xl font-black text-foreground">
@@ -196,12 +199,15 @@ export function WorkoutPlanList() {
                     }}
                     size="sm"
                     className={cn(
-                      "gap-1.5 font-semibold group/btn",
+                      "gap-1.5 font-semibold group/btn relative overflow-hidden",
                       isActive && "bg-green-600 hover:bg-green-700",
                     )}
                   >
-                    {isActive ? "Continue" : "View Plan"}
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+                    <span className="relative z-10">
+                      {isActive ? "Continue" : "View Plan"}
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1 relative z-10" />
+                    <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/20 to-transparent" />
                   </Button>
                 </div>
               </div>
