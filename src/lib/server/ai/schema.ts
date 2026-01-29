@@ -81,3 +81,100 @@ export const WORKOUT_PLAN_RESPONSE_SCHEMA = `
     }
   }
 `;
+
+export const NUTRITION_PLAN_RESPONSE_SCHEMA_VERSION = "1.0";
+
+export const NUTRITION_PLAN_RESPONSE_SCHEMA = `
+  {
+    "meta": {
+      "planName": string,
+      "planDescription": string,
+      "planDurationWeeks": number
+    },
+    "plan": {
+      "targets": {
+        "averageDailyCalories": number,
+        "trainingDayCalories": number,
+        "restDayCalories": number,
+        "macros": {
+          "proteinGrams": number,
+          "carbsGrams": number,
+          "fatsGrams": number,
+          "calories": number
+        },
+        "macroStrategy": string
+      },
+      "structure": {
+        "mealsPerDay": number,
+        "mealTimingStrategy": string,
+        "hydrationGuidelines": string,
+        "supplementGuidance": string
+      },
+      "meals": {
+        "templates": [
+          {
+            "mealType": "breakfast" | "lunch" | "dinner" | "snack",
+            "goal": string,
+            "mealOptions": [
+              {
+                "mealName": string,
+                "foods": [
+                  {
+                    "name": string,
+                    "quantity": string,
+                    "notes": string
+                  }
+                ],
+                "estimatedMacros": {
+                  "proteinGrams": number,
+                  "carbsGrams": number,
+                  "fatsGrams": number,
+                  "calories": number
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "adjustments": {
+        "checkInMetrics": [
+          "bodyWeight",
+          "energyLevels",
+          "hunger",
+          "trainingPerformance"
+        ],
+        "rules": [
+          {
+            "if": string,
+            "then": string,
+            "reasoning": string
+          }
+        ]
+      },
+      "flexibility": {
+        "eatingOut": {
+          "frequency": string,
+          "rules": string[]
+        },
+        "substitutions": [
+          {
+            "category": string,
+            "swapOptions": string[]
+          }
+        ],
+        "budgetTips": string[]
+      },
+      "health": {
+        "allergiesExcluded": string[],
+        "medicalNotes": string[],
+        "digestiveTips": string,
+        "safetyNotes": string[]
+      },
+      "notes": {
+        "adherenceTips": string[],
+        "commonMistakes": string[],
+        "general": string[]
+      }
+    }
+  }
+`;
