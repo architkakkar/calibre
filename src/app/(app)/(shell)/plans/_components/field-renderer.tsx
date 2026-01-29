@@ -26,8 +26,8 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
       : PlaceholderField;
 
   return (
-    <section className="flex flex-col grid-cols-12 space-x-8 gap-y-3 lg:grid">
-      <div className="flex flex-col col-span-5 gap-y-1">
+    <section className="flex flex-col grid-cols-12 space-x-10 gap-y-3 lg:grid">
+      <div className="flex flex-col col-span-4 gap-y-1">
         <label
           htmlFor={field.key}
           className="text-sm font-medium text-foreground"
@@ -39,7 +39,7 @@ export function FieldRenderer({ field, form }: FieldRendererProps) {
           <p className="text-xs text-muted-foreground">{field.description}</p>
         )}
       </div>
-      <div className="flex flex-col col-span-7 gap-y-1">
+      <div className="flex flex-col col-span-8 gap-y-1">
         <FieldComponent
           field={field}
           value={value}
