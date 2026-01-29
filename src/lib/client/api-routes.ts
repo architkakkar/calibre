@@ -11,6 +11,8 @@ const API_ROUTES = {
   plans: {
     workout: "/plans/workout",
     workoutById: "/plans/workout/[planId]",
+    nutrition: "/plans/nutrition",
+    nutritionById: "/plans/nutrition/[planId]",
   },
 } as const;
 
