@@ -27,7 +27,7 @@ export async function getNutritionPlansApi() {
 }
 
 export async function getNutritionPlanDetailsApi(planId: string) {
-  const url = API_ROUTES.plans.nutritionById.replace("[planId]", planId);
+  const url = API_ROUTES.plans.nutritionById.replace("{planId}", planId);
   const response = await apiClient.get(url);
 
   return response.data;

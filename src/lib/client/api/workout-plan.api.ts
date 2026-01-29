@@ -27,7 +27,7 @@ export async function getWorkoutPlansApi() {
 }
 
 export async function getWorkoutPlanDetailsApi(planId: string) {
-  const url = API_ROUTES.plans.workoutById.replace("[planId]", planId);
+  const url = API_ROUTES.plans.workoutById.replace("{planId}", planId);
   const response = await apiClient.get(url);
 
   return response.data;
