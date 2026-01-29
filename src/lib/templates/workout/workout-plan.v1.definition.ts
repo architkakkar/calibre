@@ -40,6 +40,9 @@ export const WORKOUT_PLAN_V1: PlanTemplate = {
             { label: "Maintain Fitness", value: "maintain_fitness" },
             { label: "Improve Mobility", value: "improve_mobility" },
             { label: "Athletic Performance", value: "athletic_performance" },
+            { label: "Fat Loss (Cutting Phase)", value: "cutting_phase" },
+            { label: "Body Recomposition", value: "body_recomposition" },
+            { label: "Improve Recovery", value: "improve_recovery" },
           ],
           aiHint:
             "Treat these as primary optimization objectives. Resolve conflicts by prioritizing the first selected goal.",

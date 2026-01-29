@@ -39,7 +39,6 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             { label: "Hormonal Balance", value: "hormonal_balance" },
             { label: "Digestive Health", value: "digestive_health" },
             { label: "Sustainable Lifestyle", value: "sustainable_lifestyle" },
-            { label: "Improve Recovery", value: "improve_recovery" },
             { label: "Lean Bulking", value: "lean_bulking" },
             { label: "Cutting / Fat Cut Phase", value: "cutting_phase" },
           ],
