@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
 import { db } from "@/lib/server/db/drizzle";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import {
   assertPlanTemplateVersion,
   validateAnswersAgainstPlan,
@@ -242,7 +242,8 @@ export async function getNutritionPlansForUser({ userId }: { userId: string }) {
       createdAt: nutritionPlansTable.created_at,
     })
     .from(nutritionPlansTable)
-    .where(eq(nutritionPlansTable.user_id, userId));
+    .where(eq(nutritionPlansTable.user_id, userId))
+    .orderBy(desc(nutritionPlansTable.created_at));
 
   return plans;
 }
