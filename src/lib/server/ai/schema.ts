@@ -167,13 +167,13 @@ export const NUTRITION_PLAN_RESPONSE_SCHEMA = `
       "health": {
         "allergiesExcluded": string[],
         "medicalNotes": string[],
-        "digestiveTips": string,
-        "safetyNotes": string[]
+        "digestiveTip": string,
+        "safetyNote": string
       },
       "notes": {
         "adherenceTips": string[],
         "commonMistakes": string[],
-        "general": string[]
+        "general": string
       }
     }
   }

@@ -95,8 +95,8 @@ const HealthSchema = z
   .object({
     allergiesExcluded: z.array(z.string()),
     medicalNotes: z.array(z.string()),
-    digestiveTips: z.string(),
-    safetyNotes: z.array(z.string()),
+    digestiveTip: z.string(),
+    safetyNote: z.string(),
   })
   .strict();
 
@@ -104,7 +104,7 @@ const NotesSchema = z
   .object({
     adherenceTips: z.array(z.string()),
     commonMistakes: z.array(z.string()),
-    general: z.array(z.string()),
+    general: z.string(),
   })
   .strict();
 
