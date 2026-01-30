@@ -102,7 +102,7 @@ export async function createWorkoutPlan({
   }
 
   try {
-    const isFirstPlan = await checkIfFirstPlanForUser({ userId });
+    const isFirstPlan = await checkIfFirstWorkoutPlanForUser({ userId });
 
     if (isFirstPlan) {
       await activateWorkoutPlan({
@@ -248,7 +248,7 @@ export async function activateWorkoutPlan({
     .where(eq(workoutPlansTable.id, planId));
 }
 
-export async function checkIfFirstPlanForUser({ userId }: { userId: string }) {
+export async function checkIfFirstWorkoutPlanForUser({ userId }: { userId: string }) {
   const result = await db
     .select()
     .from(workoutPlansTable)
