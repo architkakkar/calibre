@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
 import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
-import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
+import { db } from "@/lib/server/db/drizzle";
+import { and, desc, eq } from "drizzle-orm";
 import {
   assertPlanTemplateVersion,
   validateAnswersAgainstPlan,
@@ -12,15 +13,14 @@ import {
   validateWorkoutPlanJSON,
   WorkoutPlan,
 } from "@/lib/validators/workout-plan.validator";
-import { db } from "@/lib/server/db/drizzle";
 import {
   workoutPlanRequestsTable,
   workoutPlansTable,
   workoutPlanDaysTable,
 } from "@/lib/server/db/schema";
+import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai/ai-prompts";
 import { WORKOUT_PLAN_RESPONSE_SCHEMA_VERSION } from "@/lib/server/ai/schema";
-import { and, eq } from "drizzle-orm";
 
 type PlanDaysType = {
   id: string;
@@ -278,7 +278,8 @@ export async function getWorkoutPlansForUser({ userId }: { userId: string }) {
       createdAt: workoutPlansTable.created_at,
     })
     .from(workoutPlansTable)
-    .where(eq(workoutPlansTable.user_id, userId));
+    .where(eq(workoutPlansTable.user_id, userId))
+    .orderBy(desc(workoutPlansTable.created_at));
 
   return plans;
 }
