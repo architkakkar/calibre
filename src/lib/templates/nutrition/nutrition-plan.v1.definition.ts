@@ -175,17 +175,20 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             {
               label: "Low Budget",
               value: "low",
-              description: "Budget-focused meals using basic staples (approx ₹3,000–₹5,000 per month)."
+              description:
+                "Budget-focused meals using basic staples (approx ₹3,000–₹5,000 per month).",
             },
             {
               label: "Moderate Budget",
               value: "moderate",
-              description: "Balanced variety with good protein sources (approx ₹5,000–₹8,000 per month)."
+              description:
+                "Balanced variety with good protein sources (approx ₹5,000–₹8,000 per month).",
             },
             {
               label: "Flexible Budget",
               value: "high",
-              description: "Maximum flexibility, premium proteins, and convenience foods (₹8,000+ per month)."
+              description:
+                "Maximum flexibility, premium proteins, and convenience foods (₹8,000+ per month).",
             },
           ],
           aiHint:
@@ -212,11 +215,31 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             component: "dropdown",
           },
           options: [
-            { label: "Balanced", value: "balanced" },
-            { label: "High Protein", value: "high_protein" },
-            { label: "Low Carb", value: "low_carb" },
-            { label: "High Carb", value: "high_carb" },
-            { label: "Low Fat", value: "low_fat" },
+            {
+              label: "Balanced",
+              value: "balanced",
+              description: "Even distribution across all macros.",
+            },
+            {
+              label: "High Protein",
+              value: "high_protein",
+              description: "Emphasize protein intake for muscle building.",
+            },
+            {
+              label: "Low Carb",
+              value: "low_carb",
+              description: "Reduce carb intake, increase fats.",
+            },
+            {
+              label: "High Carb",
+              value: "high_carb",
+              description: "Emphasize carbs for energy and performance.",
+            },
+            {
+              label: "Low Fat",
+              value: "low_fat",
+              description: "Minimize fat intake, increase carbs.",
+            },
           ],
           aiHint:
             "Adjust macro ratios while still respecting the primary goal.",
@@ -289,9 +312,21 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             component: "dropdown",
           },
           options: [
-            { label: "Flexible", value: "flexible" },
-            { label: "Fixed Meal Times", value: "fixed_meal_times" },
-            { label: "Intermittent Fasting", value: "intermittent_fasting" },
+            {
+              label: "Flexible",
+              value: "flexible",
+              description: "Eat whenever convenient, no fixed schedule.",
+            },
+            {
+              label: "Fixed Meal Times",
+              value: "fixed_meal_times",
+              description: "Prefer eating at consistent times each day.",
+            },
+            {
+              label: "Intermittent Fasting",
+              value: "intermittent_fasting",
+              description: "Follow a time-restricted eating window.",
+            },
           ],
           aiHint: "Respect fasting windows or fixed schedules if selected.",
         },
@@ -383,10 +418,27 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             component: "dropdown",
           },
           options: [
-            { label: "Rarely", value: "rarely" },
-            { label: "Occasionally (1–2x/week)", value: "occasionally" },
-            { label: "Frequently (3–5x/week)", value: "frequently" },
-            { label: "Mostly Eating Out", value: "mostly_outside" },
+            {
+              label: "Rarely",
+              value: "rarely",
+              description: "Cook most meals at home.",
+            },
+            {
+              label: "Occasionally",
+              value: "occasionally",
+              description: "1–2 times per week.",
+            },
+            {
+              label: "Frequently",
+              value: "frequently",
+              description: "3–5 times per week.",
+            },
+            {
+              label: "Mostly Eating Out",
+              value: "mostly_outside",
+              description:
+                "Rarely cook at home, rely on restaurants or takeout.",
+            },
           ],
           aiHint:
             "Increase flexibility, simple heuristics, and food substitutions as eating out frequency increases.",
