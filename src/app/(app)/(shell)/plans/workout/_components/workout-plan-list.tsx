@@ -65,19 +65,19 @@ export function WorkoutPlanList() {
             <div className="flex flex-col md:flex-row items-stretch min-h-70 h-full">
               {/* Left: Hero Circle Section */}
               <div className="flex flex-col items-center justify-around gap-4 p-4 md:p-6 bg-muted/50 min-h-50">
-                  <div
-                    className={cn(
-                      "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
-                      isActive
-                        ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
-                        : "border-background/50 group-hover:border-primary/50 group-hover:shadow-primary/20",
-                    )}
-                  >
-                    <div className="text-3xl md:text-4xl font-black text-foreground">
-                      {plan.durationWeeks}
-                    </div>
-                    <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
-                      Week Program
+                <div
+                  className={cn(
+                    "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
+                    isActive
+                      ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
+                      : "border-background/50 group-hover:border-primary/50 group-hover:shadow-primary/20",
+                  )}
+                >
+                  <div className="text-3xl md:text-4xl font-black text-foreground">
+                    {plan.durationWeeks}
+                  </div>
+                  <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
+                    Week Program
                   </div>
                 </div>
                 <div className="text-center space-y-2.5 w-full">
