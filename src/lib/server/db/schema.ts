@@ -174,6 +174,8 @@ export const nutritionPlansTable = pgTable("nutrition_plans", {
   diet_type: varchar({ length: 50 }).notNull(),
   meals_per_day: varchar({ length: 20 }).notNull(),
   budget_level: varchar({ length: 20 }).notNull(),
+  eating_out_frequency: varchar({ length: 100 }).notNull(),
+  allergies: varchar({ length: 255 }).array().notNull(),
   plan_status: planStatusEnum().notNull().default("GENERATED"),
   is_active: boolean().notNull().default(false),
   plan_start_date: timestamp({ withTimezone: true }),
