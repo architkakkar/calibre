@@ -52,7 +52,7 @@ export function WorkoutPlanList() {
               "group relative rounded-2xl transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 bg-card overflow-hidden hover:-translate-y-1 min-h-80 cursor-pointer",
               isActive
                 ? "border-l-4 border-l-green-500 shadow-xl shadow-green-500/5 hover:shadow-2xl hover:shadow-green-500/10"
-                : "border-l-4 border-l-muted/50 shadow-lg hover:shadow-xl hover:border-l-primary/50 ",
+                : "border-l-4 border-l-muted/50 shadow-lg hover:shadow-xl hover:border-l-primary/50",
             )}
           >
             {isActive && (
@@ -64,31 +64,34 @@ export function WorkoutPlanList() {
 
             <div className="flex flex-col md:flex-row items-stretch min-h-70 h-full">
               {/* Left: Hero Circle Section */}
-              <div className="flex flex-row md:flex-col items-center justify-around md:gap-0 p-4 md:p-6 bg-muted/50 min-h-50">
-                <div
-                  className={cn(
-                    "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
-                    isActive
-                      ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
-                      : "border-background/50 group-hover:border-primary/50 group-hover:shadow-primary/20",
-                  )}
-                >
-                  <div className="text-3xl md:text-4xl font-black text-foreground">
-                    {plan.durationWeeks}
-                  </div>
-                  <div className="text-[9px] md:text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
-                    Week Program
+              <div className="flex flex-col items-center justify-around gap-4 p-4 md:p-6 bg-muted/50 min-h-50">
+                  <div
+                    className={cn(
+                      "relative flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] bg-background/50 shadow-lg shadow-black/10 transition-all duration-500 group-hover:scale-105 shrink-0",
+                      isActive
+                        ? "border-green-500/70 shadow-green-500/20 group-hover:shadow-green-500/40"
+                        : "border-background/50 group-hover:border-primary/50 group-hover:shadow-primary/20",
+                    )}
+                  >
+                    <div className="text-3xl md:text-4xl font-black text-foreground">
+                      {plan.durationWeeks}
+                    </div>
+                    <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mt-0.5">
+                      Week Program
                   </div>
                 </div>
-                <div className="md:mt-5 text-center space-y-2.5 md:flex-none flex flex-col justify-center">
-                  <div>
-                    <div className="text-xl font-bold text-foreground">
-                      {totalWorkouts}
-                    </div>
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-wide mt-0.5">
-                      Total Sessions
+                <div className="text-center space-y-2.5 w-full">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl md:text-4xl font-black text-foreground">
+                        {totalWorkouts}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wide">
+                        sessions
+                      </span>
                     </div>
                   </div>
+
                   {isActive && (
                     <div className="flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-r from-green-500/20 to-emerald-500/10 border border-green-500/40 px-2.5 py-1.5 backdrop-blur-sm shadow-sm">
                       <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
