@@ -12,12 +12,21 @@ export type NutritionPlanSummary = {
   id: string;
   name: string;
   description: string;
-  durationWeeks: number;
   isActive: boolean;
   primaryGoal: string;
   dietType: string;
   mealsPerDay: string;
   budgetLevel: string;
+  averageDailyCalories: number;
+  macros: {
+    proteinGrams: number;
+    carbsGrams: number;
+    fatsGrams: number;
+    calories: number;
+  };
+  totalMealOptions: number;
+  eatingOutFrequency: string;
+  allergies: string[];
   startDate: Date | null;
   createdAt: Date;
 };

@@ -12,6 +12,7 @@ import {
 import {
   validateNutritionPlanJSON,
   NutritionPlan,
+  MealTemplate,
 } from "@/lib/validators/nutrition-plan.validator";
 import {
   nutritionPlanRequestsTable,
@@ -172,6 +173,8 @@ export async function saveNutritionPlanToDB({
     diet_type: (answers.diet_type as string) ?? "",
     meals_per_day: (answers.meals_per_day as string) ?? "0",
     budget_level: (answers.budget_level as string) ?? "0",
+    eating_out_frequency: (answers.eating_out_frequency as string) ?? "",
+    allergies: (answers.allergies as string[]) || [],
     plan_status: "GENERATED",
     is_active: false,
     schema_version: NUTRITION_PLAN_RESPONSE_SCHEMA_VERSION,
@@ -232,20 +235,54 @@ export async function getNutritionPlansForUser({ userId }: { userId: string }) {
       id: nutritionPlansTable.id,
       name: nutritionPlansTable.plan_name,
       description: nutritionPlansTable.plan_description,
-      durationWeeks: nutritionPlansTable.plan_duration_weeks,
       isActive: nutritionPlansTable.is_active,
       primaryGoal: nutritionPlansTable.primary_goal,
       dietType: nutritionPlansTable.diet_type,
       mealsPerDay: nutritionPlansTable.meals_per_day,
       budgetLevel: nutritionPlansTable.budget_level,
+      eatingOutFrequency: nutritionPlansTable.eating_out_frequency,
+      allergies: nutritionPlansTable.allergies,
       startDate: nutritionPlansTable.plan_start_date,
       createdAt: nutritionPlansTable.created_at,
+      parsedPlan: nutritionPlansTable.parsed_plan,
     })
     .from(nutritionPlansTable)
     .where(eq(nutritionPlansTable.user_id, userId))
     .orderBy(desc(nutritionPlansTable.created_at));
 
-  return plans;
+  // Extract key nutrition metrics from parsed_plan
+  return plans.map((plan) => {
+    const parsedPlan = plan.parsedPlan as NutritionPlan | null;
+
+    return {
+      id: plan.id,
+      name: plan.name,
+      description: plan.description,
+      isActive: plan.isActive,
+      primaryGoal: plan.primaryGoal,
+      dietType: plan.dietType,
+      mealsPerDay: plan.mealsPerDay,
+      budgetLevel: plan.budgetLevel,
+      averageDailyCalories:
+        parsedPlan?.plan?.targets?.averageDailyCalories || 0,
+      macros: parsedPlan?.plan?.targets?.macros || {
+        proteinGrams: 0,
+        carbsGrams: 0,
+        fatsGrams: 0,
+        calories: 0,
+      },
+      totalMealOptions:
+        parsedPlan?.plan?.meals?.templates?.reduce(
+          (sum: number, template: MealTemplate) =>
+            sum + (template.mealOptions?.length || 0),
+          0,
+        ) || 0,
+      eatingOutFrequency: plan.eatingOutFrequency,
+      allergies: plan.allergies,
+      startDate: plan.startDate,
+      createdAt: plan.createdAt,
+    };
+  });
 }
 
 export async function getNutritionPlanDetailsById({
