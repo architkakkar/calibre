@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function WorkoutShell({ children }: { children: React.ReactNode }) {
-  const { hasPlans, isLoading, fetchPlans } = useWorkoutPlanStore();
+  const { hasPlans, isFetchingPlans, fetchPlans } = useWorkoutPlanStore();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchPlans();
   }, [fetchPlans]);
 
-  if (isLoading) {
+  if (isFetchingPlans) {
     return (
       <>
         <Skeleton className="h-15 w-2/3 rounded-lg mb-4" />
