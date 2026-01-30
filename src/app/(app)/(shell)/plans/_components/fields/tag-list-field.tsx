@@ -31,24 +31,31 @@ export function TagListField({
     >
       {field.options.map((option) => {
         const isAllOption = option.value === "all";
+        const isNoneOption = option.value === "none";
         const isAllSelected = selectedValues.includes("all");
+        const isNoneSelected = selectedValues.includes("none");
         const isSelected = selectedValues.includes(option.value);
 
         return (
           <button
             key={option.value}
             type="button"
-            disabled={isAllSelected && !isAllOption}
+            disabled={
+              (isAllSelected && !isAllOption) ||
+              (isNoneSelected && !isNoneOption)
+            }
             onClick={() => {
               if (disabled) return;
 
-              if (isAllOption) {
-                const next = isAllSelected ? [] : ["all"];
+              if (isAllOption || isNoneOption) {
+                const value = isAllOption ? "all" : "none";
+                const isSelected = selectedValues.includes(value);
+                const next = isSelected ? [] : [value];
                 onChange(next);
                 return;
               }
 
-              if (isAllSelected) {
+              if (isAllSelected || isNoneSelected) {
                 onChange([option.value]);
                 return;
               }
@@ -68,8 +75,8 @@ export function TagListField({
               isSelected
                 ? "bg-secondary/50 text-secondary-foreground border-secondary"
                 : "bg-transparent text-muted-foreground border-border hover:bg-muted hover:text-foreground",
-              isAllSelected &&
-                !isAllOption &&
+              ((isAllSelected && !isAllOption) ||
+                (isNoneSelected && !isNoneOption)) &&
                 "opacity-50 cursor-not-allowed pointer-events-none",
             )}
           >
