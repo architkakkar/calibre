@@ -1,3 +1,5 @@
+import { NutritionPlanList } from "./_components/nutrition-plan-list";
+
 export default function NutritionPlansPage() {
-  return <div>{/* plans list here */}</div>;
+  return <NutritionPlanList />;
 }
