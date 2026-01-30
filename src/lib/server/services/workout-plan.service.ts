@@ -248,7 +248,11 @@ export async function activateWorkoutPlan({
     .where(eq(workoutPlansTable.id, planId));
 }
 
-export async function checkIfFirstWorkoutPlanForUser({ userId }: { userId: string }) {
+export async function checkIfFirstWorkoutPlanForUser({
+  userId,
+}: {
+  userId: string;
+}) {
   const result = await db
     .select()
     .from(workoutPlansTable)
@@ -286,7 +290,7 @@ export async function getWorkoutPlanDetailsById({
   userId: string;
   planId: string;
 }) {
-  const plan = await db
+  const data = await db
     .select({
       plan: workoutPlansTable.parsed_plan,
     })
@@ -300,5 +304,5 @@ export async function getWorkoutPlanDetailsById({
     .limit(1)
     .then((results) => results[0]);
 
-  return plan.plan || null;
+  return data.plan || null;
 }
