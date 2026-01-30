@@ -223,7 +223,7 @@ export async function checkIfFirstNutritionPlanForUser({
     .from(nutritionPlansTable)
     .where(eq(nutritionPlansTable.user_id, userId));
 
-  return result.length === 0;
+  return result.length === 1;
 }
 
 export async function getNutritionPlansForUser({ userId }: { userId: string }) {

@@ -258,7 +258,7 @@ export async function checkIfFirstWorkoutPlanForUser({
     .from(workoutPlansTable)
     .where(eq(workoutPlansTable.user_id, userId));
 
-  return result.length === 0;
+  return result.length === 1;
 }
 
 export async function getWorkoutPlansForUser({ userId }: { userId: string }) {
