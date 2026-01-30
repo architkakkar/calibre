@@ -13,7 +13,7 @@ import {
   ZapIcon,
   Tap06Icon,
 } from "@hugeicons/core-free-icons";
-import WorkoutPlanViewDialog from "./workout-plan-view-dialog";
+import { WorkoutPlanViewDialog } from "./workout-plan-view-dialog";
 
 export function WorkoutPlanList() {
   const { plans, selectPlan, fetchPlanDetails, activePlanId } =
