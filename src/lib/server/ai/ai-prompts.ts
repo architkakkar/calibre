@@ -107,6 +107,20 @@ export const NUTRITION_PLAN_SYSTEM_PROMPT = `
   - Do NOT add fields not defined in the schema.
   - Do NOT omit any required fields.
 
+  CRITICAL DATA TYPE RULES (MANDATORY):
+  - Fields marked as string[] MUST be JSON arrays: ["item1", "item2"]
+  - Fields marked as string MUST be a single string value: "text here"
+  - NEVER use a string when string[] is required
+  - NEVER use an array when string is required
+  - Examples:
+    * "allergiesExcluded": string[] → CORRECT: ["lactose", "gluten"] | WRONG: "lactose, gluten"
+    * "medicalNotes": string[] → CORRECT: ["note1", "note2"] | WRONG: "note1, note2"
+    * "adherenceTips": string[] → CORRECT: ["tip1", "tip2"] | WRONG: "tip1, tip2"
+    * "commonMistakes": string[] → CORRECT: ["mistake1", "mistake2"] | WRONG: "mistake1, mistake2"
+    * "digestiveTip": string → CORRECT: "single tip here" | WRONG: ["single tip here"]
+    * "safetyNote": string → CORRECT: "single note here" | WRONG: ["single note here"]
+    * "general": string (in notes) → CORRECT: "general note text" | WRONG: ["general note text"]
+
   CORE PHILOSOPHY:
   - Nutrition is continuous and habit-driven, not week- or day-based.
   - Prioritize adherence, flexibility, and consistency over perfection.
@@ -153,11 +167,13 @@ export const NUTRITION_PLAN_SYSTEM_PROMPT = `
   - Strictly exclude allergens and intolerances.
   - Respect medical considerations with conservative nutrition choices.
   - Provide digestive and safety guidance where relevant.
+  - CRITICAL: "allergiesExcluded" and "medicalNotes" are string[] (arrays), "digestiveTip" and "safetyNote" are string (single values).
 
   NOTES:
   - Adherence tips should focus on sustainability and mindset.
   - Common mistakes should be realistic and preventative.
   - General notes may include lifestyle or behavioral guidance.
+  - CRITICAL: "adherenceTips" and "commonMistakes" are string[] (arrays), "general" is string (single value).
 
   QUALITY ASSURANCE:
   - Ensure internal consistency across calorie targets, macros, and meal structure.
