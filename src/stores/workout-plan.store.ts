@@ -65,7 +65,6 @@ export const useWorkoutPlanStore = create<WorkoutPlanState>((set, get) => ({
     try {
       const plans: WorkoutPlanSummary[] = await getWorkoutPlansApi();
       const activePlan = plans.find((p) => p.isActive) ?? null;
-
       set({
         plans,
         activePlanId: activePlan ? activePlan.id : null,
@@ -80,18 +79,14 @@ export const useWorkoutPlanStore = create<WorkoutPlanState>((set, get) => ({
     }
   },
 
-  createPlan: async (payload: CreateWorkoutPlanPayload) => {
+  createPlan: async (payload) => {
     set({ error: null });
 
     try {
       await createWorkoutPlanApi(payload);
-
-      // refresh plans after successful creation
-      await get().fetchPlans();
+      await get().fetchPlans(); // refresh plans after successful creation
     } catch (err) {
-      set({
-        error: "Failed to create workout plan",
-      });
+      set({ error: "Failed to create workout plan" });
       throw err;
     }
   },
@@ -102,7 +97,6 @@ export const useWorkoutPlanStore = create<WorkoutPlanState>((set, get) => ({
     try {
       const details: WorkoutPlanDetails =
         await getWorkoutPlanDetailsApi(planId);
-
       set({
         planDetails: details,
         selectedPlanId: planId,
