@@ -80,21 +80,21 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
           description: "Which diet pattern do you follow?",
           type: "single_select",
           required: true,
-          defaultValue: "non_vegetarian",
+          defaultValue: "vegetarian",
           ui: {
             component: "radio_group",
           },
           options: [
             {
-              label: "Non-Vegetarian",
-              value: "non_vegetarian",
-              description: "Includes meat, poultry, eggs, and seafood.",
-            },
-            {
               label: "Vegetarian",
               value: "vegetarian",
               description:
                 "Plant-based diet including dairy but no eggs or meat.",
+            },
+            {
+              label: "Non-Vegetarian",
+              value: "non_vegetarian",
+              description: "Includes meat, poultry, eggs, and seafood.",
             },
             {
               label: "Eggetarian",
@@ -172,12 +172,24 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             component: "dropdown",
           },
           options: [
-            { label: "Low Budget", value: "low" },
-            { label: "Moderate Budget", value: "moderate" },
-            { label: "Flexible Budget", value: "high" },
+            {
+              label: "Low Budget",
+              value: "low",
+              description: "Budget-focused meals using basic staples (approx ₹3,000–₹5,000 per month)."
+            },
+            {
+              label: "Moderate Budget",
+              value: "moderate",
+              description: "Balanced variety with good protein sources (approx ₹5,000–₹8,000 per month)."
+            },
+            {
+              label: "Flexible Budget",
+              value: "high",
+              description: "Maximum flexibility, premium proteins, and convenience foods (₹8,000+ per month)."
+            },
           ],
           aiHint:
-            "Choose food sources that align with affordability and accessibility in Indian Rupees.",
+            "Choose food sources that align with affordability and accessibility in India.",
         },
       ],
     },
