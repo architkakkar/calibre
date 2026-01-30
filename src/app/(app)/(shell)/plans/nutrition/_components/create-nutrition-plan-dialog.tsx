@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { usePlanForm } from "@/hooks/use-plan-form";
+import { useNutritionPlanStore } from "@/stores/nutrition-plan.store";
 import { useGlobalStore } from "@/stores/global.store";
-import { createNutritionPlanApi } from "@/lib/client/api/nutrition-plan.api";
 import { PlanDialogHeader } from "@/app/(app)/(shell)/plans/_components/plan-dialog-header";
 import { PlanDialogFooter } from "@/app/(app)/(shell)/plans/_components/plan-dialog-footer";
 import { PlanRenderer } from "@/app/(app)/(shell)/plans/_components/plan-renderer";
@@ -25,8 +25,9 @@ export function CreateNutritionPlanDialog({
   open,
   onOpenChange,
 }: CreateNutritionPlanDialogProps) {
-  const [currentStep, setCurrentStep] = useState(0);
+  const { createPlan } = useNutritionPlanStore();
   const { showLoader, hideLoader } = useGlobalStore.getState();
+  const [currentStep, setCurrentStep] = useState(0);
 
   const steps = ACTIVE_NUTRITION_PLAN.steps.map((step) => ({
     key: String(step.step),
@@ -69,7 +70,7 @@ export function CreateNutritionPlanDialog({
     );
 
     try {
-      await createNutritionPlanApi({
+      await createPlan({
         planTemplateId: ACTIVE_NUTRITION_PLAN.id,
         planTemplateVersion: ACTIVE_NUTRITION_PLAN.version,
         answers: payload,
