@@ -170,4 +170,5 @@ export function validateNutritionPlanJSON(rawText: string) {
   }
 }
 
+export type MealTemplate = z.infer<typeof MealTemplateSchema>;
 export type NutritionPlan = z.infer<typeof NutritionPlanSchema>;
