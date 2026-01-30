@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { usePlanForm } from "@/hooks/use-plan-form";
+import { useWorkoutPlanStore } from "@/stores/workout-plan.store";
 import { useGlobalStore } from "@/stores/global.store";
-import { createWorkoutPlanApi } from "@/lib/client/api/workout-plan.api";
 import { PlanDialogHeader } from "@/app/(app)/(shell)/plans/_components/plan-dialog-header";
 import { PlanDialogFooter } from "@/app/(app)/(shell)/plans/_components/plan-dialog-footer";
 import { PlanRenderer } from "@/app/(app)/(shell)/plans/_components/plan-renderer";
@@ -25,8 +25,9 @@ export function CreateWorkoutPlanDialog({
   open,
   onOpenChange,
 }: CreateWorkoutPlanDialogProps) {
-  const [currentStep, setCurrentStep] = useState(0);
+  const { createPlan } = useWorkoutPlanStore();
   const { showLoader, hideLoader } = useGlobalStore.getState();
+  const [currentStep, setCurrentStep] = useState(0);
 
   const steps = ACTIVE_WORKOUT_PLAN.steps.map((step) => ({
     key: String(step.step),
@@ -69,7 +70,7 @@ export function CreateWorkoutPlanDialog({
     );
 
     try {
-      await createWorkoutPlanApi({
+      await createPlan({
         planTemplateId: ACTIVE_WORKOUT_PLAN.id,
         planTemplateVersion: ACTIVE_WORKOUT_PLAN.version,
         answers: payload,
