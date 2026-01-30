@@ -21,7 +21,7 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
       description: "Define your primary nutrition objective.",
       fields: [
         {
-          key: "nutrition_goal",
+          key: "primary_goal",
           label: "Primary Goal",
           description: "What is your main nutrition objective?",
           type: "single_select",
@@ -177,7 +177,7 @@ export const NUTRITION_PLAN_V1: PlanTemplate = {
             { label: "Flexible Budget", value: "high" },
           ],
           aiHint:
-            "Choose food sources that align with affordability and accessibility.",
+            "Choose food sources that align with affordability and accessibility in Indian Rupees.",
         },
       ],
     },
