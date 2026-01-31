@@ -11,7 +11,7 @@ import {
 export function WorkoutPlanViewDialogOverview({ plan }: { plan: Plan }) {
   return (
     <>
-      <div className="p-5 border-b bg-linear-to-r from-card/80 to-background">
+      <div className="p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20">
             <HugeiconsIcon
