@@ -16,15 +16,15 @@ import {
 } from "@/lib/domain/plan.helpers";
 import { showToast } from "@/lib/client/toast";
 
-type CreateWorkoutPlanDialogProps = {
+type WorkoutCreatePlanDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export function CreateWorkoutPlanDialog({
+export function WorkoutCreatePlanDialog({
   open,
   onOpenChange,
-}: CreateWorkoutPlanDialogProps) {
+}: WorkoutCreatePlanDialogProps) {
   const { createPlan } = useWorkoutPlanStore();
   const { showLoader, hideLoader } = useGlobalStore.getState();
   const [currentStep, setCurrentStep] = useState(0);
