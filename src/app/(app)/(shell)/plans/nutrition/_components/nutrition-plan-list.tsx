@@ -93,6 +93,7 @@ export function NutritionPlanList() {
           <div
             key={plan.id}
             onClick={() => {
+              setOpen(true);
               selectPlan(plan.id);
               fetchPlanDetails(plan.id);
             }}
