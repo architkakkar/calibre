@@ -170,5 +170,18 @@ export function validateNutritionPlanJSON(rawText: string) {
   }
 }
 
+export type Macro = z.infer<typeof MacroSchema>;
+export type Targets = z.infer<typeof TargetsSchema>;
+export type Structure = z.infer<typeof StructureSchema>;
+export type Food = z.infer<typeof FoodSchema>;
+export type MealOption = z.infer<typeof MealOptionSchema>;
 export type MealTemplate = z.infer<typeof MealTemplateSchema>;
+export type Meals = z.infer<typeof MealsSchema>;
+export type AdjustmentRule = z.infer<typeof AdjustmentRuleSchema>;
+export type Adjustments = z.infer<typeof AdjustmentsSchema>;
+export type Flexibility = z.infer<typeof FlexibilitySchema>;
+export type Health = z.infer<typeof HealthSchema>;
+export type Notes = z.infer<typeof NotesSchema>;
+export type Plan = z.infer<typeof PlanSchema>;
+export type Meta = z.infer<typeof MetaSchema>;
 export type NutritionPlan = z.infer<typeof NutritionPlanSchema>;

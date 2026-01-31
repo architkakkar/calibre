@@ -151,4 +151,15 @@ export function validateWorkoutPlanJSON(rawText: string) {
   }
 }
 
+export type IntensityGuidance = z.infer<typeof IntensityGuidanceSchema>;
+export type WarmupCooldown = z.infer<typeof WarmupCooldownSchema>;
+export type WorkoutExercise = z.infer<typeof WorkoutExerciseSchema>;
+export type Day = z.infer<typeof DaySchema>;
+export type Week = z.infer<typeof WeekSchema>;
+export type ProgressionSummary = z.infer<typeof ProgressionSummarySchema>;
+export type Substitution = z.infer<typeof SubstitutionSchema>;
+export type RecoveryGuidance = z.infer<typeof RecoveryGuidanceSchema>;
+export type Note = z.infer<typeof NoteSchema>;
+export type Plan = z.infer<typeof PlanSchema>;
+export type Meta = z.infer<typeof MetaSchema>;
 export type WorkoutPlan = z.infer<typeof WorkoutPlanSchema>;
