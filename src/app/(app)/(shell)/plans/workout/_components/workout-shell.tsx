@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useWorkoutPlanStore } from "@/stores/workout-plan.store";
 import { WorkoutEmptyState } from "./workout-empty-state";
-import { CreateWorkoutPlanDialog } from "./create-workout-plan-dialog";
+import { WorkoutCreatePlanDialog } from "./workout-create-plan-dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function WorkoutShell({ children }: { children: React.ReactNode }) {
   const { hasPlans, isFetchingPlans, fetchPlans } = useWorkoutPlanStore();
-  const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchPlans();
@@ -33,7 +33,7 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
             <Button
               size="sm"
               className="font-semibold"
-              onClick={() => setOpen(true)}
+              onClick={() => setIsDialogOpen(true)}
             >
               Create Workout Plan
             </Button>
@@ -48,7 +48,7 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
       <main className="h-[calc(100dvh-184px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
         {hasPlans ? <>{children}</> : <WorkoutEmptyState />}
       </main>
-      <CreateWorkoutPlanDialog open={open} onOpenChange={setOpen} />
+      <WorkoutCreatePlanDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </div>
   );
 }

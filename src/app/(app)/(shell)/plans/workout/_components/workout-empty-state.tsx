@@ -8,7 +8,7 @@ import {
   Rocket01Icon,
   Target03Icon,
 } from "@hugeicons/core-free-icons";
-import { CreateWorkoutPlanDialog } from "./create-workout-plan-dialog";
+import { WorkoutCreatePlanDialog } from "./workout-create-plan-dialog";
 
 type CardData = {
   title: string;
@@ -76,7 +76,7 @@ function Card({ card }: { card: CardData }) {
 }
 
 export function WorkoutEmptyState() {
-  const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div
@@ -125,7 +125,7 @@ export function WorkoutEmptyState() {
         <div className="flex flex-col items-center gap-4 w-full relative z-10">
           <Button
             className="px-8 py-4 text-base font-semibold relative z-10 shadow-md hover:shadow-lg transition-all duration-300"
-            onClick={() => setOpen(true)}
+            onClick={() => setIsDialogOpen(true)}
           >
             Create First Plan
           </Button>
@@ -139,7 +139,10 @@ export function WorkoutEmptyState() {
           </footer>
         </div>
       </section>
-      <CreateWorkoutPlanDialog open={open} onOpenChange={setOpen} />
+      <WorkoutCreatePlanDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 }
