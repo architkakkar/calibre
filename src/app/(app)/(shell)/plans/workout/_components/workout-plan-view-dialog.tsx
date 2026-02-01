@@ -103,7 +103,7 @@ export function WorkoutPlanViewDialog({
                     size="sm"
                     variant="outline"
                     onClick={() => setSubstitutionsOpen(true)}
-                    className="gap-2 bg-blue-500/5! backdrop-blur-sm shadow-md text-blue-500 border-blue-500/50! hover:bg-blue-500/10! hover:border-blue-500/70! hover:text-blue-500! transition-all duration-200"
+                    className="gap-2 text-primary"
                   >
                     <HugeiconsIcon icon={RepeatIcon} className="h-4 w-4" />
                     Alternatives
