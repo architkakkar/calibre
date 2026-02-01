@@ -224,12 +224,12 @@ export function WorkoutPlanViewDialogContent({
                       className="group p-5 rounded-xl border bg-linear-to-br from-amber-500/8 to-amber-500/3 border-amber-500/20 hover:border-amber-500/35 hover:shadow-md transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-linear-to-br from-amber-500/20 to-amber-500/10 border-2 border-amber-500/40 text-amber-500 font-bold text-base shrink-0 shadow-sm">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-amber-500/20 to-amber-500/10 border-2 border-amber-500/40 text-amber-500 font-bold text-base shrink-0 shadow-sm">
                           {idx + 1}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-start justify-between gap-3 mb-2">
-                            <h4 className="font-bold text-base text-foreground transition-colors">
+                            <h4 className="font-bold text-xl text-foreground transition-colors">
                               {item.name}
                             </h4>
                             <Badge
@@ -248,7 +248,7 @@ export function WorkoutPlanViewDialogContent({
                           </p>
                           {item.notes && (
                             <div className="mt-3 pt-3 border-t border-amber-500/20">
-                              <p className="text-xs text-foreground/70 leading-relaxed">
+                              <p className="text-sm text-foreground/70 leading-relaxed">
                                 <span className="font-bold text-amber-500">
                                   Note:
                                 </span>{" "}
@@ -282,7 +282,7 @@ export function WorkoutPlanViewDialogContent({
                         className="group p-5 rounded-xl border border-border bg-card/70 hover:shadow-md hover:border-primary/20 transition-all duration-300"
                       >
                         <div className="flex items-start gap-4 mb-5">
-                          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-lg shrink-0 shadow-sm">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-lg shrink-0 shadow-sm">
                             {idx + 1}
                           </div>
                           <div className="flex-1">
@@ -393,7 +393,7 @@ export function WorkoutPlanViewDialogContent({
                         {exercise.notes && (
                           <div className="p-4 rounded-xl bg-muted/40 border border-muted">
                             <p className="text-sm text-foreground/80 leading-relaxed">
-                              <span className="font-bold text-foreground">
+                              <span className="font-bold text-primary">
                                 Note:
                               </span>{" "}
                               {exercise.notes}
@@ -423,12 +423,12 @@ export function WorkoutPlanViewDialogContent({
                       className="group p-5 rounded-xl border bg-linear-to-br from-blue-500/8 to-blue-500/3 border-blue-500/20 hover:border-blue-500/40 hover:shadow-md transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-linear-to-br from-blue-500/20 to-blue-500/10 border-2 border-blue-500/40 text-blue-600 font-bold text-base shrink-0 shadow-sm">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-blue-500/20 to-blue-500/10 border-2 border-blue-500/40 text-blue-600 font-bold text-base shrink-0 shadow-sm">
                           {idx + 1}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-start justify-between gap-3 mb-2">
-                            <h4 className="font-bold text-base text-foreground transition-colors">
+                            <h4 className="font-bold text-xl text-foreground transition-colors">
                               {item.name}
                             </h4>
                             <Badge
@@ -447,7 +447,7 @@ export function WorkoutPlanViewDialogContent({
                           </p>
                           {item.notes && (
                             <div className="mt-3 pt-3 border-t border-blue-500/20">
-                              <p className="text-xs text-foreground/70 leading-relaxed">
+                              <p className="text-sm text-foreground/70 leading-relaxed">
                                 <span className="font-bold text-blue-500">
                                   Note:
                                 </span>{" "}
