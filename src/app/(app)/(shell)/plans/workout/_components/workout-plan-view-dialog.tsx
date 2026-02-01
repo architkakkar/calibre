@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { RepeatIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
+import { RepeatIcon, Cancel01Icon, Menu01Icon } from "@hugeicons/core-free-icons";
 
 type WorkoutPlanViewDialogProps = {
   open: boolean;
@@ -32,6 +32,7 @@ export function WorkoutPlanViewDialog({
   const [selectedDay, setSelectedDay] = useState<number>(1);
   const [expandedWeeks, setExpandedWeeks] = useState<Set<number>>(new Set([1]));
   const [substitutionsOpen, setSubstitutionsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isActivePlan = selectedPlanId === activePlanId;
 
@@ -60,7 +61,11 @@ export function WorkoutPlanViewDialog({
     if (!expandedWeeks.has(weekNum)) {
       setExpandedWeeks(new Set(expandedWeeks).add(weekNum));
     }
+    // Close sidebar on mobile after selecting a day
+    setSidebarOpen(false);
   };
+
+  const closeSidebar = () => setSidebarOpen(false);
 
   const currentWeek = plan.schedule.find((w) => w.week === selectedWeek);
   const currentDay = currentWeek?.days.find((d) => d.day === selectedDay);
@@ -69,13 +74,13 @@ export function WorkoutPlanViewDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="p-0 w-full max-w-[95vw] lg:max-w-[90vw] h-[95dvh] gap-0 bg-background flex flex-col overflow-hidden"
+        className="p-0 w-full sm:max-w-[95vw] md:max-w-[90vw] h-[95dvh] gap-0 bg-background flex flex-col overflow-hidden"
       >
         <DialogTitle hidden>{meta.planName}</DialogTitle>
         <DialogDescription hidden>{meta.planDescription}</DialogDescription>
         <button
           onClick={() => onOpenChange(false)}
-          className="absolute top-6 right-5 p-2 rounded-lg hover:bg-muted hover:text-foreground text-muted-foreground z-50 cursor-pointer"
+          className="absolute top-6 right-5 p-2 rounded-lg hover:bg-muted hover:text-foreground text-muted-foreground z-10 cursor-pointer"
         >
           <HugeiconsIcon icon={Cancel01Icon} className="h-4.5 w-4.5" />
         </button>
@@ -92,8 +97,18 @@ export function WorkoutPlanViewDialog({
             selectedWeek={selectedWeek}
             selectedDay={selectedDay}
             selectDay={selectDay}
+            sidebarOpen={sidebarOpen}
+            closeSidebar={closeSidebar}
           />
           <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+            {/* Mobile sidebar toggle button */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden absolute top-6 mt-1 left-5 p-2 rounded-lg bg-card hover:bg-muted text-foreground z-10 shadow-sm border border-border"
+            >
+              <HugeiconsIcon icon={Menu01Icon} className="h-5 w-5" />
+            </button>
+
             {viewMode === "day" &&
               !currentDay?.isRestDay &&
               plan.substitutions &&
