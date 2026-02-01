@@ -174,7 +174,7 @@ export function WorkoutPlanViewDialogContent({
           defaultValue={defaultTab}
           className="flex flex-col flex-1 overflow-hidden"
         >
-          <nav className="px-5 pt-4 border-b">
+          <nav className="px-5 pt-4 border-b border-border overflow-x-auto">
             <TabsList variant="line">
               {hasWarmup && (
                 <TabsTrigger
@@ -309,7 +309,7 @@ export function WorkoutPlanViewDialogContent({
                             </div>
                           </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-3 p-4 rounded-xl bg-linear-to-br from-muted/40 via-muted/20 to-muted/10 mb-4 border border-border shadow-inner">
+                        <div className="grid grid-cols-1 xs:grid-cols-2 xl:grid-cols-4 gap-y-8 gap-3 p-4 rounded-xl bg-linear-to-br from-muted/40 via-muted/20 to-muted/10 mb-4 border border-border shadow-inner">
                           <div className="flex flex-col items-center">
                             <div className="flex items-center gap-1 mb-2">
                               <HugeiconsIcon
