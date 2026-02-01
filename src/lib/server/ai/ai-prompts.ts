@@ -197,7 +197,7 @@ export const NUTRITION_PLAN_SYSTEM_PROMPT = `
 
   MEALS:
   - Use reusable meal templates grouped by meal type.
-  - Each meal template must include multiple mealOptions.
+  - Each meal template must include multiple mealOptions to provide variety. (2-4 options recommended) 
   - Meal options should favor user-preferred foods and respect dislikes.
   - Keep ingredient lists simple and culturally appropriate where specified.
   - Estimated macros should be reasonable, not exact.
