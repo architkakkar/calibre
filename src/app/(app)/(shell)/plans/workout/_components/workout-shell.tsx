@@ -18,8 +18,9 @@ export function WorkoutShell({ children }: { children: React.ReactNode }) {
   if (isFetchingPlans) {
     return (
       <>
-        <Skeleton className="h-15 w-2/3 rounded-lg mb-4" />
-        <Skeleton className="h-[calc(100dvh-184px)] w-full rounded-2xl mt-4" />
+        <Skeleton className="mt-1 h-9 w-1/2 rounded-lg mb-2" />
+        <Skeleton className="h-6 w-full rounded-lg mb-2" />
+        <Skeleton className="h-[calc(100dvh-170px)] md:h-[calc(100dvh-196px)] w-full rounded-2xl mt-4" />
       </>
     );
   }
