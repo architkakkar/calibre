@@ -26,10 +26,10 @@ export function NutritionPlanViewDialogSubstitutionPanel({
       <div className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border p-5 z-10">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-green-500/10">
+            <div className="p-2.5 rounded-xl bg-primary/10">
               <HugeiconsIcon
                 icon={RepeatIcon}
-                className="h-5 w-5 text-green-500"
+                className="h-5 w-5 text-primary"
               />
             </div>
             <div>
@@ -64,14 +64,14 @@ export function NutritionPlanViewDialogSubstitutionPanel({
           {substitutions.map((sub, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-xl border bg-card/30 border-green-500/30"
+              className="p-5 rounded-xl border bg-card/30 border-primary/30"
             >
-              <div className="flex items-start gap-3 mb-4 pb-4 border-b border-green-500/30">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-green-500/10 border border-green-500/20 text-green-600 font-semibold shrink-0">
+              <div className="flex items-center gap-3 mb-4 pb-4 border-b border-primary/30">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 text-primary font-semibold shrink-0">
                   {idx + 1}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-base text-foreground mb-2">
+                  <h3 className="font-semibold text-base text-foreground">
                     {sub.category}
                   </h3>
                 </div>
@@ -84,9 +84,9 @@ export function NutritionPlanViewDialogSubstitutionPanel({
                   {sub.swapOptions.map((option, optIdx) => (
                     <div
                       key={optIdx}
-                      className="flex items-start gap-2.5 p-3 rounded-lg bg-green-500/10"
+                      className="flex items-start gap-2.5 p-3 rounded-lg bg-primary/10"
                     >
-                      <span className="text-green-500 mt-0.5 font-semibold">
+                      <span className="text-primary mt-0.5 font-semibold">
                         {optIdx + 1}.
                       </span>
                       <span className="text-sm text-foreground/90 leading-relaxed">
