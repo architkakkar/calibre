@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function NutritionShell({ children }: { children: React.ReactNode }) {
   const { hasPlans, isFetchingPlans, fetchPlans } = useNutritionPlanStore();
-  const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchPlans();
@@ -18,8 +18,9 @@ export function NutritionShell({ children }: { children: React.ReactNode }) {
   if (isFetchingPlans) {
     return (
       <>
-        <Skeleton className="h-15 w-2/3 rounded-lg mb-4" />
-        <Skeleton className="h-[calc(100dvh-184px)] w-full rounded-2xl mt-4" />
+        <Skeleton className="mt-1 h-9 w-1/2 rounded-lg mb-2" />
+        <Skeleton className="h-6 w-full rounded-lg mb-2" />
+        <Skeleton className="h-[calc(100dvh-170px)] md:h-[calc(100dvh-196px)] w-full rounded-2xl mt-4" />
       </>
     );
   }
@@ -30,25 +31,39 @@ export function NutritionShell({ children }: { children: React.ReactNode }) {
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold text-primary">Nutrition Plans</h1>
           {hasPlans && (
-            <Button
-              size="sm"
-              className="font-semibold"
-              onClick={() => setOpen(true)}
-            >
-              Create Nutrition Plan
-            </Button>
+            <>
+              <Button
+                size="sm"
+                variant="outline"
+                className="hidden xs:block font-semibold text-primary"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Create Nutrition Plan
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="xs:hidden font-semibold text-primary"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Create Plan
+              </Button>
+            </>
           )}
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
           {hasPlans
-            ? "Track your progress, crush your goals, and evolve your nutrition journey with every meal."
-            : "Transform your health with AI-powered nutrition plans tailored to your goals, preferences, and lifestyle."}
+            ? "Monitor your meals, track progress, and achieve your nutrition goals."
+            : "Create AI-powered nutrition plans tailored to your goals, diet, and lifestyle."}
         </p>
       </header>
-      <main className="h-[calc(100dvh-184px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
+      <main className="h-[calc(100dvh-184px)] xs:h-[calc(100dvh-164px)] md:h-[calc(100dvh-184px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
         {hasPlans ? <>{children}</> : <NutritionEmptyState />}
       </main>
-      <CreateNutritionPlanDialog open={open} onOpenChange={setOpen} />
+      <CreateNutritionPlanDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 }
