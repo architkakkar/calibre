@@ -101,7 +101,8 @@ export function NutritionPlanViewDialog({
               <HugeiconsIcon icon={Menu01Icon} className="h-5 w-5" />
             </button>
 
-            {plan.flexibility.substitutions &&
+            {viewMode === "meals" &&
+              plan.flexibility.substitutions &&
               plan.flexibility.substitutions.length > 0 && (
                 <div className="absolute top-6 right-16 z-5">
                   <Button
