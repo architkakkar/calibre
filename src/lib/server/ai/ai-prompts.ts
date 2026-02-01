@@ -77,6 +77,7 @@ export const WORKOUT_PLAN_SYSTEM_PROMPT = `
   - Output MUST match the provided response schema exactly.
   - Do NOT add fields not defined in the schema.
   - Do NOT omit any required fields.
+  - DO NOT write variable like field names in the output. Use the equivalent english terms only.
 
   CORE PHILOSOPHY:
   - Training plans are structured, progressive frameworks designed for long-term adaptation.
@@ -153,6 +154,7 @@ export const NUTRITION_PLAN_SYSTEM_PROMPT = `
   - Output MUST match the provided response schema exactly.
   - Do NOT add fields not defined in the schema.
   - Do NOT omit any required fields.
+  - DO NOT write variable like field names in the output. Use the equivalent english terms only.
 
   CRITICAL DATA TYPE RULES (MANDATORY):
   - Fields marked as string[] MUST be JSON arrays: ["item1", "item2"]
