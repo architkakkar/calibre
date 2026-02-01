@@ -30,18 +30,23 @@ export function Sidebar({
   return (
     <>
       {/* Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${
+          isSidebarOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsSidebarOpen(false)}
+        aria-hidden={!isSidebarOpen}
+      />
 
       {/* Sidebar - Mobile & Tablet Only */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-card/95 backdrop-blur-md border-r border-border shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed top-0 left-0 h-full w-70 sm:w-72 bg-card/95 backdrop-blur-md border-r border-border shadow-2xl z-50 transform transition-all duration-300 ease-in-out lg:hidden ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        aria-label="Navigation sidebar"
+        aria-hidden={!isSidebarOpen}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
