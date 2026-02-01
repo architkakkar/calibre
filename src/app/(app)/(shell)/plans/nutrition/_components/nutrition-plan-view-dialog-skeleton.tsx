@@ -45,17 +45,18 @@ export function NutritionPlanViewDialogSkeleton({
             </div>
           </div>
           <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
-              <div className="flex items-center gap-3">
+            <div className="pl-18 lg:pl-5 p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
+              <div className="flex items-start gap-3">
                 <Skeleton className="h-10 w-10 rounded-xl" />
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <Skeleton className="h-6 w-40" />
                   <Skeleton className="h-4 w-72" />
                 </div>
               </div>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <div className="p-5 space-y-8">
+              <div className="p-5 space-y-6">
+                {/* Daily Targets */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-10 w-10 rounded-xl" />
@@ -64,36 +65,23 @@ export function NutritionPlanViewDialogSkeleton({
                       <Skeleton className="h-3 w-64" />
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    <Skeleton className="h-32 rounded-xl" />
-                    <Skeleton className="h-32 rounded-xl" />
-                    <Skeleton className="h-32 rounded-xl" />
-                  </div>
-                  <Skeleton className="h-40 rounded-xl" />
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="h-10 w-10 rounded-xl" />
-                    <div className="space-y-1.5">
-                      <Skeleton className="h-5 w-28" />
-                      <Skeleton className="h-3 w-52" />
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <Skeleton className="h-28 rounded-xl" />
+                    <Skeleton className="h-28 rounded-xl" />
+                    <Skeleton className="h-28 rounded-xl" />
                   </div>
                   <Skeleton className="h-48 rounded-xl" />
                 </div>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="h-10 w-10 rounded-xl" />
-                    <div className="space-y-1.5">
-                      <Skeleton className="h-5 w-36" />
-                      <Skeleton className="h-3 w-48" />
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <Skeleton className="h-32 rounded-xl" />
-                    <Skeleton className="h-32 rounded-xl" />
-                  </div>
-                </div>
+                {/* Plan Structure */}
+                <Skeleton className="h-64 rounded-xl" />
+                {/* Progress Adjustments */}
+                <Skeleton className="h-80 rounded-xl" />
+                {/* Flexibility & Lifestyle */}
+                <Skeleton className="h-56 rounded-xl" />
+                {/* Health & Safety */}
+                <Skeleton className="h-72 rounded-xl" />
+                {/* Important Notes */}
+                <Skeleton className="h-64 rounded-xl" />
               </div>
             </div>
           </div>
@@ -113,44 +101,32 @@ export function NutritionPlanViewDialogSkeleton({
           </div>
           <div className="flex-1 overflow-y-auto">
             <div className="p-5 space-y-6">
+              {/* Daily Targets */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Skeleton className="h-10 w-10 rounded-xl" />
                   <div className="space-y-1.5 flex-1">
                     <Skeleton className="h-5 w-32" />
-                    <Skeleton className="h-3 w-64" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <Skeleton className="h-28 rounded-xl" />
-                  <Skeleton className="h-28 rounded-xl" />
-                  <Skeleton className="h-28 rounded-xl" />
-                </div>
-                <Skeleton className="h-48 rounded-xl" />
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-xl" />
-                  <div className="space-y-1.5 flex-1">
-                    <Skeleton className="h-5 w-28" />
-                    <Skeleton className="h-3 w-52" />
-                  </div>
-                </div>
-                <Skeleton className="h-48 rounded-xl" />
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-xl" />
-                  <div className="space-y-1.5 flex-1">
-                    <Skeleton className="h-5 w-36" />
                     <Skeleton className="h-3 w-48" />
                   </div>
                 </div>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <Skeleton className="h-24 rounded-xl" />
                   <Skeleton className="h-24 rounded-xl" />
                   <Skeleton className="h-24 rounded-xl" />
                 </div>
+                <Skeleton className="h-40 rounded-xl" />
               </div>
+              {/* Plan Structure */}
+              <Skeleton className="h-56 rounded-xl" />
+              {/* Progress Adjustments */}
+              <Skeleton className="h-72 rounded-xl" />
+              {/* Flexibility & Lifestyle */}
+              <Skeleton className="h-48 rounded-xl" />
+              {/* Health & Safety */}
+              <Skeleton className="h-64 rounded-xl" />
+              {/* Important Notes */}
+              <Skeleton className="h-56 rounded-xl" />
             </div>
           </div>
         </div>
