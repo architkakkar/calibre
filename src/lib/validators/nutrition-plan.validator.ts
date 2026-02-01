@@ -75,18 +75,20 @@ const AdjustmentsSchema = z
   })
   .strict();
 
+const SubstitutionsSchema = z
+  .object({
+    category: z.string(),
+    swapOptions: z.array(z.string()),
+  })
+  .strict();
+
 const FlexibilitySchema = z
   .object({
     eatingOut: z.object({
       frequency: z.string(),
       rules: z.array(z.string()),
     }),
-    substitutions: z.array(
-      z.object({
-        category: z.string(),
-        swapOptions: z.array(z.string()),
-      }),
-    ),
+    substitutions: z.array(SubstitutionsSchema),
     budgetTips: z.array(z.string()),
   })
   .strict();
@@ -179,6 +181,7 @@ export type MealTemplate = z.infer<typeof MealTemplateSchema>;
 export type Meals = z.infer<typeof MealsSchema>;
 export type AdjustmentRule = z.infer<typeof AdjustmentRuleSchema>;
 export type Adjustments = z.infer<typeof AdjustmentsSchema>;
+export type Substitution = z.infer<typeof SubstitutionsSchema>;
 export type Flexibility = z.infer<typeof FlexibilitySchema>;
 export type Health = z.infer<typeof HealthSchema>;
 export type Notes = z.infer<typeof NotesSchema>;
