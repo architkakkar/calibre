@@ -15,7 +15,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { RepeatIcon, Cancel01Icon, Menu01Icon } from "@hugeicons/core-free-icons";
+import {
+  RepeatIcon,
+  Cancel01Icon,
+  Menu01Icon,
+} from "@hugeicons/core-free-icons";
 
 type WorkoutPlanViewDialogProps = {
   open: boolean;
@@ -80,7 +84,7 @@ export function WorkoutPlanViewDialog({
         <DialogDescription hidden>{meta.planDescription}</DialogDescription>
         <button
           onClick={() => onOpenChange(false)}
-          className="absolute top-6 right-5 p-2 rounded-lg hover:bg-muted hover:text-foreground text-muted-foreground z-10 cursor-pointer"
+          className="absolute top-6 right-5 p-2 rounded-lg hover:bg-muted hover:text-foreground text-muted-foreground z-10 cursor-pointer focus-visible:outline-primary"
         >
           <HugeiconsIcon icon={Cancel01Icon} className="h-4.5 w-4.5" />
         </button>
