@@ -288,7 +288,7 @@ export function NutritionPlanList() {
                     {plan.allergies.slice(0, 3).map((allergy, idx) => (
                       <div
                         key={idx}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-[11px] font-semibold text-rose-400 transition-all duration-300 hover:bg-rose-500/20 hover:border-rose-500/30 hover:scale-105"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-[11px] font-semibold text-red-400 transition-all duration-300 hover:bg-red-500/20 hover:border-red-500/30 hover:scale-105"
                       >
                         <HugeiconsIcon
                           icon={AlertCircleIcon}
@@ -298,7 +298,7 @@ export function NutritionPlanList() {
                       </div>
                     ))}
                     {plan.allergies.length > 3 && (
-                      <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-[11px] font-bold text-rose-300 transition-all duration-300 hover:bg-rose-500/20 hover:border-rose-500/40 hover:scale-105">
+                      <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-[11px] font-bold text-red-400 transition-all duration-300 hover:bg-red-500/20 hover:border-red-500/40 hover:scale-105">
                         <span>+{plan.allergies.length - 3} more</span>
                       </div>
                     )}
