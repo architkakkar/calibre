@@ -13,6 +13,10 @@ import {
   CheckmarkCircle01Icon,
   FireIcon,
   Time02Icon,
+  RepeatIcon,
+  HourglassIcon,
+  DashboardSpeed01Icon,
+  ActivityIcon,
 } from "@hugeicons/core-free-icons";
 
 type WorkoutPlanViewDialogContentProps = {
@@ -152,7 +156,7 @@ export function WorkoutPlanViewDialogContent({
         <section className="flex-1 overflow-y-auto overflow-x-hidden">
           <div className="p-5 h-full -mt-10">
             <div className="flex flex-col justify-center items-center h-full">
-              <div className="inline-flex p-6 rounded-full bg-emerald-500/10 mb-6">
+              <div className="inline-flex p-5 rounded-full bg-emerald-500/10 mb-6">
                 <HugeiconsIcon
                   icon={CheckmarkCircle01Icon}
                   className="h-20 w-20 text-emerald-500"
@@ -175,7 +179,7 @@ export function WorkoutPlanViewDialogContent({
               {hasWarmup && (
                 <TabsTrigger
                   value="warmup"
-                  className="data-active:text-orange-600 data-active:after:bg-orange-600"
+                  className="data-active:text-amber-600 data-active:after:bg-amber-600"
                 >
                   <HugeiconsIcon icon={FireIcon} className="h-4 w-4" />
                   Warmup
@@ -193,7 +197,7 @@ export function WorkoutPlanViewDialogContent({
               {hasCooldown && (
                 <TabsTrigger
                   value="cooldown"
-                  className="data-active:text-cyan-600 data-active:after:bg-cyan-600"
+                  className="data-active:text-blue-600 data-active:after:bg-blue-600"
                 >
                   <HugeiconsIcon
                     icon={WorkoutStretchingIcon}
@@ -217,7 +221,7 @@ export function WorkoutPlanViewDialogContent({
                   {currentDay.warmup.map((item, idx) => (
                     <article
                       key={idx}
-                      className="p-5 rounded-xl border bg-linear-to-br from-orange-500/5 to-orange-500/10 border-orange-500/20"
+                      className="p-5 rounded-xl border bg-linear-to-br from-amber-500/5 to-amber-500/10 border-amber-500/20"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
@@ -228,14 +232,14 @@ export function WorkoutPlanViewDialogContent({
                             {item.focus}
                           </p>
                           {item.notes && (
-                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-orange-500/20">
+                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-amber-500/20">
                               {item.notes}
                             </p>
                           )}
                         </div>
                         <Badge
                           variant="outline"
-                          className="shrink-0 bg-orange-500/10 border-orange-500/20 font-semibold"
+                          className="shrink-0 bg-amber-500/10 border-amber-500/20 font-semibold"
                         >
                           {item.durationMinutes} min
                         </Badge>
@@ -261,22 +265,22 @@ export function WorkoutPlanViewDialogContent({
                     return (
                       <article
                         key={idx}
-                        className="p-6 rounded-xl border bg-card hover:shadow-sm transition-all duration-200"
+                        className="group p-5 rounded-xl border border-border bg-card/70 hover:shadow-md hover:border-primary/20 transition-all duration-300"
                       >
                         {/* Exercise Header */}
-                        <div className="flex items-start gap-4 mb-4">
-                          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 text-primary font-semibold text-lg shrink-0">
+                        <div className="flex items-start gap-4 mb-5">
+                          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-lg shrink-0 shadow-sm">
                             {idx + 1}
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold text-lg text-foreground mb-2">
+                            <h4 className="font-bold text-xl text-foreground mb-2.5 group-hover:text-primary transition-colors">
                               {exercise.exercise}
                             </h4>
                             <div className="flex items-center gap-2 flex-wrap">
                               <Badge
                                 variant="outline"
                                 className={cn(
-                                  "text-xs font-medium",
+                                  "text-xs font-semibold px-2.5 py-0.5",
                                   roleConfig.bg,
                                   roleConfig.color,
                                 )}
@@ -285,7 +289,7 @@ export function WorkoutPlanViewDialogContent({
                               </Badge>
                               <Badge
                                 variant="secondary"
-                                className="text-xs font-medium"
+                                className="text-xs font-semibold px-2.5 py-0.5 bg-foreground/5 capitalize"
                               >
                                 {exercise.movementPattern}
                               </Badge>
@@ -294,36 +298,63 @@ export function WorkoutPlanViewDialogContent({
                         </div>
 
                         {/* Stats Grid */}
-                        <div className="grid grid-cols-4 gap-4 p-5 rounded-xl bg-linear-to-br from-muted/30 to-muted/10 mb-4 border">
-                          <div className="text-center">
-                            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide mb-1.5">
-                              Sets
-                            </p>
-                            <p className="text-2xl font-semibold text-foreground">
+                        <div className="grid grid-cols-4 gap-3 p-4 rounded-xl bg-linear-to-br from-muted/40 via-muted/20 to-muted/10 mb-4 border border-border shadow-inner">
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-1 mb-2">
+                              <HugeiconsIcon
+                                icon={ActivityIcon}
+                                className="h-3.5 w-3.5 text-muted-foreground"
+                              />
+                              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                                Sets
+                              </p>
+                            </div>
+                            <p className="text-3xl font-bold text-foreground">
                               {exercise.sets}
                             </p>
                           </div>
-                          <div className="text-center">
-                            <p className="text-[10px] text-foreground/60 font-semibold uppercase tracking-wide mb-1.5">
-                              Reps
-                            </p>
-                            <p className="text-2xl font-bold text-foreground">
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-1 mb-2">
+                              <HugeiconsIcon
+                                icon={RepeatIcon}
+                                className="h-3.5 w-3.5 text-muted-foreground"
+                              />
+                              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                                Reps
+                              </p>
+                            </div>
+                            <p className="text-3xl font-bold text-foreground">
                               {exercise.reps}
                             </p>
                           </div>
-                          <div className="text-center">
-                            <p className="text-[10px] text-foreground/60 font-semibold uppercase tracking-wide mb-1.5">
-                              Rest
-                            </p>
-                            <p className="text-2xl font-bold text-foreground">
-                              {Math.floor(exercise.restSeconds / 60)}m
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-1 mb-2">
+                              <HugeiconsIcon
+                                icon={HourglassIcon}
+                                className="h-3.5 w-3.5 text-muted-foreground"
+                              />
+                              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                                Rest
+                              </p>
+                            </div>
+                            <p className="text-3xl font-bold text-foreground">
+                              {Math.floor(exercise.restSeconds / 60)}
+                              <span className="text-lg text-muted-foreground">
+                                m
+                              </span>
                             </p>
                           </div>
-                          <div className="text-center">
-                            <p className="text-[10px] text-foreground/60 font-semibold uppercase tracking-wide mb-1.5">
-                              Tempo
-                            </p>
-                            <p className="text-2xl font-bold font-mono text-foreground">
+                          <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-1 mb-2">
+                              <HugeiconsIcon
+                                icon={DashboardSpeed01Icon}
+                                className="h-3.5 w-3.5 text-muted-foreground"
+                              />
+                              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                                Tempo
+                              </p>
+                            </div>
+                            <p className="text-3xl font-bold font-mono text-foreground">
                               {exercise.tempo}
                             </p>
                           </div>
@@ -331,17 +362,19 @@ export function WorkoutPlanViewDialogContent({
 
                         {/* Intensity & Notes */}
                         {exercise.intensityGuidance && (
-                          <div className="p-4 rounded-xl bg-linear-to-br from-blue-500/5 to-cyan-500/5 border border-blue-500/20 mb-3">
-                            <div className="flex items-start gap-2.5">
-                              <HugeiconsIcon
-                                icon={InformationCircleIcon}
-                                className="h-4 w-4 text-blue-500 mt-0.5 shrink-0"
-                              />
-                              <div>
-                                <p className="text-xs font-semibold text-blue-600 mb-1.5">
+                          <div className="relative p-4 rounded-xl bg-linear-to-br from-blue-500/10 via-blue-500/5 to-transparent border-l-4 border-l-blue-500 border border-blue-500/20 mb-3 shadow-sm">
+                            <div className="flex items-start gap-3">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/15 shrink-0">
+                                <HugeiconsIcon
+                                  icon={InformationCircleIcon}
+                                  className="h-4 w-4 text-blue-600"
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">
                                   {exercise.intensityGuidance.type}
                                 </p>
-                                <p className="text-sm text-foreground/90 leading-relaxed">
+                                <p className="text-sm font-medium text-foreground leading-relaxed">
                                   {exercise.intensityGuidance.value}
                                 </p>
                               </div>
@@ -350,9 +383,11 @@ export function WorkoutPlanViewDialogContent({
                         )}
 
                         {exercise.notes && (
-                          <div className="p-4 rounded-xl bg-muted/30 border">
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              <span className="font-bold">Note:</span>{" "}
+                          <div className="p-4 rounded-xl bg-muted/40 border border-muted">
+                            <p className="text-sm text-foreground/80 leading-relaxed">
+                              <span className="font-bold text-foreground">
+                                Note:
+                              </span>{" "}
                               {exercise.notes}
                             </p>
                           </div>
@@ -377,7 +412,7 @@ export function WorkoutPlanViewDialogContent({
                   {currentDay.cooldown.map((item, idx) => (
                     <article
                       key={idx}
-                      className="p-5 rounded-xl border bg-linear-to-br from-cyan-500/5 to-cyan-500/10 border-cyan-500/20"
+                      className="p-5 rounded-xl border bg-linear-to-br from-blue-500/5 to-blue-500/10 border-blue-500/20"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
@@ -388,14 +423,14 @@ export function WorkoutPlanViewDialogContent({
                             {item.focus}
                           </p>
                           {item.notes && (
-                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-cyan-500/20">
+                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-blue-500/20">
                               {item.notes}
                             </p>
                           )}
                         </div>
                         <Badge
                           variant="outline"
-                          className="shrink-0 bg-cyan-500/10 border-cyan-500/20 font-semibold"
+                          className="shrink-0 bg-blue-500/10 border-blue-500/20 font-semibold"
                         >
                           {item.durationMinutes} min
                         </Badge>
