@@ -19,7 +19,7 @@ export function WorkoutPlanViewDialogSubstitutionPanel({
   return (
     <div
       className={cn(
-        "absolute top-0 right-0 h-full w-full sm:w-108 bg-background border-l border-border shadow-xl z-50 transition-transform duration-300 ease-out overflow-y-auto",
+        "absolute top-0 right-0 h-full w-full sm:w-108 bg-background border-l border-border shadow-xl z-30 transition-transform duration-300 ease-out overflow-y-auto",
         isOpen ? "translate-x-0" : "translate-x-full",
       )}
     >

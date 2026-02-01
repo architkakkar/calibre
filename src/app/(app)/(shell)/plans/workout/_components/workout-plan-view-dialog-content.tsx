@@ -73,7 +73,7 @@ export function WorkoutPlanViewDialogContent({
   return (
     <>
       {/* Header */}
-      <header className="p-5 border-b bg-linear-to-r from-card to-card/50">
+      <header className="pl-18 lg:pl-5 p-5 border-b bg-linear-to-r from-card to-card/50">
         <div className="flex items-start justify-between mb-4">
           <div>
             <div className="flex items-center gap-2 mb-1">

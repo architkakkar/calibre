@@ -17,7 +17,7 @@ export function WorkoutPlanViewDialogSkeleton({
 }: WorkoutPlanViewDialogSkeletonProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 w-full max-w-[95vw] lg:max-w-[90vw] h-[95dvh] gap-0 bg-background flex flex-col overflow-hidden">
+      <DialogContent className="p-0 w-full sm:max-w-[95vw] md:max-w-[90vw] h-[95dvh] gap-0 bg-background flex flex-col overflow-hidden">
         <DialogTitle hidden></DialogTitle>
         <DialogDescription hidden></DialogDescription>
 

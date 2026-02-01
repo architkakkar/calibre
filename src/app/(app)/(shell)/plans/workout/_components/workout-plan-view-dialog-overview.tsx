@@ -11,9 +11,9 @@ import {
 export function WorkoutPlanViewDialogOverview({ plan }: { plan: Plan }) {
   return (
     <>
-      <div className="p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20">
+      <div className="pl-18 lg:pl-5 p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
+        <div className="flex items-start gap-3 mb-2">
+          <div className="p-2.5 mt-1 rounded-xl bg-primary/10 border border-primary/20">
             <HugeiconsIcon
               icon={BookOpen01Icon}
               className="h-5 w-5 text-primary"
