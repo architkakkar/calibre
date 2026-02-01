@@ -282,7 +282,7 @@ export function WorkoutPlanViewDialogContent({
                         className="group p-5 rounded-xl border border-border bg-card/70 hover:shadow-md hover:border-primary/20 transition-all duration-300"
                       >
                         <div className="flex items-start gap-4 mb-5">
-                          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-lg shrink-0 shadow-sm">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-base shrink-0 shadow-sm">
                             {idx + 1}
                           </div>
                           <div className="flex-1">
