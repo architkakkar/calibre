@@ -27,10 +27,10 @@ export function WorkoutPlanViewDialogSubstitutionPanel({
       <div className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border p-5 z-10">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
+            <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20">
               <HugeiconsIcon
                 icon={RepeatIcon}
-                className="h-5 w-5 text-indigo-500"
+                className="h-5 w-5 text-blue-500"
               />
             </div>
             <div>
@@ -66,10 +66,10 @@ export function WorkoutPlanViewDialogSubstitutionPanel({
           {substitutions.map((sub, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-xl border bg-card/30 border-indigo-500/30"
+              className="p-5 rounded-xl border bg-card/30 border-blue-500/30"
             >
-              <div className="flex items-start gap-3 mb-4 pb-4 border-b border-indigo-500/30">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 font-semibold shrink-0">
+              <div className="flex items-start gap-3 mb-4 pb-4 border-b border-blue-500/30">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-500 font-semibold shrink-0">
                   {idx + 1}
                 </div>
                 <div className="flex-1">
@@ -78,7 +78,7 @@ export function WorkoutPlanViewDialogSubstitutionPanel({
                   </h3>
                   <Badge
                     variant="outline"
-                    className="bg-indigo-500/10 text-indigo-500 border-indigo-500/20 font-medium text-xs capitalize"
+                    className="bg-blue-500/10 text-blue-500 border-blue-500/20 font-medium text-xs capitalize"
                   >
                     {sub.movementPattern}
                   </Badge>
@@ -92,9 +92,9 @@ export function WorkoutPlanViewDialogSubstitutionPanel({
                   {sub.alternatives.map((alt, altIdx) => (
                     <div
                       key={altIdx}
-                      className="flex items-start gap-2.5 p-3 rounded-lg bg-indigo-500/10"
+                      className="flex items-start gap-2.5 p-3 rounded-lg bg-blue-500/10"
                     >
-                      <span className="text-indigo-500 mt-0.5 font-semibold">
+                      <span className="text-blue-500 mt-0.5 font-semibold">
                         {altIdx + 1}.
                       </span>
                       <span className="text-sm text-foreground/90 leading-relaxed">
