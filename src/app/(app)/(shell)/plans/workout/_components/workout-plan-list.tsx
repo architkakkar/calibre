@@ -18,7 +18,7 @@ import { WorkoutPlanViewDialog } from "./workout-plan-view-dialog";
 export function WorkoutPlanList() {
   const { plans, selectPlan, fetchPlanDetails, activePlanId } =
     useWorkoutPlanStore();
-  const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (plans.length === 0) {
     return null;
@@ -45,7 +45,7 @@ export function WorkoutPlanList() {
             onClick={() => {
               selectPlan(plan.id);
               fetchPlanDetails(plan.id);
-              setOpen(true);
+              setIsDialogOpen(true);
             }}
             style={{ animationDelay: `${index * 100}ms` }}
             className={cn(
@@ -240,7 +240,7 @@ export function WorkoutPlanList() {
           </div>
         );
       })}
-      <WorkoutPlanViewDialog open={open} onOpenChange={setOpen} />
+      {isDialogOpen && <WorkoutPlanViewDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />}
     </div>
   );
 }
