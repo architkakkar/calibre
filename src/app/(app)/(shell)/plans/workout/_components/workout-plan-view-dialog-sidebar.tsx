@@ -79,7 +79,7 @@ export function WorkoutPlanViewDialogSidebar({
                 className="h-5 w-5 text-primary"
               />
             </div>
-            <h2 className="font-semibold text-xl text-foreground flex-1">
+            <h2 className="font-semibold text-xl max-w-48 text-foreground flex-1">
               {meta.planName}
             </h2>
           </div>
