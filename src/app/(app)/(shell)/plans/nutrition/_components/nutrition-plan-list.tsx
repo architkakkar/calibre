@@ -24,7 +24,7 @@ import {
 export function NutritionPlanList() {
   const { plans, selectPlan, fetchPlanDetails, activePlanId } =
     useNutritionPlanStore();
-  const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (plans.length === 0) {
     return null;
@@ -93,7 +93,7 @@ export function NutritionPlanList() {
           <div
             key={plan.id}
             onClick={() => {
-              setOpen(true);
+              setIsDialogOpen(true);
               selectPlan(plan.id);
               fetchPlanDetails(plan.id);
             }}
@@ -341,7 +341,12 @@ export function NutritionPlanList() {
           </div>
         );
       })}
-      <NutritionPlanViewDialog open={open} onOpenChange={setOpen} />
+      {isDialogOpen && (
+        <NutritionPlanViewDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+        />
+      )}
     </div>
   );
 }
