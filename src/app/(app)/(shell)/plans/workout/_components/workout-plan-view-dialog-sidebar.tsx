@@ -78,7 +78,7 @@ export function WorkoutPlanViewDialogSidebar({
         <button
           onClick={() => setViewMode("overview")}
           className={cn(
-            "mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-200",
+            "mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 focus-visible:outline-primary focus-visible:outline-1",
             viewMode === "overview"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "bg-muted/50 text-foreground hover:bg-muted",
@@ -97,7 +97,7 @@ export function WorkoutPlanViewDialogSidebar({
               {/* Week Header */}
               <button
                 onClick={() => toggleWeek(week.week)}
-                className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-left group"
+                className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1"
               >
                 <HugeiconsIcon
                   icon={
@@ -134,7 +134,7 @@ export function WorkoutPlanViewDialogSidebar({
                       key={day.day}
                       onClick={() => selectDay(week.week, day.day)}
                       className={cn(
-                        "w-full flex items-center gap-2.5 p-2 rounded-lg transition-all duration-200 text-left",
+                        "w-full flex items-center gap-2.5 p-2 rounded-lg transition-all duration-200 text-left focus-visible:outline-primary focus-visible:outline-1",
                         selectedWeek === week.week &&
                           selectedDay === day.day &&
                           viewMode === "day"
