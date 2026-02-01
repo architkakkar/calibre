@@ -166,7 +166,7 @@ export function NutritionPlanViewDialogSidebar({
         {/* Meal Types Navigation */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <div className="p-2.5">
-            <div className="mb-2 px-2">
+            <div className="my-1 px-2">
               <p className="text-[10px] font-semibold text-foreground/60 uppercase tracking-wider">
                 Meal Templates
               </p>
@@ -201,16 +201,16 @@ export function NutritionPlanViewDialogSidebar({
                     className={cn(
                       "w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1",
                       isSelected
-                        ? "bg-primary text-primary-foreground shadow-sm"
+                        ? cn(config.bg, "shadow-sm")
                         : "hover:bg-muted/50",
                     )}
                   >
                     <div
                       className={cn(
                         "flex items-center justify-center w-8 h-8 rounded-lg border shrink-0",
-                        isSelected
-                          ? "bg-primary-foreground/20 border-primary-foreground/20"
-                          : cn(config.bg, config.color, "border-current/20"),
+                        config.bg,
+                        config.color,
+                        "border-current/20",
                       )}
                     >
                       <HugeiconsIcon icon={config.icon} className="h-4 w-4" />
@@ -219,9 +219,7 @@ export function NutritionPlanViewDialogSidebar({
                       <p
                         className={cn(
                           "font-medium text-sm truncate",
-                          isSelected
-                            ? "text-primary-foreground"
-                            : "text-foreground",
+                          isSelected ? config.color : "text-foreground",
                         )}
                       >
                         {displayLabel}
@@ -229,9 +227,7 @@ export function NutritionPlanViewDialogSidebar({
                       <p
                         className={cn(
                           "text-xs truncate leading-tight",
-                          isSelected
-                            ? "text-primary-foreground/70"
-                            : "text-muted-foreground",
+                          "text-muted-foreground",
                         )}
                       >
                         {template.mealOptions.length} options

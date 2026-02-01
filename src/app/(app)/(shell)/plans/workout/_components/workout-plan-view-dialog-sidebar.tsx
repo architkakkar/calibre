@@ -126,11 +126,16 @@ export function WorkoutPlanViewDialogSidebar({
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
           <div className="p-2.5">
+            <div className="my-1 px-2">
+              <p className="text-[10px] font-semibold text-foreground/60 uppercase tracking-wider">
+                Workout Schedule
+              </p>
+            </div>
             {plan.schedule.map((week) => (
               <div key={week.week} className="mb-1.5">
                 <button
                   onClick={() => toggleWeek(week.week)}
-                  className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1"
+                  className="w-full flex items-center gap-2 p-2.5 pl-1 rounded-lg hover:bg-muted/50 transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1"
                 >
                   <HugeiconsIcon
                     icon={
@@ -160,7 +165,7 @@ export function WorkoutPlanViewDialogSidebar({
                 </button>
 
                 {expandedWeeks.has(week.week) && (
-                  <div className="ml-7.5 space-y-0.5">
+                  <div className="ml-6 space-y-0.5">
                     {week.days.map((day) => (
                       <button
                         key={day.day}
