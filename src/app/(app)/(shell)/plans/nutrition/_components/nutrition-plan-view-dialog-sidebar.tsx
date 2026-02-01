@@ -6,8 +6,6 @@ import {
   BookOpen01Icon,
   Restaurant01Icon,
   Target03Icon,
-  ChevronDown,
-  ChevronRight,
   Cancel01Icon,
   Sun02Icon,
   SunCloudIcon,
@@ -21,9 +19,7 @@ export function NutritionPlanViewDialogSidebar({
   isActivePlan,
   viewMode,
   setViewMode,
-  expandedMealTypes,
-  toggleMealType,
-  selectedMealType,
+  selectedTemplateIndex,
   selectMeal,
   sidebarOpen,
   closeSidebar,
@@ -33,10 +29,8 @@ export function NutritionPlanViewDialogSidebar({
   isActivePlan: boolean;
   viewMode: "overview" | "meals";
   setViewMode: (mode: "overview" | "meals") => void;
-  expandedMealTypes: Set<string>;
-  toggleMealType: (mealType: string) => void;
-  selectedMealType: string | null;
-  selectMeal: (mealType: string) => void;
+  selectedTemplateIndex: number | null;
+  selectMeal: (templateIndex: number) => void;
   sidebarOpen: boolean;
   closeSidebar: () => void;
 }) {
@@ -45,8 +39,8 @@ export function NutritionPlanViewDialogSidebar({
     closeSidebar();
   };
 
-  const handleMealSelect = (mealType: string) => {
-    selectMeal(mealType);
+  const handleMealSelect = (templateIndex: number) => {
+    selectMeal(templateIndex);
     closeSidebar();
   };
 
@@ -79,6 +73,18 @@ export function NutritionPlanViewDialogSidebar({
       bg: "bg-green-500/10",
     },
   };
+
+  // Count occurrences of each mealType to number them (e.g., Snack 1, Snack 2)
+  const mealTypeCounts = plan.meals.templates.reduce(
+    (acc, template) => {
+      acc[template.mealType] = (acc[template.mealType] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  // Track current count for each mealType to assign numbers
+  const mealTypeCounters: Record<string, number> = {};
 
   return (
     <>
@@ -117,7 +123,7 @@ export function NutritionPlanViewDialogSidebar({
                 className="h-5 w-5 text-primary"
               />
             </div>
-            <h2 className="font-semibold text-xl text-foreground flex-1">
+            <h2 className="font-semibold text-xl max-w-48 text-foreground flex-1">
               {meta.planName}
             </h2>
           </div>
@@ -165,80 +171,73 @@ export function NutritionPlanViewDialogSidebar({
                 Meal Templates
               </p>
             </div>
-            {plan.meals.templates.map((template) => {
+            {plan.meals.templates.map((template, templateIndex) => {
               const config = mealTypeConfig[template.mealType];
-              const isExpanded = expandedMealTypes.has(template.mealType);
               const isSelected =
-                viewMode === "meals" && selectedMealType === template.mealType;
+                viewMode === "meals" && selectedTemplateIndex === templateIndex;
+
+              // Determine if this meal type has multiple instances
+              const hasMultiple = mealTypeCounts[template.mealType] > 1;
+
+              // Get and increment the counter for this meal type
+              if (!mealTypeCounters[template.mealType]) {
+                mealTypeCounters[template.mealType] = 0;
+              }
+              mealTypeCounters[template.mealType]++;
+              const mealNumber = mealTypeCounters[template.mealType];
+
+              // Display label with number if multiple instances
+              const displayLabel = hasMultiple
+                ? `${config.label} ${mealNumber}`
+                : config.label;
 
               return (
-                <div key={template.mealType} className="mb-1.5">
-                  {/* Meal Type Header */}
+                <div
+                  key={`${template.mealType}-${mealNumber}`}
+                  className="mb-1.5"
+                >
                   <button
-                    onClick={() => toggleMealType(template.mealType)}
-                    className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1"
+                    onClick={() => handleMealSelect(templateIndex)}
+                    className={cn(
+                      "w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-all duration-200 text-left group focus-visible:outline-primary focus-visible:outline-1",
+                      isSelected
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "hover:bg-muted/50",
+                    )}
                   >
-                    <HugeiconsIcon
-                      icon={isExpanded ? ChevronDown : ChevronRight}
-                      className="h-4 w-4 text-foreground/50 group-hover:text-foreground/70 transition-colors"
-                    />
                     <div
                       className={cn(
                         "flex items-center justify-center w-8 h-8 rounded-lg border shrink-0",
-                        config.bg,
-                        config.color,
-                        "border-current/20",
+                        isSelected
+                          ? "bg-primary-foreground/20 border-primary-foreground/20"
+                          : cn(config.bg, config.color, "border-current/20"),
                       )}
                     >
                       <HugeiconsIcon icon={config.icon} className="h-4 w-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm text-foreground truncate">
-                        {config.label}
+                      <p
+                        className={cn(
+                          "font-medium text-sm truncate",
+                          isSelected
+                            ? "text-primary-foreground"
+                            : "text-foreground",
+                        )}
+                      >
+                        {displayLabel}
                       </p>
-                      <p className="text-xs text-muted-foreground truncate leading-tight">
+                      <p
+                        className={cn(
+                          "text-xs truncate leading-tight",
+                          isSelected
+                            ? "text-primary-foreground/70"
+                            : "text-muted-foreground",
+                        )}
+                      >
                         {template.mealOptions.length} options
                       </p>
                     </div>
                   </button>
-
-                  {/* Meal Options List */}
-                  {isExpanded && (
-                    <div className="ml-7.5 space-y-0.5">
-                      <button
-                        onClick={() => handleMealSelect(template.mealType)}
-                        className={cn(
-                          "w-full flex items-center gap-2.5 p-2 rounded-lg transition-all duration-200 text-left focus-visible:outline-primary focus-visible:outline-1",
-                          isSelected
-                            ? "bg-primary text-primary-foreground shadow-sm"
-                            : "hover:bg-muted/40",
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            "flex items-center justify-center w-7 h-7 rounded text-xs font-semibold shrink-0",
-                            isSelected
-                              ? "bg-primary-foreground/20"
-                              : cn(config.bg, config.color),
-                          )}
-                        >
-                          {template.mealOptions.length}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p
-                            className={cn(
-                              "font-medium text-xs truncate",
-                              isSelected
-                                ? "text-primary-foreground"
-                                : "text-foreground",
-                            )}
-                          >
-                            View All Options
-                          </p>
-                        </div>
-                      </button>
-                    </div>
-                  )}
                 </div>
               );
             })}

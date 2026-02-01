@@ -32,10 +32,9 @@ export function NutritionPlanViewDialog({
 }: NutritionPlanViewDialogProps) {
   const { planDetails, selectedPlanId, activePlanId } = useNutritionPlanStore();
   const [viewMode, setViewMode] = useState<"overview" | "meals">("overview");
-  const [selectedMealType, setSelectedMealType] = useState<string | null>(null);
-  const [expandedMealTypes, setExpandedMealTypes] = useState<Set<string>>(
-    new Set(),
-  );
+  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<
+    number | null
+  >(null);
   const [substitutionsOpen, setSubstitutionsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -52,31 +51,19 @@ export function NutritionPlanViewDialog({
 
   const { meta, plan } = planDetails;
 
-  const toggleMealType = (mealType: string) => {
-    const newSet = new Set(expandedMealTypes);
-    if (newSet.has(mealType)) {
-      newSet.delete(mealType);
-    } else {
-      newSet.add(mealType);
-    }
-    setExpandedMealTypes(newSet);
-  };
-
-  const selectMeal = (mealType: string) => {
+  const selectMeal = (templateIndex: number) => {
     setViewMode("meals");
-    setSelectedMealType(mealType);
-    if (!expandedMealTypes.has(mealType)) {
-      toggleMealType(mealType);
-    }
+    setSelectedTemplateIndex(templateIndex);
     // Close sidebar on mobile after selecting a meal
     setSidebarOpen(false);
   };
 
   const closeSidebar = () => setSidebarOpen(false);
 
-  const currentMealTemplate = selectedMealType
-    ? plan.meals.templates.find((t) => t.mealType === selectedMealType)
-    : null;
+  const currentMealTemplate =
+    selectedTemplateIndex !== null
+      ? plan.meals.templates[selectedTemplateIndex]
+      : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -100,9 +87,7 @@ export function NutritionPlanViewDialog({
             isActivePlan={isActivePlan}
             viewMode={viewMode}
             setViewMode={setViewMode}
-            expandedMealTypes={expandedMealTypes}
-            toggleMealType={toggleMealType}
-            selectedMealType={selectedMealType}
+            selectedTemplateIndex={selectedTemplateIndex}
             selectMeal={selectMeal}
             sidebarOpen={sidebarOpen}
             closeSidebar={closeSidebar}
