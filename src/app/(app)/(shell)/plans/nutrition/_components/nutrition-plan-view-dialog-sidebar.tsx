@@ -51,8 +51,8 @@ export function NutritionPlanViewDialogSidebar({
     breakfast: {
       icon: Sun02Icon,
       label: "Breakfast",
-      color: "text-orange-500",
-      bg: "bg-orange-500/10",
+      color: "text-yellow-500",
+      bg: "bg-yellow-500/10",
     },
     lunch: {
       icon: SunCloudIcon,
@@ -63,8 +63,8 @@ export function NutritionPlanViewDialogSidebar({
     dinner: {
       icon: Moon02Icon,
       label: "Dinner",
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
+      color: "text-indigo-500",
+      bg: "bg-indigo-500/10",
     },
     snack: {
       icon: StarIcon,
