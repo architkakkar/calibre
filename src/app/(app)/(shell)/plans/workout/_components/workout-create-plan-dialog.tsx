@@ -109,7 +109,7 @@ export function WorkoutCreatePlanDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 gap-y-8 overflow-hidden min-w-[70vw] max-w-5xl border border-border/50 shadow-2xl text-primary">
+      <DialogContent className="p-0 gap-y-8 overflow-hidden w-full sm:max-w-[95vw] md:max-w-[80vw] h-[95dvh] border border-border/50 shadow-2xl text-primary">
         <PlanDialogHeader
           title="Create Workout Plan"
           description="Answer a few quick questions to generate your personalized workout plan."
