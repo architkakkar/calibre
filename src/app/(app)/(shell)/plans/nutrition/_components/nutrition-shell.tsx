@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useNutritionPlanStore } from "@/stores/nutrition-plan.store";
 import { NutritionEmptyState } from "./nutrition-empty-state";
-import { CreateNutritionPlanDialog } from "./create-nutrition-plan-dialog";
+import { NutritionCreatePlanDialog } from "./nutrition-create-plan-dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -60,7 +60,7 @@ export function NutritionShell({ children }: { children: React.ReactNode }) {
       <main className="h-[calc(100dvh-184px)] xs:h-[calc(100dvh-164px)] md:h-[calc(100dvh-184px)] w-full text-primary border border-border rounded-2xl mt-4 relative bg-card/30 overflow-hidden">
         {hasPlans ? <>{children}</> : <NutritionEmptyState />}
       </main>
-      <CreateNutritionPlanDialog
+      <NutritionCreatePlanDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
       />

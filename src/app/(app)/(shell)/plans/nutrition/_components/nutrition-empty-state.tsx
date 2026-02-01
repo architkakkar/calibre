@@ -8,7 +8,7 @@ import {
   Rocket01Icon,
   Target03Icon,
 } from "@hugeicons/core-free-icons";
-import { CreateNutritionPlanDialog } from "./create-nutrition-plan-dialog";
+import { NutritionCreatePlanDialog } from "./nutrition-create-plan-dialog";
 
 type CardData = {
   title: string;
@@ -139,7 +139,10 @@ export function NutritionEmptyState() {
           </footer>
         </div>
       </section>
-      <CreateNutritionPlanDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+      <NutritionCreatePlanDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 }

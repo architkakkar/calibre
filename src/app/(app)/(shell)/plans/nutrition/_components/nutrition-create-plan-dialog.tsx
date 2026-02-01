@@ -16,15 +16,15 @@ import {
 } from "@/lib/domain/plan.helpers";
 import { showToast } from "@/lib/client/toast";
 
-type CreateNutritionPlanDialogProps = {
+type NutritionCreatePlanDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export function CreateNutritionPlanDialog({
+export function NutritionCreatePlanDialog({
   open,
   onOpenChange,
-}: CreateNutritionPlanDialogProps) {
+}: NutritionCreatePlanDialogProps) {
   const { createPlan } = useNutritionPlanStore();
   const { showLoader, hideLoader } = useGlobalStore.getState();
   const [currentStep, setCurrentStep] = useState(0);
