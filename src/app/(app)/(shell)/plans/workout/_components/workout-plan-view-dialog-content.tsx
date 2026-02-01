@@ -221,28 +221,42 @@ export function WorkoutPlanViewDialogContent({
                   {currentDay.warmup.map((item, idx) => (
                     <article
                       key={idx}
-                      className="p-5 rounded-xl border bg-linear-to-br from-amber-500/5 to-amber-500/10 border-amber-500/20"
+                      className="group p-5 rounded-xl border bg-linear-to-br from-amber-500/8 to-amber-500/3 border-amber-500/20 hover:border-amber-500/35 hover:shadow-md transition-all duration-300"
                     >
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-4">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-linear-to-br from-amber-500/20 to-amber-500/10 border-2 border-amber-500/40 text-amber-500 font-bold text-base shrink-0 shadow-sm">
+                          {idx + 1}
+                        </div>
                         <div className="flex-1">
-                          <h4 className="font-semibold text-sm text-foreground mb-1">
-                            {item.name}
-                          </h4>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <h4 className="font-bold text-base text-foreground transition-colors">
+                              {item.name}
+                            </h4>
+                            <Badge
+                              variant="outline"
+                              className="shrink-0 bg-amber-500/15 border-amber-500/30 text-amber-500 font-bold px-3 py-1"
+                            >
+                              <HugeiconsIcon
+                                icon={Time02Icon}
+                                className="h-3 w-3 mr-1"
+                              />
+                              {item.durationMinutes} min
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
                             {item.focus}
                           </p>
                           {item.notes && (
-                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-amber-500/20">
-                              {item.notes}
-                            </p>
+                            <div className="mt-3 pt-3 border-t border-amber-500/20">
+                              <p className="text-xs text-foreground/70 leading-relaxed">
+                                <span className="font-bold text-amber-500">
+                                  Note:
+                                </span>{" "}
+                                {item.notes}
+                              </p>
+                            </div>
                           )}
                         </div>
-                        <Badge
-                          variant="outline"
-                          className="shrink-0 bg-amber-500/10 border-amber-500/20 font-semibold"
-                        >
-                          {item.durationMinutes} min
-                        </Badge>
                       </div>
                     </article>
                   ))}
@@ -251,7 +265,7 @@ export function WorkoutPlanViewDialogContent({
             </TabsContent>
           )}
 
-          {/* Main Workout Tab Content */}
+          {/* Workout Tab Content */}
           {hasWorkout && (
             <TabsContent
               value="workout"
@@ -267,13 +281,12 @@ export function WorkoutPlanViewDialogContent({
                         key={idx}
                         className="group p-5 rounded-xl border border-border bg-card/70 hover:shadow-md hover:border-primary/20 transition-all duration-300"
                       >
-                        {/* Exercise Header */}
                         <div className="flex items-start gap-4 mb-5">
                           <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-primary/15 to-primary/5 border-2 border-primary/20 text-primary font-bold text-lg shrink-0 shadow-sm">
                             {idx + 1}
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-bold text-xl text-foreground mb-2.5 group-hover:text-primary transition-colors">
+                            <h4 className="font-bold text-xl text-foreground mb-2.5 transition-colors">
                               {exercise.exercise}
                             </h4>
                             <div className="flex items-center gap-2 flex-wrap">
@@ -296,8 +309,6 @@ export function WorkoutPlanViewDialogContent({
                             </div>
                           </div>
                         </div>
-
-                        {/* Stats Grid */}
                         <div className="grid grid-cols-4 gap-3 p-4 rounded-xl bg-linear-to-br from-muted/40 via-muted/20 to-muted/10 mb-4 border border-border shadow-inner">
                           <div className="flex flex-col items-center">
                             <div className="flex items-center gap-1 mb-2">
@@ -359,19 +370,17 @@ export function WorkoutPlanViewDialogContent({
                             </p>
                           </div>
                         </div>
-
-                        {/* Intensity & Notes */}
                         {exercise.intensityGuidance && (
                           <div className="relative p-4 rounded-xl bg-linear-to-br from-blue-500/10 via-blue-500/5 to-transparent border-l-4 border-l-blue-500 border border-blue-500/20 mb-3 shadow-sm">
                             <div className="flex items-start gap-3">
                               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/15 shrink-0">
                                 <HugeiconsIcon
                                   icon={InformationCircleIcon}
-                                  className="h-4 w-4 text-blue-600"
+                                  className="h-4 w-4 text-blue-500"
                                 />
                               </div>
                               <div className="flex-1">
-                                <p className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">
+                                <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-2">
                                   {exercise.intensityGuidance.type}
                                 </p>
                                 <p className="text-sm font-medium text-foreground leading-relaxed">
@@ -381,7 +390,6 @@ export function WorkoutPlanViewDialogContent({
                             </div>
                           </div>
                         )}
-
                         {exercise.notes && (
                           <div className="p-4 rounded-xl bg-muted/40 border border-muted">
                             <p className="text-sm text-foreground/80 leading-relaxed">
@@ -412,28 +420,42 @@ export function WorkoutPlanViewDialogContent({
                   {currentDay.cooldown.map((item, idx) => (
                     <article
                       key={idx}
-                      className="p-5 rounded-xl border bg-linear-to-br from-blue-500/5 to-blue-500/10 border-blue-500/20"
+                      className="group p-5 rounded-xl border bg-linear-to-br from-blue-500/8 to-blue-500/3 border-blue-500/20 hover:border-blue-500/40 hover:shadow-md transition-all duration-300"
                     >
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-4">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-linear-to-br from-blue-500/20 to-blue-500/10 border-2 border-blue-500/40 text-blue-600 font-bold text-base shrink-0 shadow-sm">
+                          {idx + 1}
+                        </div>
                         <div className="flex-1">
-                          <h4 className="font-bold text-sm text-foreground mb-1">
-                            {item.name}
-                          </h4>
-                          <p className="text-xs text-foreground/70 leading-relaxed">
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <h4 className="font-bold text-base text-foreground transition-colors">
+                              {item.name}
+                            </h4>
+                            <Badge
+                              variant="outline"
+                              className="shrink-0 bg-blue-500/15 border-blue-500/30 text-blue-500 font-bold px-3 py-1"
+                            >
+                              <HugeiconsIcon
+                                icon={Time02Icon}
+                                className="h-3 w-3 mr-1"
+                              />
+                              {item.durationMinutes} min
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
                             {item.focus}
                           </p>
                           {item.notes && (
-                            <p className="text-xs text-foreground/60 mt-3 pt-3 border-t border-blue-500/20">
-                              {item.notes}
-                            </p>
+                            <div className="mt-3 pt-3 border-t border-blue-500/20">
+                              <p className="text-xs text-foreground/70 leading-relaxed">
+                                <span className="font-bold text-blue-500">
+                                  Note:
+                                </span>{" "}
+                                {item.notes}
+                              </p>
+                            </div>
                           )}
                         </div>
-                        <Badge
-                          variant="outline"
-                          className="shrink-0 bg-blue-500/10 border-blue-500/20 font-semibold"
-                        >
-                          {item.durationMinutes} min
-                        </Badge>
                       </div>
                     </article>
                   ))}
