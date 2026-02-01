@@ -201,6 +201,7 @@ export const NUTRITION_PLAN_SYSTEM_PROMPT = `
   - Meal options should favor user-preferred foods and respect dislikes.
   - Keep ingredient lists simple and culturally appropriate where specified.
   - Estimated macros should be reasonable, not exact.
+  - Arrange meals in a logical daily order. breakfast -> snack -> lunch -> snack -> dinner
 
   ADJUSTMENTS:
   - Adjustment rules should be conditional and practical.
