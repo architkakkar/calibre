@@ -172,7 +172,7 @@ export function WorkoutPlanViewDialogOverview({ plan }: { plan: Plan }) {
                   </div>
                 )}
                 {plan.notes.general.length > 0 && (
-                  <div className="p-6 rounded-xl border bg-muted/30 border-muted">
+                  <div className="p-6 rounded-xl border bg-muted/30 border-muted-foreground/20">
                     <div className="flex items-center gap-2 mb-4">
                       <HugeiconsIcon
                         icon={AlertCircleIcon}
