@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   SentIcon,
-  SpoonAndKnifeIcon,
   Dumbbell01Icon,
   Info,
+  Restaurant01Icon,
 } from "@hugeicons/core-free-icons";
 
 interface ChatInputProps {
@@ -82,7 +82,7 @@ export function ChatInput({ onSend }: ChatInputProps) {
               variant="outline"
               className="h-8 w-8 p-0"
             >
-              <HugeiconsIcon icon={SpoonAndKnifeIcon} className="size-4" />
+              <HugeiconsIcon icon={Dumbbell01Icon} className="size-4" />
             </Button>
             <Button
               type="button"
@@ -90,16 +90,16 @@ export function ChatInput({ onSend }: ChatInputProps) {
               variant="outline"
               className="h-8 w-8 p-0"
             >
-              <HugeiconsIcon icon={Dumbbell01Icon} className="size-4" />
+              <HugeiconsIcon icon={Restaurant01Icon} className="size-4" />
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <span className="hidden md:block text-xs text-muted-foreground">
+            {/* <span className="hidden md:block text-xs text-muted-foreground">
               (7 of 20 free chats remaining today)
             </span>
             <span className="block md:hidden text-xs text-muted-foreground">
               (7 free chats)
-            </span>
+            </span> */}
             <Button
               type="submit"
               size="sm"
