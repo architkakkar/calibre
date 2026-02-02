@@ -216,11 +216,11 @@ export function Navbar() {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
-                onClick={() => router.push("/account")}
+                onClick={() => router.push("/accounts")}
                 className="flex items-center gap-2"
               >
                 <HugeiconsIcon icon={User02Icon} className="size-4" />
-                Account
+                Accounts
               </DropdownMenuItem>
 
               {/* Notifications - Mobile Only */}
