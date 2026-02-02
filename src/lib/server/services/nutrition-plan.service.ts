@@ -308,3 +308,25 @@ export async function getNutritionPlanDetailsById({
 
   return data.plan || null;
 }
+
+export async function getActiveNutritionPlanForUser({
+  userId,
+}: {
+  userId: string;
+}) {
+  const data = await db
+    .select({
+      plan: nutritionPlansTable.parsed_plan,
+    })
+    .from(nutritionPlansTable)
+    .where(
+      and(
+        eq(nutritionPlansTable.user_id, userId),
+        eq(nutritionPlansTable.is_active, true),
+      ),
+    )
+    .limit(1)
+    .then((results) => results[0]);
+
+  return data.plan || null;
+}

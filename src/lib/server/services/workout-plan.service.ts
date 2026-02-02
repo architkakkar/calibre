@@ -307,3 +307,25 @@ export async function getWorkoutPlanDetailsById({
 
   return data.plan || null;
 }
+
+export async function getActiveWorkoutPlanForUser({
+  userId,
+}: {
+  userId: string;
+}) {
+  const data = await db
+    .select({
+      plan: workoutPlansTable.parsed_plan,
+    })
+    .from(workoutPlansTable)
+    .where(
+      and(
+        eq(workoutPlansTable.user_id, userId),
+        eq(workoutPlansTable.is_active, true),
+      ),
+    )
+    .limit(1)
+    .then((results) => results[0]);
+
+  return data?.plan || null;
+}
