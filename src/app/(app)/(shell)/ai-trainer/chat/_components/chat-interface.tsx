@@ -11,7 +11,7 @@ import { markdownComponents } from "@/lib/client/markdown";
 
 interface ChatInterfaceProps {
   messages: UIMessage[];
-  onSendMessage: (prompt: string) => void;
+  onSendMessage: (prompt: string, planContext?: { workout: boolean; nutrition: boolean }) => void;
   status: ChatStatus;
 }
 

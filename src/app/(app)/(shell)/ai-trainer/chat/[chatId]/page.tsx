@@ -60,7 +60,9 @@ export default function ChatByIdPage() {
     <ChatInterface
       messages={messages}
       status={status}
-      onSendMessage={(prompt) => sendMessage({ text: prompt })}
+      onSendMessage={(prompt, planContext) =>
+        sendMessage({ text: prompt }, { body: { data: planContext } })
+      }
     />
   );
 }

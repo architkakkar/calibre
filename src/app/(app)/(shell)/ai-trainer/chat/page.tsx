@@ -13,14 +13,14 @@ export default function AIChatPage() {
   return (
     <ChatInterface
       messages={messages}
-      onSendMessage={(prompt) => {
+      onSendMessage={(prompt, planContext) => {
         // update URL on first user message
         if (!hasUpdatedUrlRef.current && pathname.endsWith("/chat")) {
           hasUpdatedUrlRef.current = true;
           window.history.replaceState(null, "", `/ai-trainer/chat/${id}`);
         }
 
-        sendMessage({ text: prompt });
+        sendMessage({ text: prompt }, { body: { data: planContext } });
       }}
       status={status}
     />
