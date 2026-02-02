@@ -16,15 +16,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Dumbbell,
-  Apple,
-  Droplets,
-  CheckCircle2,
-  Circle,
-  Plus,
-  Settings,
-} from "lucide-react";
+  Dumbbell01Icon,
+  Apple01Icon,
+  DropletIcon,
+  CheckmarkCircle02Icon,
+  CircleIcon,
+  Add01Icon,
+  Settings02Icon,
+} from "@hugeicons/core-free-icons";
 
 interface Exercise {
   name: string;
@@ -284,7 +285,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-xl bg-primary/10">
-                      <Dumbbell className="w-4 h-4 text-primary" />
+                      <HugeiconsIcon
+                        icon={Dumbbell01Icon}
+                        className="w-4 h-4 text-primary"
+                      />
                     </div>
                     <CardTitle className="text-lg">Workout</CardTitle>
                   </div>
@@ -299,7 +303,10 @@ export default function DashboardPage() {
               <CardContent className="relative overflow-y-auto max-h-[calc(100%-5rem)]">
                 {!workoutData?.hasActivePlan ? (
                   <div className="text-center py-12">
-                    <Dumbbell className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                    <HugeiconsIcon
+                      icon={Dumbbell01Icon}
+                      className="w-12 h-12 mx-auto mb-3 text-muted-foreground"
+                    />
                     <p className="text-sm text-muted-foreground mb-3">
                       No active plan
                     </p>
@@ -308,7 +315,10 @@ export default function DashboardPage() {
                       size="sm"
                       className="rounded-full"
                     >
-                      <Plus className="w-3 h-3 mr-1" />
+                      <HugeiconsIcon
+                        icon={Add01Icon}
+                        className="w-3 h-3 mr-1"
+                      />
                       Create Plan
                     </Button>
                   </div>
@@ -392,12 +402,18 @@ export default function DashboardPage() {
                     >
                       {workoutData.isCompleted ? (
                         <>
-                          <CheckCircle2 className="w-4 h-4 mr-1" />
+                          <HugeiconsIcon
+                            icon={CheckmarkCircle02Icon}
+                            className="w-4 h-4 mr-1"
+                          />
                           Completed
                         </>
                       ) : (
                         <>
-                          <Circle className="w-4 h-4 mr-1" />
+                          <HugeiconsIcon
+                            icon={CircleIcon}
+                            className="w-4 h-4 mr-1"
+                          />
                           Mark Complete
                         </>
                       )}
@@ -415,7 +431,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-xl bg-green-500/10">
-                      <Apple className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      <HugeiconsIcon
+                        icon={Apple01Icon}
+                        className="w-4 h-4 text-green-600 dark:text-green-400"
+                      />
                     </div>
                     <CardTitle className="text-lg">Nutrition</CardTitle>
                   </div>
@@ -430,7 +449,7 @@ export default function DashboardPage() {
                           variant="ghost"
                           className="rounded-full h-8 w-8 p-0"
                         >
-                          <Plus className="w-4 h-4" />
+                          <HugeiconsIcon icon={Add01Icon} className="w-4 h-4" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="rounded-2xl">
@@ -482,7 +501,10 @@ export default function DashboardPage() {
               <CardContent className="relative overflow-y-auto max-h-[calc(100%-5rem)]">
                 {!nutritionData?.hasActivePlan ? (
                   <div className="text-center py-12">
-                    <Apple className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                    <HugeiconsIcon
+                      icon={Apple01Icon}
+                      className="w-12 h-12 mx-auto mb-3 text-muted-foreground"
+                    />
                     <p className="text-sm text-muted-foreground mb-3">
                       No active plan
                     </p>
@@ -491,7 +513,10 @@ export default function DashboardPage() {
                       onClick={() => router.push("/plans/nutrition")}
                       className="rounded-full"
                     >
-                      <Plus className="w-3 h-3 mr-1" />
+                      <HugeiconsIcon
+                        icon={Add01Icon}
+                        className="w-3 h-3 mr-1"
+                      />
                       Create Plan
                     </Button>
                   </div>
@@ -578,7 +603,10 @@ export default function DashboardPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-4 rounded-xl bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20">
                   <div className="flex items-center justify-between mb-2">
-                    <Dumbbell className="w-5 h-5 text-primary" />
+                    <HugeiconsIcon
+                      icon={Dumbbell01Icon}
+                      className="w-5 h-5 text-primary"
+                    />
                     <Badge
                       variant={workoutData?.isCompleted ? "default" : "outline"}
                       className="text-[10px] h-5"
@@ -596,7 +624,10 @@ export default function DashboardPage() {
 
                 <div className="p-4 rounded-xl bg-linear-to-br from-green-500/10 to-green-500/5 border border-green-500/20">
                   <div className="flex items-center justify-between mb-2">
-                    <Apple className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <HugeiconsIcon
+                      icon={Apple01Icon}
+                      className="w-5 h-5 text-green-600 dark:text-green-400"
+                    />
                     <Badge variant="outline" className="text-[10px] h-5">
                       {nutritionData?.loggedMeals?.length || 0}/3
                     </Badge>
@@ -682,7 +713,10 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-xl bg-primary/10">
-                    <Droplets className="w-4 h-4 text-primary" />
+                    <HugeiconsIcon
+                      icon={DropletIcon}
+                      className="w-4 h-4 text-primary"
+                    />
                   </div>
                   <CardTitle className="text-lg">Hydration</CardTitle>
                 </div>
@@ -696,7 +730,10 @@ export default function DashboardPage() {
                       variant="ghost"
                       className="rounded-full h-8 w-8 p-0"
                     >
-                      <Settings className="w-4 h-4" />
+                      <HugeiconsIcon
+                        icon={Settings02Icon}
+                        className="w-4 h-4"
+                      />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="rounded-2xl">
