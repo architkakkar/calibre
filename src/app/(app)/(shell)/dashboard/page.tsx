@@ -1,793 +1,800 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import {
+  Dumbbell,
+  Apple,
+  Droplets,
   CheckCircle2,
   Circle,
-  Droplets,
-  Dumbbell,
-  UtensilsCrossed,
   Plus,
-  Minus,
-  Zap,
-  Target,
-  Award,
-  Activity,
-  Apple,
-  Coffee,
-  Moon,
-  Sun,
-  Heart,
-  Sparkles,
+  Settings,
 } from "lucide-react";
 
-// Motivational messages pool
-const motivationalMessages = [
-  "Every workout brings you closer to your goals! 💪",
-  "Progress, not perfection. Keep pushing forward!",
-  "Your only limit is you. Break through it today!",
-  "Strong mind, strong body. You've got this!",
-  "The pain you feel today will be the strength you feel tomorrow.",
-  "One day or day one. You decide!",
-  "Success starts with self-discipline.",
-  "Don't stop when you're tired. Stop when you're done!",
-  "Champions are made in the gym, legends are made in the mind!",
-  "The only bad workout is the one that didn't happen!",
-];
+interface Exercise {
+  name: string;
+  sets?: number;
+  reps?: number;
+  duration?: string;
+  notes?: string;
+}
 
-const getMotivationalMessage = () => {
-  return motivationalMessages[
-    Math.floor(Math.random() * motivationalMessages.length)
-  ];
-};
+interface WorkoutData {
+  hasActivePlan: boolean;
+  planName?: string;
+  currentWeek?: number;
+  currentDay?: number;
+  workout?: {
+    id: string;
+    name: string;
+    warmup?: string;
+    cooldown?: string;
+    exercises: Exercise[];
+  };
+  isCompleted?: boolean;
+}
 
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+interface NutritionData {
+  hasActivePlan: boolean;
+  planName?: string;
+  planDayId?: string;
+  targets?: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
+  loggedMeals?: Array<{
+    id: string;
+    type: string;
+    name: string;
+    notes: string;
+  }>;
+}
 
-const getTimeOfDay = () => {
-  const hour = new Date().getHours();
-  if (hour < 12) return { greeting: "Good Morning", icon: Sun };
-  if (hour < 17) return { greeting: "Good Afternoon", icon: Coffee };
-  return { greeting: "Good Evening", icon: Moon };
-};
-
-// Circular Progress Component
-function CircularProgress({
-  percentage,
-  size = 120,
-  strokeWidth = 8,
-  color = "text-primary",
-  label,
-  value,
-  animated = true,
-}: {
+interface HydrationData {
+  dailyTarget: number;
+  totalConsumed: number;
   percentage: number;
-  size?: number;
-  strokeWidth?: number;
-  color?: string;
-  label?: string;
-  value?: string;
-  animated?: boolean;
-}) {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (percentage / 100) * circumference;
-
-  return (
-    <div className="relative inline-flex items-center justify-center">
-      <svg width={size} height={size} className="transform -rotate-90">
-        {/* Background circle */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-          className="text-muted/30"
-        />
-        {/* Progress circle */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          className={`${color} ${
-            animated ? "transition-all duration-1000 ease-out" : ""
-          }`}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold">
-          {value || `${Math.round(percentage)}%`}
-        </span>
-        {label && (
-          <span className="text-xs text-muted-foreground mt-0.5">{label}</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Hydration Ball Component with enhanced visuals
-function HydrationBall({
-  current,
-  target,
-  compact = false,
-}: {
-  current: number;
-  target: number;
-  compact?: boolean;
-}) {
-  const percentage = Math.min((current / target) * 100, 100);
-  const [showSplash, setShowSplash] = useState(false);
-  const size = compact ? "w-24 h-24" : "w-32 h-32";
-
-  useEffect(() => {
-    if (percentage > 0) {
-      setShowSplash(true);
-      const timer = setTimeout(() => setShowSplash(false), 600);
-      return () => clearTimeout(timer);
-    }
-  }, [current]);
-
-  return (
-    <div className={`relative ${size} mx-auto`}>
-      {/* Outer glow effect */}
-      <div
-        className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse"
-        style={{ opacity: percentage > 80 ? 0.5 : 0.2 }}
-      />
-
-      {/* Ball container */}
-      <div className="absolute inset-2 rounded-full border-2 border-blue-500/30 overflow-hidden bg-gradient-to-br from-card to-muted shadow-lg">
-        {/* Water fill with gradient */}
-        <div
-          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-600 via-blue-400 to-cyan-300 transition-all duration-700 ease-out"
-          style={{ height: `${percentage}%` }}
-        >
-          {/* Animated waves */}
-          <div className="absolute top-0 left-0 right-0 h-12">
-            <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent animate-pulse" />
-            <svg
-              className="absolute top-0 w-full h-8"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0,60 Q150,80 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z"
-                fill="rgba(255,255,255,0.15)"
-                className="animate-[wave_3s_ease-in-out_infinite]"
-              />
-            </svg>
-            <svg
-              className="absolute top-2 w-full h-8"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0,60 Q150,40 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z"
-                fill="rgba(255,255,255,0.1)"
-                className="animate-[wave_4s_ease-in-out_infinite]"
-              />
-            </svg>
-          </div>
-
-          {/* Bubbles */}
-          {percentage > 20 && (
-            <>
-              <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-white/40 rounded-full animate-[rise_3s_ease-in_infinite]" />
-              <div className="absolute bottom-1/3 right-1/3 w-3 h-3 bg-white/30 rounded-full animate-[rise_4s_ease-in_infinite_0.5s]" />
-              <div className="absolute bottom-1/2 left-1/3 w-1.5 h-1.5 bg-white/50 rounded-full animate-[rise_2.5s_ease-in_infinite_1s]" />
-            </>
-          )}
-        </div>
-
-        {/* Glass shine effect */}
-        <div className="absolute top-6 left-6 w-20 h-20 bg-white/30 rounded-full blur-2xl" />
-        <div className="absolute top-1/3 right-6 w-12 h-12 bg-white/20 rounded-full blur-xl" />
-
-        {/* Splash effect */}
-        {showSplash && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-blue-400/50 rounded-full animate-ping" />
-          </div>
-        )}
-      </div>
-
-      {/* Text overlay with glow */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center z-10 bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
-          <div className="text-2xl font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-            {current}L
-          </div>
-          <div className="text-[10px] text-white/90 drop-shadow-lg font-medium">
-            of {target}L
-          </div>
-        </div>
-      </div>
-
-      {/* Droplets for empty state */}
-      {percentage < 20 && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Droplets className="size-12 text-blue-500/30 animate-bounce" />
-        </div>
-      )}
-
-      {/* Celebration sparkles at 100% */}
-      {percentage >= 100 && (
-        <>
-          <Sparkles className="absolute top-0 right-2 size-4 text-yellow-400 animate-pulse" />
-          <Sparkles className="absolute bottom-2 left-0 size-3 text-yellow-400 animate-pulse delay-150" />
-          <Sparkles className="absolute top-1/2 right-0 size-3 text-yellow-400 animate-pulse delay-300" />
-        </>
-      )}
-    </div>
-  );
-}
-
-// Celebration confetti component
-function CelebrationEffect() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-2 h-2 rounded-full animate-[confetti_2s_ease-out_forwards]"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: "-10px",
-            backgroundColor: [
-              "#f59e0b",
-              "#10b981",
-              "#3b82f6",
-              "#8b5cf6",
-              "#ec4899",
-            ][Math.floor(Math.random() * 5)],
-            animationDelay: `${Math.random() * 0.5}s`,
-            transform: `rotate(${Math.random() * 360}deg)`,
-          }}
-        />
-      ))}
-    </div>
-  );
 }
 
 export default function DashboardPage() {
-  const [workoutStatus, setWorkoutStatus] = useState<"pending" | "completed">(
-    "pending"
+  const router = useRouter();
+  const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
+  const [nutritionData, setNutritionData] = useState<NutritionData | null>(
+    null,
   );
-  const [dietStatus, setDietStatus] = useState<"pending" | "completed">(
-    "pending"
+  const [hydrationData, setHydrationData] = useState<HydrationData | null>(
+    null,
   );
-  const [waterIntake, setWaterIntake] = useState(1.5);
-  const [exercises, setExercises] = useState([
-    { name: "Bench Press", sets: "3 sets × 10 reps", completed: false },
-    { name: "Pull-ups", sets: "3 sets × 8 reps", completed: false },
-    { name: "Dumbbell Rows", sets: "3 sets × 12 reps", completed: false },
-    { name: "Dumbbell Rows", sets: "3 sets × 12 reps", completed: false },
-    { name: "Dumbbell Rows", sets: "3 sets × 12 reps", completed: false },
-    { name: "Shoulder Press", sets: "3 sets × 10 reps", completed: false },
-  ]);
-  const [showWorkoutCelebration, setShowWorkoutCelebration] = useState(false);
-  const [showDietCelebration, setShowDietCelebration] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const waterTarget = 3.5;
-  const currentDate = new Date(2026, 0, 2); // January 2, 2026
-  const { greeting, icon: GreetingIcon } = getTimeOfDay();
+  const [mealDialogOpen, setMealDialogOpen] = useState(false);
+  const [mealType, setMealType] = useState("");
+  const [mealName, setMealName] = useState("");
+  const [mealNotes, setMealNotes] = useState("");
 
-  const completedExercises = exercises.filter((e) => e.completed).length;
-  const workoutProgress = (completedExercises / exercises.length) * 100;
+  const [targetDialogOpen, setTargetDialogOpen] = useState(false);
+  const [newTarget, setNewTarget] = useState("");
 
-  const incrementWater = () => {
-    setWaterIntake((prev) => Math.min(prev + 0.25, waterTarget));
-  };
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
-  const decrementWater = () => {
-    setWaterIntake((prev) => Math.max(prev - 0.25, 0));
-  };
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      const [workoutRes, nutritionRes, hydrationRes] = await Promise.all([
+        fetch("/api/dashboard/workout"),
+        fetch("/api/dashboard/nutrition"),
+        fetch("/api/dashboard/hydration"),
+      ]);
 
-  const toggleExercise = (index: number) => {
-    const newExercises = [...exercises];
-    newExercises[index].completed = !newExercises[index].completed;
-    setExercises(newExercises);
-  };
+      const workout = await workoutRes.json();
+      const nutrition = await nutritionRes.json();
+      const hydration = await hydrationRes.json();
 
-  const handleWorkoutComplete = () => {
-    const newStatus = workoutStatus === "completed" ? "pending" : "completed";
-    setWorkoutStatus(newStatus);
-    if (newStatus === "completed") {
-      setShowWorkoutCelebration(true);
-      setTimeout(() => setShowWorkoutCelebration(false), 2000);
+      setWorkoutData(workout);
+      setNutritionData(nutrition);
+      setHydrationData(hydration);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+      toast.error("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDietComplete = () => {
-    const newStatus = dietStatus === "completed" ? "pending" : "completed";
-    setDietStatus(newStatus);
-    if (newStatus === "completed") {
-      setShowDietCelebration(true);
-      setTimeout(() => setShowDietCelebration(false), 2000);
+  const toggleWorkoutComplete = async () => {
+    if (!workoutData?.workout?.id) return;
+
+    try {
+      const res = await fetch("/api/dashboard/workout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ workoutPlanDayId: workoutData.workout.id }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update workout");
+
+      const result = await res.json();
+      setWorkoutData((prev) => ({
+        ...prev!,
+        isCompleted: result.newStatus === "COMPLETED",
+      }));
+
+      toast.success(
+        result.newStatus === "COMPLETED"
+          ? "Workout completed! 🎉"
+          : "Workout marked as pending",
+      );
+    } catch (error) {
+      console.error("Error updating workout:", error);
+      toast.error("Failed to update workout");
     }
   };
 
-  const dailyCaloriesConsumed = 1850;
-  const dailyCaloriesTarget = 2200;
-  const proteinConsumed = 145;
-  const proteinTarget = 180;
+  const logMeal = async () => {
+    if (!nutritionData?.planDayId || !mealType) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
 
-  return (
-    <div className=" bg-background relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-10 right-10 w-48 h-48 bg-primary/5 rounded-full blur-2xl animate-pulse" />
-      <div className="absolute bottom-10 left-10 w-56 h-56 bg-secondary/5 rounded-full blur-2xl animate-pulse delay-1000" />
+    try {
+      const res = await fetch("/api/dashboard/nutrition", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planDayId: nutritionData.planDayId,
+          mealType,
+          mealName,
+          notes: mealNotes,
+        }),
+      });
 
-      {/* Main 12-Column Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
-        {/* Left Section - 7 columns */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Greeting & Motivation */}
-          <div className="space-y-3">
-            {/* Greeting with icon */}
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
-                <GreetingIcon className="size-6 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">
-                  {greeting}!
-                </h1>
-                <p className="text-sm text-muted-foreground font-medium">
-                  {new Date(currentDate).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
-            </div>
+      if (!res.ok) throw new Error("Failed to log meal");
 
-            {/* Motivational Quote */}
-            <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
-              <div className="flex items-start gap-3">
-                <Sparkles className="size-5 text-primary mt-0.5 flex-shrink-0" />
-                <p className="text-sm font-medium text-foreground/90">
-                  {getMotivationalMessage()}
-                </p>
-              </div>
+      toast.success("Meal logged successfully!");
+      setMealDialogOpen(false);
+      setMealType("");
+      setMealName("");
+      setMealNotes("");
+      fetchDashboardData();
+    } catch (error) {
+      console.error("Error logging meal:", error);
+      toast.error("Failed to log meal");
+    }
+  };
+
+  const addWater = async (amount: number) => {
+    try {
+      const res = await fetch("/api/dashboard/hydration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount }),
+      });
+
+      if (!res.ok) throw new Error("Failed to add water");
+
+      toast.success(`Added ${amount}ml 💧`);
+      fetchDashboardData();
+    } catch (error) {
+      console.error("Error adding water:", error);
+      toast.error("Failed to add water");
+    }
+  };
+
+  const updateHydrationTarget = async () => {
+    const target = parseInt(newTarget);
+    if (!target || target <= 0) {
+      toast.error("Please enter a valid target");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/dashboard/hydration", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dailyTarget: target }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update target");
+
+      toast.success("Daily target updated!");
+      setTargetDialogOpen(false);
+      setNewTarget("");
+      fetchDashboardData();
+    } catch (error) {
+      console.error("Error updating target:", error);
+      toast.error("Failed to update target");
+    }
+  };
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
+  if (loading) {
+    return (
+      <div className="h-[calc(100dvh-84px)] md:h-[calc(100dvh-108px)] relative overflow-y-auto bg-linear-to-br from-background via-background to-muted/20 ">
+        <div className="h-full grid grid-cols-12 gap-4 p-4">
+          {/* Left section skeleton */}
+          <div className="col-span-12 lg:col-span-7 flex flex-col gap-4">
+            <div className="h-12 bg-muted/50 animate-pulse rounded-full" />
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-muted/50 animate-pulse rounded-2xl" />
+              <div className="bg-muted/50 animate-pulse rounded-2xl" />
             </div>
           </div>
+          {/* Right section skeleton */}
+          <div className="col-span-12 lg:col-span-5 flex flex-col gap-4">
+            <div className="flex-1 bg-muted/50 animate-pulse rounded-2xl" />
+            <div className="flex-1 bg-muted/50 animate-pulse rounded-2xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-          {/* Workout & Diet Cards Grid */}
-          <div className="grid grid-cols-2 gap-6">
-            {/* Workout Status - Enhanced */}
-            <Card className="relative overflow-hidden border-2 hover:border-primary/50 transition-all">
-              {showWorkoutCelebration && <CelebrationEffect />}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
+  return (
+    <div className="h-[calc(100dvh-84px)] md:h-[calc(100dvh-108px)] relative overflow-y-auto bg-linear-to-br from-background via-background to-muted/20 text-primary">
+      {/* 12x12 Grid Layout */}
+      <div className="h-full grid grid-cols-12 gap-4 p-4">
+        {/* Left Section - 7 columns */}
+        <div className="col-span-12 lg:col-span-7 flex flex-col gap-4">
+          {/* Greeting */}
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-linear-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 backdrop-blur-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-sm font-medium">{getGreeting()}</span>
+            </div>
+            <span className="text-sm text-muted-foreground">
+              {new Date().toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
 
-              <CardHeader className="pb-3">
+          {/* Two Equal Cards - Workout & Nutrition */}
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Workout Card */}
+            <Card className="h-full border-2 hover:border-primary/30 transition-all duration-500 bg-linear-to-br from-card to-primary/5 overflow-hidden group">
+              <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <CardHeader className="relative">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-primary/20 rounded-xl blur-md animate-pulse" />
-                      <div className="relative p-2 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30">
-                        <Dumbbell className="size-5 text-primary" />
-                      </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-xl bg-primary/10">
+                      <Dumbbell className="w-4 h-4 text-primary" />
                     </div>
-                    <div>
-                      <CardTitle className="text-lg font-semibold">
-                        Today's Workout
-                      </CardTitle>
-                      <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
-                        <span>Upper Body Strength</span>
-                        <span className="text-primary">•</span>
-                        <span>45 mins</span>
-                      </p>
-                    </div>
+                    <CardTitle className="text-lg">Workout</CardTitle>
                   </div>
-                  <Badge
-                    variant={
-                      workoutStatus === "completed" ? "default" : "outline"
-                    }
-                    className="text-xs"
-                  >
-                    {workoutStatus === "completed" ? (
-                      <>
-                        <CheckCircle2 className="size-3" /> Completed
-                      </>
-                    ) : (
-                      "Pending"
-                    )}
-                  </Badge>
+                  {workoutData?.hasActivePlan && (
+                    <Badge variant="outline" className="rounded-full text-xs">
+                      W{workoutData.currentWeek} D{workoutData.currentDay}
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3">
-                {/* Progress Circle */}
-                <div className="flex justify-center py-2">
-                  <CircularProgress
-                    percentage={workoutProgress}
-                    size={80}
-                    strokeWidth={6}
-                    color="text-primary"
-                    value={`${completedExercises}/${exercises.length}`}
-                  />
-                </div>
-
-                {/* Exercise List */}
-                <div className="space-y-2">
-                  {exercises.map((exercise, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => toggleExercise(idx)}
-                      className={`group flex items-center justify-between p-3 rounded-lg border-2 transition-all cursor-pointer ${
-                        exercise.completed
-                          ? "bg-primary/10 border-primary/30 hover:bg-primary/15"
-                          : "bg-muted/30 border-muted hover:border-primary/20 hover:bg-muted/50"
-                      }`}
+              <CardContent className="relative overflow-y-auto max-h-[calc(100%-5rem)]">
+                {!workoutData?.hasActivePlan ? (
+                  <div className="text-center py-12">
+                    <Dumbbell className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground mb-3">
+                      No active plan
+                    </p>
+                    <Button
+                      onClick={() => router.push("/plans/workout")}
+                      size="sm"
+                      className="rounded-full"
                     >
-                      <div className="flex items-center gap-3">
-                        {exercise.completed ? (
-                          <CheckCircle2 className="size-6 text-primary animate-[bounce_0.5s_ease-out]" />
-                        ) : (
-                          <Circle className="size-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                        )}
-                        <div>
-                          <span
-                            className={`text-sm font-medium ${
-                              exercise.completed
-                                ? "line-through text-muted-foreground"
-                                : ""
-                            }`}
-                          >
-                            {exercise.name}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-sm font-medium text-muted-foreground">
-                        {exercise.sets}
-                      </span>
+                      <Plus className="w-3 h-3 mr-1" />
+                      Create Plan
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="p-3 rounded-xl bg-muted/50">
+                      <h3 className="font-bold text-base mb-0.5">
+                        {workoutData.workout?.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        {workoutData.planName}
+                      </p>
                     </div>
-                  ))}
-                </div>
 
-                <Button
-                  className="w-full h-10 text-sm font-semibold shadow-lg hover:shadow-xl transition-all"
-                  variant={
-                    workoutStatus === "completed" ? "outline" : "default"
-                  }
-                  onClick={handleWorkoutComplete}
-                >
-                  {workoutStatus === "completed" ? (
-                    <>
-                      <CheckCircle2 className="size-4" />
-                      Workout Completed! 🎉
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="size-4" />
-                      Complete Full Workout
-                    </>
-                  )}
-                </Button>
+                    {workoutData.workout?.warmup && (
+                      <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                        <p className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wider">
+                          Warm-up
+                        </p>
+                        <p className="text-xs text-foreground/80">
+                          {workoutData.workout.warmup}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      {workoutData.workout?.exercises.map((exercise, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg border bg-card hover:bg-accent/50 transition-all"
+                        >
+                          <p className="font-medium text-sm mb-1">
+                            {exercise.name}
+                          </p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {exercise.sets && (
+                              <Badge
+                                variant="secondary"
+                                className="rounded-full text-[10px] h-5"
+                              >
+                                {exercise.sets} sets
+                              </Badge>
+                            )}
+                            {exercise.reps && (
+                              <Badge
+                                variant="secondary"
+                                className="rounded-full text-[10px] h-5"
+                              >
+                                {exercise.reps} reps
+                              </Badge>
+                            )}
+                            {exercise.duration && (
+                              <Badge
+                                variant="secondary"
+                                className="rounded-full text-[10px] h-5"
+                              >
+                                {exercise.duration}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {workoutData.workout?.cooldown && (
+                      <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                        <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 mb-1 uppercase tracking-wider">
+                          Cool-down
+                        </p>
+                        <p className="text-xs text-foreground/80">
+                          {workoutData.workout.cooldown}
+                        </p>
+                      </div>
+                    )}
+
+                    <Button
+                      onClick={toggleWorkoutComplete}
+                      className="w-full rounded-xl"
+                      size="sm"
+                      variant={workoutData.isCompleted ? "outline" : "default"}
+                    >
+                      {workoutData.isCompleted ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-1" />
+                          Completed
+                        </>
+                      ) : (
+                        <>
+                          <Circle className="w-4 h-4 mr-1" />
+                          Mark Complete
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* Diet Status - Enhanced */}
-            <Card className="relative overflow-hidden border-2 hover:border-secondary/50 transition-all">
-              {showDietCelebration && <CelebrationEffect />}
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/5 rounded-full blur-3xl" />
+            {/* Nutrition Card */}
+            <Card className="h-full border-2 hover:border-green-500/30 transition-all duration-500 bg-linear-to-br from-card to-green-500/5 overflow-hidden group">
+              <div className="absolute inset-0 bg-linear-to-br from-green-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-              <CardHeader className="pb-3">
+              <CardHeader className="relative">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-green-500/20 rounded-xl blur-md animate-pulse" />
-                      <div className="relative p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 border border-green-500/30">
-                        <UtensilsCrossed className="size-5 text-green-500" />
-                      </div>
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-xl bg-green-500/10">
+                      <Apple className="w-4 h-4 text-green-600 dark:text-green-400" />
                     </div>
-                    <div>
-                      <CardTitle className="text-lg font-semibold">
-                        Today's Nutrition
-                      </CardTitle>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Track your meals and macros
-                      </p>
-                    </div>
+                    <CardTitle className="text-lg">Nutrition</CardTitle>
                   </div>
-                  <Badge
-                    variant={dietStatus === "completed" ? "default" : "outline"}
-                    className="text-xs"
-                  >
-                    {dietStatus === "completed" ? (
-                      <>
-                        <CheckCircle2 className="size-3" /> Logged
-                      </>
-                    ) : (
-                      "Pending"
-                    )}
-                  </Badge>
+                  {nutritionData?.hasActivePlan && (
+                    <Dialog
+                      open={mealDialogOpen}
+                      onOpenChange={setMealDialogOpen}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="rounded-full h-8 w-8 p-0"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="rounded-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Log a Meal</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div>
+                            <Label>Meal Type *</Label>
+                            <Input
+                              value={mealType}
+                              onChange={(e) => setMealType(e.target.value)}
+                              placeholder="Breakfast, Lunch..."
+                              className="rounded-xl"
+                            />
+                          </div>
+                          <div>
+                            <Label>Meal Name</Label>
+                            <Input
+                              value={mealName}
+                              onChange={(e) => setMealName(e.target.value)}
+                              placeholder="What did you eat?"
+                              className="rounded-xl"
+                            />
+                          </div>
+                          <div>
+                            <Label>Notes</Label>
+                            <Textarea
+                              value={mealNotes}
+                              onChange={(e) => setMealNotes(e.target.value)}
+                              placeholder="Optional notes..."
+                              rows={3}
+                              className="rounded-xl"
+                            />
+                          </div>
+                          <Button
+                            onClick={logMeal}
+                            className="w-full rounded-xl"
+                          >
+                            Log Meal
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3">
-                {/* Macro Progress - Circular */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="flex flex-col items-center gap-2">
-                    <CircularProgress
-                      percentage={
-                        (dailyCaloriesConsumed / dailyCaloriesTarget) * 100
-                      }
-                      size={70}
-                      strokeWidth={6}
-                      color="text-green-500"
-                      value={`${Math.round(
-                        (dailyCaloriesConsumed / dailyCaloriesTarget) * 100
-                      )}%`}
-                    />
-                    <div className="text-center">
-                      <p className="text-[11px] text-muted-foreground font-medium">
-                        Calories
-                      </p>
-                      <p className="text-xs font-semibold text-foreground">
-                        {dailyCaloriesConsumed}/{dailyCaloriesTarget}
-                      </p>
-                    </div>
+              <CardContent className="relative overflow-y-auto max-h-[calc(100%-5rem)]">
+                {!nutritionData?.hasActivePlan ? (
+                  <div className="text-center py-12">
+                    <Apple className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground mb-3">
+                      No active plan
+                    </p>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push("/plans/nutrition")}
+                      className="rounded-full"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Create Plan
+                    </Button>
                   </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <CircularProgress
-                      percentage={(proteinConsumed / proteinTarget) * 100}
-                      size={70}
-                      strokeWidth={6}
-                      color="text-blue-500"
-                      value={`${proteinConsumed}g`}
-                    />
-                    <div className="text-center">
-                      <p className="text-[11px] text-muted-foreground font-medium">
-                        Protein
-                      </p>
-                      <p className="text-xs font-semibold text-foreground">
-                        {proteinConsumed}/{proteinTarget}g
-                      </p>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-3 rounded-xl bg-linear-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/20">
+                        <p className="text-xl font-bold">
+                          {nutritionData.targets?.calories}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                          Calories
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-linear-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                        <p className="text-xl font-bold">
+                          {nutritionData.targets?.protein}g
+                        </p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                          Protein
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-linear-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                        <p className="text-xl font-bold">
+                          {nutritionData.targets?.carbs}g
+                        </p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                          Carbs
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-linear-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20">
+                        <p className="text-xl font-bold">
+                          {nutritionData.targets?.fats}g
+                        </p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                          Fats
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Meal Tracker */}
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="group p-2.5 rounded-lg bg-gradient-to-br from-amber-500/10 to-amber-500/5 border-2 border-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer hover:scale-105">
-                    <div className="flex flex-col items-center gap-1">
-                      <Coffee className="size-5 text-amber-500 group-hover:animate-bounce" />
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-foreground">
-                          3
+                    {nutritionData.loggedMeals &&
+                      nutritionData.loggedMeals.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                            Recent Meals
+                          </p>
+                          <div className="space-y-1.5">
+                            {nutritionData.loggedMeals
+                              .slice(0, 3)
+                              .map((meal) => (
+                                <div
+                                  key={meal.id}
+                                  className="p-2 rounded-lg bg-muted/50 border border-border/50"
+                                >
+                                  <p className="font-medium text-sm">
+                                    {meal.type}
+                                  </p>
+                                  {meal.name && (
+                                    <p className="text-xs text-muted-foreground truncate">
+                                      {meal.name}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                          </div>
                         </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          Breakfast
-                        </div>
-                        <div className="text-[10px] text-amber-600 font-medium mt-0.5">
-                          650 cal
-                        </div>
-                      </div>
-                    </div>
+                      )}
                   </div>
-                  <div className="group p-2.5 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-2 border-orange-500/20 hover:border-orange-500/40 transition-all cursor-pointer hover:scale-105">
-                    <div className="flex flex-col items-center gap-1">
-                      <Apple className="size-5 text-orange-500 group-hover:animate-bounce" />
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-foreground">
-                          2
-                        </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          Lunch
-                        </div>
-                        <div className="text-[10px] text-orange-600 font-medium mt-0.5">
-                          750 cal
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="group p-2.5 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-500/5 border-2 border-purple-500/20 hover:border-purple-500/40 transition-all cursor-pointer hover:scale-105">
-                    <div className="flex flex-col items-center gap-1">
-                      <Moon className="size-5 text-purple-500 group-hover:animate-bounce" />
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-foreground">
-                          3
-                        </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          Dinner
-                        </div>
-                        <div className="text-[10px] text-purple-600 font-medium mt-0.5">
-                          450 cal
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  className="w-full h-10 text-sm font-semibold shadow-lg hover:shadow-xl transition-all"
-                  variant={dietStatus === "completed" ? "outline" : "default"}
-                  onClick={handleDietComplete}
-                >
-                  {dietStatus === "completed" ? (
-                    <>
-                      <CheckCircle2 className="size-4" />
-                      All Meals Logged! 🍽️
-                    </>
-                  ) : (
-                    <>
-                      <Apple className="size-4" />
-                      Log All Meals
-                    </>
-                  )}
-                </Button>
+                )}
               </CardContent>
             </Card>
           </div>
         </div>
 
         {/* Right Section - 5 columns */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* Today's Progress Stats Card */}
+        <div className="col-span-12 lg:col-span-5 flex flex-col gap-4">
+          {/* Daily Overview Card */}
+          <Card className="flex-1 border-2 hover:border-primary/20 transition-all duration-500 bg-linear-to-br from-card to-muted/10">
+            <CardHeader>
+              <CardTitle className="text-lg">Today&apos;s Overview</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-4 rounded-xl bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <Dumbbell className="w-5 h-5 text-primary" />
+                    <Badge
+                      variant={workoutData?.isCompleted ? "default" : "outline"}
+                      className="text-[10px] h-5"
+                    >
+                      {workoutData?.isCompleted ? "Done" : "Pending"}
+                    </Badge>
+                  </div>
+                  <p className="text-2xl font-bold">
+                    {workoutData?.workout?.exercises.length || 0}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                    Exercises
+                  </p>
+                </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-2 border-purple-500/20 rounded-xl p-4 hover:scale-105 transition-transform cursor-pointer">
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Goal
+                <div className="p-4 rounded-xl bg-linear-to-br from-green-500/10 to-green-500/5 border border-green-500/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <Apple className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <Badge variant="outline" className="text-[10px] h-5">
+                      {nutritionData?.loggedMeals?.length || 0}/3
+                    </Badge>
+                  </div>
+                  <p className="text-2xl font-bold">
+                    {nutritionData?.targets?.calories || 0}
                   </p>
-                  <Target className="size-6 text-purple-500" />
-                </div>
-                <p className="text-2xl font-bold">80%</p>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-2 border-green-500/20 rounded-xl p-4 hover:scale-105 transition-transform cursor-pointer">
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Calories
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                    Cal Target
                   </p>
-                  <Activity className="size-6 text-green-500" />
                 </div>
-                <p className="text-2xl font-bold">{dailyCaloriesConsumed}</p>
               </div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-2 border-blue-500/20 rounded-xl p-4 hover:scale-105 transition-transform cursor-pointer">
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Heart Rate
-                  </p>
-                  <Heart className="size-6 text-blue-500" />
-                </div>
-                <p className="text-2xl font-bold">72</p>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-amber-500/10 to-amber-600/5 border-2 border-amber-500/20 rounded-xl p-4 hover:scale-105 transition-transform cursor-pointer">
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Active Time
-                  </p>
-                  <Award className="size-6 text-amber-500" />
-                </div>
-                <p className="text-2xl font-bold">2:15</p>
-              </div>
-            </div>
-          </div>
 
-          {/* Hydration Tracker Card */}
-          <Card className="border-2 hover:border-blue-500/30 transition-all">
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-blue-500/20 rounded-xl blur-md animate-pulse" />
-                  <div className="relative p-1.5 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 border border-blue-500/30">
-                    <Droplets className="size-4 text-blue-500" />
+              {/* Progress Summary */}
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium">Workout Progress</p>
+                    <p className="text-xs text-muted-foreground">
+                      {workoutData?.isCompleted ? "100%" : "0%"}
+                    </p>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-primary h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: workoutData?.isCompleted ? "100%" : "0%",
+                      }}
+                    />
                   </div>
                 </div>
-                <CardTitle className="text-sm">Hydration Tracker</CardTitle>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium">Hydration Goal</p>
+                    <p className="text-xs text-muted-foreground">
+                      {hydrationData?.percentage || 0}%
+                    </p>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-primary h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(hydrationData?.percentage || 0, 100)}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="pt-2">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
+                  Quick Actions
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => router.push("/ai-trainer/chat")}
+                    className="rounded-xl text-xs h-9"
+                  >
+                    Ask AI Trainer
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => router.push("/plans")}
+                    className="rounded-xl text-xs h-9"
+                  >
+                    View Plans
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Hydration Box - Second Half */}
+          <Card className="flex-1 border-2 hover:border-primary/20 transition-all duration-500 bg-linear-to-br from-card to-primary/5 overflow-hidden group">
+            <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <CardHeader className="relative">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-xl bg-primary/10">
+                    <Droplets className="w-4 h-4 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Hydration</CardTitle>
+                </div>
+                <Dialog
+                  open={targetDialogOpen}
+                  onOpenChange={setTargetDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="rounded-full h-8 w-8 p-0"
+                    >
+                      <Settings className="w-4 h-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="rounded-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Set Daily Target</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Daily Target (ml)</Label>
+                        <Input
+                          type="number"
+                          value={newTarget}
+                          onChange={(e) => setNewTarget(e.target.value)}
+                          placeholder="2000"
+                          className="rounded-xl"
+                        />
+                      </div>
+                      <Button
+                        onClick={updateHydrationTarget}
+                        className="w-full rounded-xl"
+                      >
+                        Update Target
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {/* Center ball with percentage */}
-              <div className="flex flex-col items-center">
-                <div className="relative">
-                  <HydrationBall
-                    current={waterIntake}
-                    target={waterTarget}
-                    compact={true}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-xs font-bold text-blue-600">
-                        {Math.round((waterIntake / waterTarget) * 100)}%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-[11px] text-muted-foreground mt-2 font-medium">
-                  {waterIntake.toFixed(2)}L of {waterTarget}L
-                </div>
-              </div>
 
-              {/* Progress bar */}
-              <div className="relative w-full bg-muted rounded-full h-1.5 overflow-hidden">
-                <div
-                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full transition-all duration-500"
-                  style={{
-                    width: `${Math.min(
-                      (waterIntake / waterTarget) * 100,
-                      100
-                    )}%`,
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/30 animate-pulse" />
+            <CardContent className="relative">
+              <div className="space-y-4">
+                {/* Circular progress */}
+                <div className="relative flex items-center justify-center py-6">
+                  <svg className="w-40 h-40 transform -rotate-90">
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="70"
+                      stroke="currentColor"
+                      strokeWidth="10"
+                      fill="none"
+                      className="text-muted/30"
+                    />
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="70"
+                      stroke="currentColor"
+                      strokeWidth="10"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 70}`}
+                      strokeDashoffset={`${2 * Math.PI * 70 * (1 - (hydrationData?.percentage || 0) / 100)}`}
+                      className="text-primary transition-all duration-1000"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <p className="text-4xl font-bold text-foreground">
+                      {hydrationData?.percentage || 0}%
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {hydrationData?.totalConsumed || 0}ml
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Stats grid */}
-              <div className="grid grid-cols-2 gap-2">
-                <div className="p-2 rounded bg-muted/50 text-center">
-                  <div className="text-[10px] text-muted-foreground font-medium">
-                    Remaining
-                  </div>
-                  <div className="text-xs font-bold mt-0.5">
-                    {(waterTarget - waterIntake).toFixed(2)}L
-                  </div>
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Target: {hydrationData?.dailyTarget || 2000}ml
+                  </p>
                 </div>
-                <div className="p-2 rounded bg-blue-500/10 text-center">
-                  <div className="text-[10px] text-muted-foreground font-medium">
-                    Glasses
-                  </div>
-                  <div className="text-xs font-bold text-blue-600 mt-0.5">
-                    {Math.round(waterIntake * 4)}
-                  </div>
-                </div>
-              </div>
 
-              {/* Quick add buttons */}
-              <div className="flex items-center justify-center gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-8 hover:scale-110 transition-transform hover:bg-blue-500/10 hover:border-blue-500/50"
-                  onClick={decrementWater}
-                  disabled={waterIntake <= 0}
-                >
-                  <Minus className="size-4" />
-                </Button>
-                <div className="text-center px-2.5 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <div className="text-[9px] text-muted-foreground font-medium">
-                    + 0.25L
-                  </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => addWater(250)}
+                    className="rounded-xl"
+                  >
+                    +250ml
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => addWater(500)}
+                    className="rounded-xl"
+                  >
+                    +500ml
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => addWater(1000)}
+                    className="rounded-xl"
+                  >
+                    +1L
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-8 hover:scale-110 transition-transform hover:bg-blue-500/10 hover:border-blue-500/50"
-                  onClick={incrementWater}
-                  disabled={waterIntake >= waterTarget}
-                >
-                  <Plus className="size-4" />
-                </Button>
               </div>
             </CardContent>
           </Card>
