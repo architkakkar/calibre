@@ -18,7 +18,7 @@ import {
   motivationEnum,
   messageRoleEnum,
   planStatusEnum,
-  planActivityStatusEnum,
+  workoutStatusEnum,
 } from "@/lib/server/db/enums";
 
 // USER RELATED TABLES
@@ -118,32 +118,25 @@ export const workoutPlansTable = pgTable("workout_plans", {
   created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 
-export const workoutPlanDaysTable = pgTable("workout_plan_days", {
+export const workoutSessionLogsTable = pgTable("workout_session_logs", {
   id: varchar({ length: 36 }).primaryKey(),
   plan_id: varchar({ length: 36 })
     .notNull()
     .references(() => workoutPlansTable.id, { onDelete: "cascade" }),
-  week_number: integer().notNull(),
-  week_label: varchar({ length: 50 }).notNull(),
-  day_number: integer().notNull(),
-  day_label: varchar({ length: 50 }).notNull(),
-  day_focus: varchar({ length: 255 }).notNull(),
-  is_rest_day: boolean().notNull(),
-  session_intent: varchar({ length: 50 }).notNull(),
-  total_duration_minutes: integer().notNull(),
-});
-
-export const workoutDayActivitiesTable = pgTable("workout_day_activities", {
-  id: varchar({ length: 36 }).primaryKey(),
-  plan_day_id: varchar({ length: 36 })
-    .notNull()
-    .references(() => workoutPlanDaysTable.id, { onDelete: "cascade" }),
   user_id: varchar({ length: 255 })
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
-  plan_activity_status: planActivityStatusEnum().notNull().default("PENDING"),
-  completed_at: timestamp({ withTimezone: true }),
+  week_number: integer().notNull(),
+  day_number: integer().notNull(),
+  is_rest_day: boolean().notNull().default(false),
+  workout_date: timestamp({ withTimezone: true }).notNull(),
+  warmup_completed: boolean().notNull().default(false),
+  main_workout_completed: boolean().notNull().default(false),
+  cooldown_completed: boolean().notNull().default(false),
+  workout_status: workoutStatusEnum().notNull().default("PENDING"),
+  difficulty_rating: integer(),
   notes: text(),
+  completed_at: timestamp({ withTimezone: true }),
   created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
 

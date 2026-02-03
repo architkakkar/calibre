@@ -68,7 +68,7 @@ export const messageRoleEnum = pgEnum("role", ["USER", "ASSISTANT"]);
 
 export const planStatusEnum = pgEnum("plan_status", ["GENERATED", "ARCHIVED"]);
 
-export const planActivityStatusEnum = pgEnum("plan_activity_status", [
+export const workoutStatusEnum = pgEnum("workout_status", [
   "PENDING",
   "COMPLETED",
   "MISSED",
