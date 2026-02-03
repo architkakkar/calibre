@@ -4,15 +4,20 @@
  */
 const API_ROUTES = {
   onboarding: "/onboarding",
-  chat: {
-    byId: "/chat/{chatId}",
-    history: "/chat/history",
+  dashboard: {
+    workout: "/dashboard/workout",
+    nutrition: "/dashboard/nutrition",
+    hydration: "/dashboard/hydration",
   },
   plans: {
     workout: "/plans/workout",
     workoutById: "/plans/workout/{planId}",
     nutrition: "/plans/nutrition",
     nutritionById: "/plans/nutrition/{planId}",
+  },
+  chat: {
+    byId: "/chat/{chatId}",
+    history: "/chat/history",
   },
 } as const;
 
