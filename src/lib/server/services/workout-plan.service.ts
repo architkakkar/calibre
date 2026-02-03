@@ -16,23 +16,25 @@ import {
 import {
   workoutPlanRequestsTable,
   workoutPlansTable,
-  workoutPlanDaysTable,
+  workoutSessionLogsTable,
 } from "@/lib/server/db/schema";
 import { ACTIVE_WORKOUT_PLAN } from "@/lib/templates";
 import { WORKOUT_PLAN_SYSTEM_PROMPT } from "@/lib/server/ai/ai-prompts";
 import { WORKOUT_PLAN_RESPONSE_SCHEMA_VERSION } from "@/lib/server/ai/schema";
 
-type PlanDaysType = {
+type WorkoutSessionLogs = {
   id: string;
   plan_id: string;
+  user_id: string;
   week_number: number;
-  week_label: string;
   day_number: number;
-  day_label: string;
-  day_focus: string;
+  workout_date: Date;
   is_rest_day: boolean;
-  session_intent: string;
-  total_duration_minutes: number;
+  warmup_completed: boolean;
+  main_workout_completed: boolean;
+  cooldown_completed: boolean;
+  workout_status: "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED";
+  completed_at: Date | null;
 };
 
 export async function createWorkoutPlan({
@@ -164,24 +166,6 @@ export async function saveWorkoutPlanToDB({
 
   const requestId = nanoid();
   const planId = nanoid();
-  const planDays: Array<PlanDaysType> = [];
-
-  for (const week of parsed.plan.schedule) {
-    for (const day of week.days) {
-      planDays.push({
-        id: nanoid(),
-        plan_id: planId,
-        week_number: week.week,
-        week_label: week.weekLabel,
-        day_number: day.day,
-        day_label: day.dayLabel,
-        day_focus: day.focus,
-        is_rest_day: day.isRestDay,
-        session_intent: day.sessionIntent,
-        total_duration_minutes: day.totalDurationMinutes,
-      });
-    }
-  }
 
   await db.insert(workoutPlanRequestsTable).values({
     id: requestId,
@@ -210,10 +194,6 @@ export async function saveWorkoutPlanToDB({
     parsed_plan: parsed,
   });
 
-  if (planDays.length > 0) {
-    await db.insert(workoutPlanDaysTable).values(planDays);
-  }
-
   return planId;
 }
 
@@ -224,12 +204,46 @@ export async function activateWorkoutPlan({
   userId: string;
   planId: string;
 }) {
-  // deactivate any currently active plan for the user
+  const plan = await db
+    .select()
+    .from(workoutPlansTable)
+    .where(eq(workoutPlansTable.id, planId))
+    .limit(1);
+
+  if (!plan.length) {
+    throw new Error("Plan not found");
+  }
+
+  const planData = plan[0];
+  const parsedPlan = planData.parsed_plan as WorkoutPlan;
+
+  await deactivateCurrentPlan({ userId });
+
+  const startDate = new Date();
+  startDate.setHours(0, 0, 0, 0); // Start of day
+
+  await db
+    .update(workoutPlansTable)
+    .set({
+      is_active: true,
+      plan_start_date: startDate,
+    })
+    .where(eq(workoutPlansTable.id, planId));
+
+  await prepopulateSessionLogs({
+    userId,
+    planId,
+    parsedPlan,
+    startDate,
+  });
+}
+
+export async function deactivateCurrentPlan({ userId }: { userId: string }) {
   await db
     .update(workoutPlansTable)
     .set({
       is_active: false,
-      plan_status: "ARCHIVED",
+      plan_start_date: null,
     })
     .where(
       and(
@@ -237,15 +251,57 @@ export async function activateWorkoutPlan({
         eq(workoutPlansTable.is_active, true),
       ),
     );
+}
 
-  // activate the selected plan
-  await db
-    .update(workoutPlansTable)
-    .set({
-      is_active: true,
-      plan_start_date: new Date(),
-    })
-    .where(eq(workoutPlansTable.id, planId));
+export async function prepopulateSessionLogs({
+  planId,
+  userId,
+  parsedPlan,
+  startDate,
+}: {
+  planId: string;
+  userId: string;
+  parsedPlan: WorkoutPlan;
+  startDate: Date;
+}) {
+  /*
+    Status flow:
+    - PENDING: Today or future, not yet completed
+    - COMPLETED: User marked complete
+    - SKIPPED: Rest day (no user action required)
+    - MISSED: Past date with PENDING status (requires CRON job to update)
+  */
+  const sessionLogs: Array<WorkoutSessionLogs> = [];
+
+  for (const week of parsedPlan.plan.schedule) {
+    for (const day of week.days) {
+      const dayDate = new Date(startDate);
+      // Calculate the date: (week - 1) * 7 + (day - 1) days from start
+      const daysOffset = (week.week - 1) * 7 + (day.day - 1);
+      dayDate.setDate(startDate.getDate() + daysOffset);
+
+      const isRestDay = day.isRestDay || false;
+
+      sessionLogs.push({
+        id: nanoid(),
+        plan_id: planId,
+        user_id: userId,
+        week_number: week.week,
+        day_number: day.day,
+        workout_date: dayDate,
+        is_rest_day: isRestDay,
+        warmup_completed: false,
+        main_workout_completed: false,
+        cooldown_completed: false,
+        workout_status: isRestDay ? "SKIPPED" : "PENDING",
+        completed_at: null,
+      });
+    }
+  }
+
+  if (sessionLogs.length > 0) {
+    await db.insert(workoutSessionLogsTable).values(sessionLogs);
+  }
 }
 
 export async function checkIfFirstWorkoutPlanForUser({
