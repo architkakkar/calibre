@@ -125,7 +125,7 @@ export function WorkoutPlanViewDialog({
                     className="gap-2 text-primary"
                   >
                     <HugeiconsIcon icon={RepeatIcon} className="h-4 w-4" />
-                    Alternatives
+                    <span className="hidden xs:block">Alternatives</span>
                   </Button>
                 </div>
               )}

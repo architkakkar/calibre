@@ -112,7 +112,7 @@ export function NutritionPlanViewDialog({
                     className="gap-2 text-primary"
                   >
                     <HugeiconsIcon icon={RepeatIcon} className="h-4 w-4" />
-                    Substitutions
+                    <span className="hidden xs:block">Substitutions</span>
                   </Button>
                 </div>
               )}

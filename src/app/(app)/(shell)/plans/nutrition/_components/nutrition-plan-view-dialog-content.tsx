@@ -1,5 +1,4 @@
 import { MealTemplate } from "@/lib/validators/nutrition-plan.validator";
-import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Sun02Icon,
@@ -76,7 +75,7 @@ export function NutritionPlanViewDialogContent({
   return (
     <>
       <div className="pl-18 lg:pl-5 p-5 border-b border-border bg-linear-to-r from-card/80 to-background">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 pt-1.5">
           <div
             className={`p-2.5 rounded-xl border ${config.bg} ${config.color} border-current/20`}
           >
@@ -101,67 +100,68 @@ export function NutritionPlanViewDialogContent({
               key={idx}
               className="p-6 rounded-xl border border-border/50 bg-card shadow-sm hover:border-border/80 transition-colors"
             >
-              <div className="flex items-start gap-4 mb-5 pb-5 border-b border-border/50">
-                <div
-                  className={`flex items-center justify-center w-12 h-12 rounded-xl ${config.bg} ${config.color} font-bold text-lg shrink-0 shadow-sm border border-current/20`}
-                >
-                  {idx + 1}
+              <div>
+                <div className="flex items-center gap-4 border-b border-border/50">
+                  <div
+                    className={`flex items-center justify-center w-12 h-12 rounded-xl ${config.bg} ${config.color} font-bold text-lg shrink-0 shadow-sm border border-current/20`}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-foreground">
+                      {option.mealName}
+                    </h3>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg text-foreground mb-3">
-                    {option.mealName}
-                  </h3>
-
-                  {/* Macros */}
-                  <div className="grid grid-cols-4 gap-3">
-                    <div
-                      className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                {/* Macros */}
+                <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-3 py-4">
+                  <div
+                    className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                  >
+                    <p className="text-2xl font-bold text-foreground mb-1">
+                      {option.estimatedMacros.proteinGrams}g
+                    </p>
+                    <p
+                      className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
                     >
-                      <p className="text-2xl font-bold text-foreground mb-1">
-                        {option.estimatedMacros.proteinGrams}g
-                      </p>
-                      <p
-                        className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
-                      >
-                        Protein
-                      </p>
-                    </div>
-                    <div
-                      className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                      Protein
+                    </p>
+                  </div>
+                  <div
+                    className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                  >
+                    <p className="text-2xl font-bold text-foreground mb-1">
+                      {option.estimatedMacros.carbsGrams}g
+                    </p>
+                    <p
+                      className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
                     >
-                      <p className="text-2xl font-bold text-foreground mb-1">
-                        {option.estimatedMacros.carbsGrams}g
-                      </p>
-                      <p
-                        className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
-                      >
-                        Carbs
-                      </p>
-                    </div>
-                    <div
-                      className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                      Carbs
+                    </p>
+                  </div>
+                  <div
+                    className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                  >
+                    <p className="text-2xl font-bold text-foreground mb-1">
+                      {option.estimatedMacros.fatsGrams}g
+                    </p>
+                    <p
+                      className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
                     >
-                      <p className="text-2xl font-bold text-foreground mb-1">
-                        {option.estimatedMacros.fatsGrams}g
-                      </p>
-                      <p
-                        className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
-                      >
-                        Fats
-                      </p>
-                    </div>
-                    <div
-                      className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                      Fats
+                    </p>
+                  </div>
+                  <div
+                    className={`text-center p-4 rounded-xl border ${config.macroBorder} bg-linear-to-br ${config.macroGradient}`}
+                  >
+                    <p className="text-2xl font-bold text-foreground mb-1">
+                      {option.estimatedMacros.calories}
+                    </p>
+                    <p
+                      className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
                     >
-                      <p className="text-2xl font-bold text-foreground mb-1">
-                        {option.estimatedMacros.calories}
-                      </p>
-                      <p
-                        className={`text-xs ${config.macroText} uppercase tracking-wider font-semibold`}
-                      >
-                        Calories
-                      </p>
-                    </div>
+                      Calories
+                    </p>
                   </div>
                 </div>
               </div>
