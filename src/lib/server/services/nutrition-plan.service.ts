@@ -1,3 +1,5 @@
+import "server-only";
+
 import { nanoid } from "nanoid";
 import { generateText } from "ai";
 import { openrouter } from "@/lib/server/open-router";
