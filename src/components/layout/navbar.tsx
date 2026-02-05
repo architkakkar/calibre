@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { SignOutButton } from "@clerk/nextjs";
+import { useGlobalStore } from "@/stores/global.store";
 import { AppLogo } from "@/components/common/app-logo";
 import { NotificationPopup } from "@/components/layout/notification-popup";
-import { StreakActivityPopup } from "@/components/layout/streak-activity-popup";
+// import { StreakActivityPopup } from "@/components/layout/streak-activity-popup";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,9 +29,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  CoinsDollarIcon,
+  // CoinsDollarIcon,
   Notification01Icon,
-  SparklesIcon,
+  // SparklesIcon,
   Home03Icon,
   Notebook02Icon,
   AiChat02Icon,
@@ -45,8 +46,13 @@ import {
 export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const firstName = "Archit Kakkar";
+  const { user, fetchUser } = useGlobalStore();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Fetch user data on mount
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   // Close sidebar on route change
   useEffect(() => {
@@ -160,17 +166,17 @@ export function Navbar() {
         {/* Right Section */}
         <div className="flex items-center gap-3 text-foreground">
           {/* Upgrade - Desktop Only */}
-          <Badge
+          {/* <Badge
             variant="secondary"
             onClick={() => router.push("/upgrade")}
             className="hidden lg:flex h-7 gap-1.5 rounded-tl rounded-lg px-3 text-xs font-semibold bg-linear-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
           >
             <HugeiconsIcon icon={SparklesIcon} />
             Upgrade
-          </Badge>
+          </Badge> */}
 
           {/* Streak & Coins - Tablet & Desktop (hidden on mobile) */}
-          <div className="items-center hidden gap-2 sm:flex">
+          {/* <div className="items-center hidden gap-2 sm:flex">
             <StreakActivityPopup />
             <div className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-foreground transition-all flex items-center justify-center">
               <HugeiconsIcon
@@ -179,7 +185,7 @@ export function Navbar() {
               />
               <span className="hidden lg:inline">120</span>
             </div>
-          </div>
+          </div> */}
 
           {/* Notifications - Tablet & Desktop (hidden on mobile) */}
           <NotificationPopup />
@@ -209,8 +215,8 @@ export function Navbar() {
               sideOffset={8}
               className="p-1.5 min-w-44"
             >
-              <div className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold text-foreground">
-                Hello, {firstName}
+              <div className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold text-foreground capitalize">
+                Hello, {user?.firstName + " " + user?.lastName || "User"}
               </div>
 
               <DropdownMenuSeparator />

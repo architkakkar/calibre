@@ -2,6 +2,7 @@ import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
 import { eq } from "drizzle-orm";
+import { currentUser } from "@clerk/nextjs/server";
 import { updateClerkUserMetadata } from "@/lib/server/services/clerk.service";
 import {
   usersTable,
@@ -12,6 +13,7 @@ import {
   UserProfile,
   FitnessGoals,
 } from "@/lib/validators/onboarding.validator";
+import type { UserResponse } from "@/lib/validators/user.validator";
 import {
   GENDER_MAP,
   ACTIVITY_LEVEL_MAP,
@@ -21,6 +23,21 @@ import {
   WEEKLY_FREQUENCY_MAP,
   MOTIVATION_MAP,
 } from "@/lib/domain/onboarding.helpers";
+
+export async function getUser(): Promise<UserResponse | null> {
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    firstName: user.firstName || "User",
+    lastName: user.lastName || null,
+    email: user.emailAddresses[0]?.emailAddress || "",
+    imageUrl: user.imageUrl || null,
+  };
+}
 
 export async function createUser({ id, email }: { id: string; email: string }) {
   if (!id || !email) {
