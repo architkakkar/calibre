@@ -130,7 +130,7 @@ export default function DashboardPage() {
           <Greeting />
 
           {/* Two Equal Cards - Workout & Nutrition */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 min-h-[calc(100dvh-267.5px)] max-h-[calc(100dvh-267.5px)]">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 min-h-[calc(100dvh-260px)] max-h-[calc(100dvh-260px)]">
             <WorkoutCard
               data={workoutData}
               onToggleComplete={handleWorkoutComplete}
@@ -143,7 +143,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Right Section - 5 columns */}
-        <div className="col-span-12 lg:col-span-5 flex flex-col gap-2 md:gap-4">
+        <div className="col-span-12 lg:col-span-5 flex flex-col gap-2 md:gap-4 h-[calc(100dvh-110px)]">
           <OverviewCard
             workoutData={workoutData}
             nutritionData={nutritionData}
