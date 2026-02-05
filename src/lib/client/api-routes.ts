@@ -8,6 +8,7 @@ const API_ROUTES = {
     workout: "/dashboard/workout",
     nutrition: "/dashboard/nutrition",
     hydration: "/dashboard/hydration",
+    overview: "/dashboard/overview",
   },
   plans: {
     workout: "/plans/workout",

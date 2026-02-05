@@ -5,6 +5,7 @@ import type {
   CompleteMealResponse,
   AddWaterResponse,
   UpdateHydrationTargetResponse,
+  OverviewStatsResponse,
 } from "@/lib/validators/dashboard.validator";
 
 // Workout API
@@ -71,5 +72,11 @@ export async function updateHydrationTargetApi(
   const response = await apiClient.patch(API_ROUTES.dashboard.hydration, {
     dailyTargetMl,
   });
+  return response.data;
+}
+
+// Overview Stats API
+export async function getOverviewStatsApi(): Promise<OverviewStatsResponse> {
+  const response = await apiClient.get(API_ROUTES.dashboard.overview);
   return response.data;
 }

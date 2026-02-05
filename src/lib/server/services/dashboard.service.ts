@@ -34,6 +34,7 @@ import {
   type AddWaterResponse,
   type UpdateHydrationTargetInput,
   type UpdateHydrationTargetResponse,
+  type OverviewStatsResponse,
 } from "@/lib/validators/dashboard.validator";
 import { WorkoutPlan } from "@/lib/validators/workout-plan.validator";
 
@@ -441,5 +442,84 @@ export async function updateHydrationTarget(
 
   return {
     success: true,
+  };
+}
+
+// OVERVIEW STATS FUNCTIONS
+export async function getOverviewStats({
+  userId,
+}: {
+  userId: string;
+}): Promise<OverviewStatsResponse> {
+  // Get total completed workouts (lifetime)
+  const completedWorkouts = await db
+    .select()
+    .from(workoutSessionLogsTable)
+    .where(
+      and(
+        eq(workoutSessionLogsTable.user_id, userId),
+        eq(workoutSessionLogsTable.workout_status, "COMPLETED"),
+      ),
+    );
+
+  // Get total logged meals (COMPLETED status, lifetime)
+  const completedMeals = await db
+    .select()
+    .from(nutritionMealLogsTable)
+    .where(
+      and(
+        eq(nutritionMealLogsTable.user_id, userId),
+        eq(nutritionMealLogsTable.meal_status, "COMPLETED"),
+      ),
+    );
+
+  // Get total water consumed (lifetime, in liters)
+  const waterLogs = await db
+    .select()
+    .from(hydrationLogsTable)
+    .where(eq(hydrationLogsTable.user_id, userId));
+
+  const totalWaterMl = waterLogs.reduce((sum, log) => sum + log.amount_ml, 0);
+  const totalWaterLiters = Math.round((totalWaterMl / 1000) * 10) / 10; // Round to 1 decimal
+
+  // Calculate current streak (consecutive days with any activity)
+  // Get all unique dates with activity
+  const workoutDates = completedWorkouts.map(
+    (w) => new Date(w.workout_date).toISOString().split("T")[0],
+  );
+  const mealDates = completedMeals.map(
+    (m) => new Date(m.logged_at).toISOString().split("T")[0],
+  );
+  const waterDates = waterLogs.map(
+    (w) => new Date(w.logged_at).toISOString().split("T")[0],
+  );
+
+  const allActivityDates = new Set([
+    ...workoutDates,
+    ...mealDates,
+    ...waterDates,
+  ]);
+  const sortedDates = Array.from(allActivityDates).sort().reverse();
+
+  // Calculate streak from today backwards
+  let currentStreak = 0;
+  let checkDate = new Date();
+  checkDate = addDays.call(checkDate, 2); // Apply same offset as other functions
+
+  while (true) {
+    const dateStr = checkDate.toISOString().split("T")[0];
+    if (sortedDates.includes(dateStr)) {
+      currentStreak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return {
+    currentStreak,
+    totalWorkoutsCompleted: completedWorkouts.length,
+    totalMealsLogged: completedMeals.length,
+    totalWaterLiters,
   };
 }

@@ -3,6 +3,7 @@ import type {
   TodayWorkoutResponse as WorkoutData,
   TodayNutritionResponse as NutritionData,
   TodayHydrationResponse as HydrationData,
+  OverviewStatsResponse as OverviewData,
 } from "@/lib/validators/dashboard.validator";
 import {
   getTodayWorkoutApi,
@@ -12,6 +13,7 @@ import {
   getTodayHydrationApi,
   addWaterApi,
   updateHydrationTargetApi,
+  getOverviewStatsApi,
 } from "@/lib/client/api/dashboard.api";
 
 interface DashboardState {
@@ -19,6 +21,7 @@ interface DashboardState {
   workoutData: WorkoutData | null;
   nutritionData: NutritionData | null;
   hydrationData: HydrationData | null;
+  overviewData: OverviewData | null;
   loading: boolean;
 
   // Actions
@@ -51,20 +54,23 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   workoutData: null,
   nutritionData: null,
   hydrationData: null,
+  overviewData: null,
   loading: true,
 
   fetchDashboardData: async () => {
     set({ loading: true });
-    const [workout, nutrition, hydration] = await Promise.all([
+    const [workout, nutrition, hydration, overview] = await Promise.all([
       getTodayWorkoutApi(),
       getTodayNutritionApi(),
       getTodayHydrationApi(),
+      getOverviewStatsApi(),
     ]);
 
     set({
       workoutData: workout,
       nutritionData: nutrition,
       hydrationData: hydration,
+      overviewData: overview,
       loading: false,
     });
   },
@@ -152,6 +158,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       workoutData: null,
       nutritionData: null,
       hydrationData: null,
+      overviewData: null,
       loading: true,
     }),
 }));
+
+export type { WorkoutData, NutritionData, HydrationData, OverviewData };

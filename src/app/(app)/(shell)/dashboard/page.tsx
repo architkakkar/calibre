@@ -14,6 +14,7 @@ export default function DashboardPage() {
     workoutData,
     nutritionData,
     hydrationData,
+    overviewData,
     loading,
     fetchDashboardData,
     toggleWorkoutComplete,
@@ -142,7 +143,7 @@ export default function DashboardPage() {
           <Greeting />
 
           {/* Two Equal Cards - Workout & Nutrition */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 min-h-[calc(100dvh-260px)] max-h-[calc(100dvh-260px)]">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 md:min-h-[calc(100dvh-260px)] md:max-h-[calc(100dvh-260px)]">
             <WorkoutCard
               data={workoutData}
               onToggleComplete={handleWorkoutComplete}
@@ -156,11 +157,7 @@ export default function DashboardPage() {
 
         {/* Right Section - 5 columns */}
         <div className="col-span-12 lg:col-span-5 flex flex-col gap-2 md:gap-4 h-[calc(100dvh-110px)]">
-          <OverviewCard
-            workoutData={workoutData}
-            nutritionData={nutritionData}
-            hydrationData={hydrationData}
-          />
+          <OverviewCard data={overviewData} />
           <HydrationCard
             data={hydrationData}
             onAddWater={handleAddWater}

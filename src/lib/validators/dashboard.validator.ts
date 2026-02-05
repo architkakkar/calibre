@@ -212,3 +212,13 @@ export type UpdateHydrationTargetInput = z.infer<
 export type UpdateHydrationTargetResponse = z.infer<
   typeof updateHydrationTargetResponseSchema
 >;
+
+// OVERVIEW STATS
+export const overviewStatsResponseSchema = z.object({
+  currentStreak: z.number(),
+  totalWorkoutsCompleted: z.number(),
+  totalMealsLogged: z.number(),
+  totalWaterLiters: z.number(),
+});
+
+export type OverviewStatsResponse = z.infer<typeof overviewStatsResponseSchema>;
