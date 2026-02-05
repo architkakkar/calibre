@@ -19,6 +19,7 @@ import {
   messageRoleEnum,
   planStatusEnum,
   workoutStatusEnum,
+  mealStatusEnum,
 } from "@/lib/server/db/enums";
 
 // USER RELATED TABLES
@@ -200,6 +201,11 @@ export const nutritionMealLogsTable = pgTable("nutrition_meal_logs", {
     .references(() => usersTable.id, { onDelete: "cascade" }),
   meal_type: varchar({ length: 20 }).notNull(),
   meal_name: varchar({ length: 255 }),
+  calories: integer(),
+  protein_grams: integer(),
+  carbs_grams: integer(),
+  fats_grams: integer(),
   notes: text(),
+  meal_status: mealStatusEnum().notNull().default("PENDING"),
   logged_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });

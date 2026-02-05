@@ -17,7 +17,7 @@ export default function DashboardPage() {
     loading,
     fetchDashboardData,
     toggleWorkoutComplete,
-    logMeal,
+    completeMeal,
     addWater,
     updateHydrationTarget,
   } = useDashboardStore();
@@ -52,19 +52,28 @@ export default function DashboardPage() {
     }
   };
 
-  const handleLogMeal = async (payload: {
+  const handleCompleteMeal = async (payload: {
     mealType: string;
-    mealName: string;
-    notes: string;
-  }) => {
+    mealName?: string;
+    calories?: number;
+    proteinGrams?: number;
+    carbsGrams?: number;
+    fatsGrams?: number;
+    notes?: string;
+    status?: "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED";
+  }): Promise<{ success: boolean; mealId: string } | undefined> => {
     try {
-      await logMeal(payload);
-      toast.success("Meal logged successfully!");
+      const result = await completeMeal(payload);
+      if (result) {
+        toast.success("Meal logged successfully! 🍽️");
+      }
+      return result;
     } catch (error) {
-      console.error("Error logging meal:", error);
+      console.error("Error completing meal:", error);
       toast.error(
         error instanceof Error ? error.message : "Failed to log meal",
       );
+      return undefined;
     }
   };
 
@@ -126,7 +135,10 @@ export default function DashboardPage() {
               data={workoutData}
               onToggleComplete={handleWorkoutComplete}
             />
-            <NutritionCard data={nutritionData} onLogMeal={handleLogMeal} />
+            <NutritionCard
+              data={nutritionData}
+              onCompleteMeal={handleCompleteMeal}
+            />
           </div>
         </div>
 

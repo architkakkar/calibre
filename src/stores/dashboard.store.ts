@@ -1,32 +1,17 @@
 import { create } from "zustand";
-import type { TodayWorkoutResponse as WorkoutData } from "@/lib/validators/dashboard.validator";
+import type {
+  TodayWorkoutResponse as WorkoutData,
+  TodayNutritionResponse as NutritionData,
+} from "@/lib/validators/dashboard.validator";
 import {
   getTodayWorkoutApi,
   completeWorkoutApi,
   getTodayNutritionApi,
-  logMealApi,
+  completeMealApi,
   getTodayHydrationApi,
   addWaterApi,
   updateHydrationTargetApi,
 } from "@/lib/client/api/dashboard.api";
-
-export interface NutritionData {
-  hasActivePlan: boolean;
-  planName?: string;
-  planDayId?: string;
-  targets?: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    fats: number;
-  };
-  loggedMeals?: Array<{
-    id: string;
-    type: string;
-    name: string;
-    notes: string;
-  }>;
-}
 
 export interface HydrationData {
   dailyTarget: number;
@@ -48,11 +33,16 @@ interface DashboardState {
     mainWorkout: boolean;
     cooldown: boolean;
   }) => Promise<{ success: boolean; status: string } | undefined>;
-  logMeal: (payload: {
+  completeMeal: (payload: {
     mealType: string;
-    mealName: string;
-    notes: string;
-  }) => Promise<void>;
+    mealName?: string;
+    calories?: number;
+    proteinGrams?: number;
+    carbsGrams?: number;
+    fatsGrams?: number;
+    notes?: string;
+    status?: "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED";
+  }) => Promise<{ success: boolean; mealId: string } | undefined>;
   addWater: (amount: number) => Promise<void>;
   updateHydrationTarget: (target: number) => Promise<void>;
   reset: () => void;
@@ -102,22 +92,34 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     return result;
   },
 
-  logMeal: async (payload: {
+  completeMeal: async (payload: {
     mealType: string;
-    mealName: string;
-    notes: string;
-  }) => {
+    mealName?: string;
+    calories?: number;
+    proteinGrams?: number;
+    carbsGrams?: number;
+    fatsGrams?: number;
+    notes?: string;
+    status?: "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED";
+  }): Promise<{ success: boolean; mealId: string } | undefined> => {
     const { nutritionData, fetchDashboardData } = get();
-    if (!nutritionData?.planDayId || !payload.mealType) {
-      throw new Error("Please fill in all required fields");
-    }
 
-    await logMealApi({
+    if (
+      !nutritionData ||
+      !nutritionData.hasActivePlan ||
+      !nutritionData.planDayId
+    )
+      return;
+
+    const result = await completeMealApi({
       planDayId: nutritionData.planDayId,
       ...payload,
     });
 
+    // Refresh data
     await fetchDashboardData();
+
+    return result;
   },
 
   addWater: async (amount: number) => {

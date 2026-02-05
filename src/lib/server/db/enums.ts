@@ -74,3 +74,10 @@ export const workoutStatusEnum = pgEnum("workout_status", [
   "MISSED",
   "SKIPPED",
 ]);
+
+export const mealStatusEnum = pgEnum("meal_status", [
+  "PENDING",
+  "COMPLETED",
+  "SKIPPED",
+  "MISSED",
+]);

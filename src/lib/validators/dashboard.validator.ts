@@ -82,3 +82,87 @@ export type CompleteWorkoutInput = z.infer<typeof completeWorkoutInputSchema>;
 export type CompleteWorkoutResponse = z.infer<
   typeof completeWorkoutResponseSchema
 >;
+
+// NUTRITION VALIDATORS
+export const mealStatusSchema = z.enum([
+  "PENDING",
+  "COMPLETED",
+  "SKIPPED",
+  "MISSED",
+]);
+
+export const mealLogSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  name: z.string().nullable(),
+  calories: z.number().nullable(),
+  proteinGrams: z.number().nullable(),
+  carbsGrams: z.number().nullable(),
+  fatsGrams: z.number().nullable(),
+  notes: z.string().nullable(),
+  status: mealStatusSchema,
+  loggedAt: z.date(),
+});
+
+export const nutritionTargetsSchema = z.object({
+  calories: z.number(),
+  protein: z.number(),
+  carbs: z.number(),
+  fats: z.number(),
+});
+
+export const nutritionProgressSchema = z.object({
+  calories: z.number(),
+  protein: z.number(),
+  carbs: z.number(),
+  fats: z.number(),
+});
+
+export const todayNutritionResponseSchema = z.discriminatedUnion(
+  "hasActivePlan",
+  [
+    // no active plan case
+    z.object({
+      hasActivePlan: z.literal(false),
+    }),
+    // active plan case
+    z.object({
+      hasActivePlan: z.literal(true),
+      planName: z.string(),
+      planDayId: z.string(),
+      targets: nutritionTargetsSchema,
+      progress: nutritionProgressSchema,
+      mealsCompleted: z.number(),
+      totalMeals: z.number(),
+      meals: z.array(mealLogSchema),
+    }),
+  ],
+);
+
+export const completeMealInputSchema = z.object({
+  userId: z.string(),
+  planDayId: z.string(),
+  mealType: z.string(),
+  mealName: z.string().optional(),
+  calories: z.number().optional(),
+  proteinGrams: z.number().optional(),
+  carbsGrams: z.number().optional(),
+  fatsGrams: z.number().optional(),
+  notes: z.string().optional(),
+  status: mealStatusSchema.default("COMPLETED"),
+});
+
+export const completeMealResponseSchema = z.object({
+  success: z.boolean(),
+  mealId: z.string(),
+});
+
+export type MealStatus = z.infer<typeof mealStatusSchema>;
+export type MealLog = z.infer<typeof mealLogSchema>;
+export type NutritionTargets = z.infer<typeof nutritionTargetsSchema>;
+export type NutritionProgress = z.infer<typeof nutritionProgressSchema>;
+export type TodayNutritionResponse = z.infer<
+  typeof todayNutritionResponseSchema
+>;
+export type CompleteMealInput = z.infer<typeof completeMealInputSchema>;
+export type CompleteMealResponse = z.infer<typeof completeMealResponseSchema>;

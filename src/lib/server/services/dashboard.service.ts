@@ -1,17 +1,30 @@
 import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
-import { eq, and } from "drizzle-orm";
+import { eq, and, gte, lte } from "drizzle-orm";
 import {
   workoutPlansTable,
   workoutSessionLogsTable,
+  nutritionPlansTable,
+  nutritionPlanDaysTable,
+  nutritionMealLogsTable,
 } from "@/lib/server/db/schema";
-import { addDays, extractWorkoutFromParsedPlan } from "@/lib/domain/dashboard.helpers";
+import {
+  addDays,
+  extractWorkoutFromParsedPlan,
+  extractMealsFromParsedPlan,
+  extractTargetsFromParsedPlan,
+  calculateNutritionProgress,
+} from "@/lib/domain/dashboard.helpers";
 import {
   completeWorkoutInputSchema,
+  completeMealInputSchema,
   type TodayWorkoutResponse,
   type CompleteWorkoutInput,
   type CompleteWorkoutResponse,
+  type TodayNutritionResponse,
+  type CompleteMealInput,
+  type CompleteMealResponse,
 } from "@/lib/validators/dashboard.validator";
 import { WorkoutPlan } from "@/lib/validators/workout-plan.validator";
 
@@ -133,5 +146,157 @@ export async function completeWorkout(
   return {
     success: true,
     status: allSectionsComplete ? "COMPLETED" : "PENDING",
+  };
+}
+
+export async function getTodayNutrition({
+  userId,
+}: {
+  userId: string;
+}): Promise<TodayNutritionResponse> {
+  let today = new Date();
+  today = addDays.call(today, 2); // for testing purposes only
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Get active nutrition plan
+  const activePlan = await db
+    .select()
+    .from(nutritionPlansTable)
+    .where(
+      and(
+        eq(nutritionPlansTable.user_id, userId),
+        eq(nutritionPlansTable.is_active, true),
+      ),
+    )
+    .limit(1);
+
+  if (!activePlan.length) {
+    return { hasActivePlan: false };
+  }
+
+  const plan = activePlan[0];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const parsedPlan: any = plan.parsed_plan;
+
+  // Get or create today's nutrition day
+  let todayPlanDay = await db
+    .select()
+    .from(nutritionPlanDaysTable)
+    .where(
+      and(
+        eq(nutritionPlanDaysTable.plan_id, plan.id),
+        eq(nutritionPlanDaysTable.user_id, userId),
+        gte(nutritionPlanDaysTable.date, today),
+        lte(nutritionPlanDaysTable.date, tomorrow),
+      ),
+    )
+    .limit(1);
+
+  if (!todayPlanDay.length) {
+    // Create today's entry
+    const newDay = await db
+      .insert(nutritionPlanDaysTable)
+      .values({
+        id: crypto.randomUUID(),
+        plan_id: plan.id,
+        user_id: userId,
+        date: today,
+      })
+      .returning();
+
+    todayPlanDay = newDay;
+  }
+
+  const planDayId = todayPlanDay[0].id;
+
+  // Get today's meal logs
+  const mealLogs = await db
+    .select()
+    .from(nutritionMealLogsTable)
+    .where(
+      and(
+        eq(nutritionMealLogsTable.plan_day_id, planDayId),
+        eq(nutritionMealLogsTable.user_id, userId),
+      ),
+    );
+
+  // Extract targets and meals from parsed plan
+  const targets = extractTargetsFromParsedPlan({ parsedPlan });
+  const mealTemplates = extractMealsFromParsedPlan({ parsedPlan });
+
+  // Calculate progress
+  const progress = calculateNutritionProgress(mealLogs);
+
+  // Count completed meals
+  const mealsCompleted = mealLogs.filter(
+    (log) => log.meal_status === "COMPLETED",
+  ).length;
+  const totalMeals = mealTemplates.length;
+
+  return {
+    hasActivePlan: true,
+    planName: plan.plan_name,
+    planDayId,
+    targets,
+    progress,
+    mealsCompleted,
+    totalMeals,
+    meals: mealLogs.map((log) => ({
+      id: log.id,
+      type: log.meal_type,
+      name: log.meal_name,
+      calories: log.calories,
+      proteinGrams: log.protein_grams,
+      carbsGrams: log.carbs_grams,
+      fatsGrams: log.fats_grams,
+      notes: log.notes,
+      status: log.meal_status as "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED",
+      loggedAt: log.logged_at,
+    })),
+  };
+}
+
+/**
+ * Complete/log a meal
+ */
+export async function completeMeal(
+  input: CompleteMealInput,
+): Promise<CompleteMealResponse> {
+  // Validate input
+  const validated = completeMealInputSchema.parse(input);
+  const {
+    userId,
+    planDayId,
+    mealType,
+    mealName,
+    calories,
+    proteinGrams,
+    carbsGrams,
+    fatsGrams,
+    notes,
+    status,
+  } = validated;
+
+  const mealId = crypto.randomUUID();
+
+  await db.insert(nutritionMealLogsTable).values({
+    id: mealId,
+    plan_day_id: planDayId,
+    user_id: userId,
+    meal_type: mealType,
+    meal_name: mealName || null,
+    calories: calories || null,
+    protein_grams: proteinGrams || null,
+    carbs_grams: carbsGrams || null,
+    fats_grams: fatsGrams || null,
+    notes: notes || null,
+    meal_status: status,
+  });
+
+  return {
+    success: true,
+    mealId,
   };
 }
