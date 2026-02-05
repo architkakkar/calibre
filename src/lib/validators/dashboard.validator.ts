@@ -166,3 +166,49 @@ export type TodayNutritionResponse = z.infer<
 >;
 export type CompleteMealInput = z.infer<typeof completeMealInputSchema>;
 export type CompleteMealResponse = z.infer<typeof completeMealResponseSchema>;
+
+// HYDRATION VALIDATORS
+export const hydrationLogSchema = z.object({
+  id: z.string(),
+  amountMl: z.number(),
+  loggedAt: z.date(),
+});
+
+export const todayHydrationResponseSchema = z.object({
+  dailyTargetMl: z.number(),
+  totalConsumedMl: z.number(),
+  percentage: z.number(),
+  logs: z.array(hydrationLogSchema),
+});
+
+export const addWaterInputSchema = z.object({
+  userId: z.string(),
+  amountMl: z.number().min(1),
+});
+
+export const addWaterResponseSchema = z.object({
+  success: z.boolean(),
+  logId: z.string(),
+});
+
+export const updateHydrationTargetInputSchema = z.object({
+  userId: z.string(),
+  dailyTargetMl: z.number().min(1),
+});
+
+export const updateHydrationTargetResponseSchema = z.object({
+  success: z.boolean(),
+});
+
+export type HydrationLog = z.infer<typeof hydrationLogSchema>;
+export type TodayHydrationResponse = z.infer<
+  typeof todayHydrationResponseSchema
+>;
+export type AddWaterInput = z.infer<typeof addWaterInputSchema>;
+export type AddWaterResponse = z.infer<typeof addWaterResponseSchema>;
+export type UpdateHydrationTargetInput = z.infer<
+  typeof updateHydrationTargetInputSchema
+>;
+export type UpdateHydrationTargetResponse = z.infer<
+  typeof updateHydrationTargetResponseSchema
+>;

@@ -77,25 +77,37 @@ export default function DashboardPage() {
     }
   };
 
-  const handleAddWater = async (amount: number) => {
+  const handleAddWater = async (
+    amount: number,
+  ): Promise<{ success: boolean; logId: string } | undefined> => {
     try {
-      await addWater(amount);
-      toast.success(`Added ${amount}ml 💧`);
+      const result = await addWater(amount);
+      if (result) {
+        toast.success(`Added ${amount}ml 💧`);
+      }
+      return result;
     } catch (error) {
       console.error("Error adding water:", error);
       toast.error("Failed to add water");
+      return undefined;
     }
   };
 
-  const handleUpdateHydrationTarget = async (target: number) => {
+  const handleUpdateHydrationTarget = async (
+    target: number,
+  ): Promise<{ success: boolean } | undefined> => {
     try {
-      await updateHydrationTarget(target);
-      toast.success("Daily target updated!");
+      const result = await updateHydrationTarget(target);
+      if (result) {
+        toast.success("Daily target updated!");
+      }
+      return result;
     } catch (error) {
       console.error("Error updating target:", error);
       toast.error(
         error instanceof Error ? error.message : "Failed to update target",
       );
+      return undefined;
     }
   };
 

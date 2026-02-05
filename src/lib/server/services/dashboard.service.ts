@@ -8,6 +8,8 @@ import {
   nutritionPlansTable,
   nutritionPlanDaysTable,
   nutritionMealLogsTable,
+  hydrationSettingsTable,
+  hydrationLogsTable,
 } from "@/lib/server/db/schema";
 import {
   addDays,
@@ -19,12 +21,19 @@ import {
 import {
   completeWorkoutInputSchema,
   completeMealInputSchema,
+  addWaterInputSchema,
+  updateHydrationTargetInputSchema,
   type TodayWorkoutResponse,
   type CompleteWorkoutInput,
   type CompleteWorkoutResponse,
   type TodayNutritionResponse,
   type CompleteMealInput,
   type CompleteMealResponse,
+  type TodayHydrationResponse,
+  type AddWaterInput,
+  type AddWaterResponse,
+  type UpdateHydrationTargetInput,
+  type UpdateHydrationTargetResponse,
 } from "@/lib/validators/dashboard.validator";
 import { WorkoutPlan } from "@/lib/validators/workout-plan.validator";
 
@@ -298,5 +307,114 @@ export async function completeMeal(
   return {
     success: true,
     mealId,
+  };
+}
+
+// HYDRATION FUNCTIONS
+export async function getTodayHydration({
+  userId,
+}: {
+  userId: string;
+}): Promise<TodayHydrationResponse> {
+  let today = new Date();
+  today = addDays.call(today, 2); // for testing purposes only
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Get user's hydration settings
+  const settings = await db
+    .select()
+    .from(hydrationSettingsTable)
+    .where(eq(hydrationSettingsTable.user_id, userId))
+    .limit(1);
+
+  const dailyTargetMl =
+    settings.length > 0 ? settings[0].daily_target_ml : 2000;
+
+  // Get today's hydration logs
+  const logs = await db
+    .select()
+    .from(hydrationLogsTable)
+    .where(
+      and(
+        eq(hydrationLogsTable.user_id, userId),
+        gte(hydrationLogsTable.logged_at, today),
+        lte(hydrationLogsTable.logged_at, tomorrow),
+      ),
+    );
+
+  // Calculate total consumed
+  const totalConsumedMl = logs.reduce((sum, log) => sum + log.amount_ml, 0);
+  const percentage = Math.round((totalConsumedMl / dailyTargetMl) * 100);
+
+  return {
+    dailyTargetMl,
+    totalConsumedMl,
+    percentage,
+    logs: logs.map((log) => ({
+      id: log.id,
+      amountMl: log.amount_ml,
+      loggedAt: log.logged_at,
+    })),
+  };
+}
+
+/**
+ * Add water intake
+ */
+export async function addWater(
+  input: AddWaterInput,
+): Promise<AddWaterResponse> {
+  const validated = addWaterInputSchema.parse(input);
+  const { userId, amountMl } = validated;
+
+  const logId = crypto.randomUUID();
+
+  await db.insert(hydrationLogsTable).values({
+    id: logId,
+    user_id: userId,
+    amount_ml: amountMl,
+  });
+
+  return {
+    success: true,
+    logId,
+  };
+}
+
+/**
+ * Update daily hydration target
+ */
+export async function updateHydrationTarget(
+  input: UpdateHydrationTargetInput,
+): Promise<UpdateHydrationTargetResponse> {
+  const validated = updateHydrationTargetInputSchema.parse(input);
+  const { userId, dailyTargetMl } = validated;
+
+  // Upsert hydration settings
+  const existing = await db
+    .select()
+    .from(hydrationSettingsTable)
+    .where(eq(hydrationSettingsTable.user_id, userId))
+    .limit(1);
+
+  if (existing.length > 0) {
+    await db
+      .update(hydrationSettingsTable)
+      .set({
+        daily_target_ml: dailyTargetMl,
+        updated_at: new Date(),
+      })
+      .where(eq(hydrationSettingsTable.user_id, userId));
+  } else {
+    await db.insert(hydrationSettingsTable).values({
+      user_id: userId,
+      daily_target_ml: dailyTargetMl,
+    });
+  }
+
+  return {
+    success: true,
   };
 }

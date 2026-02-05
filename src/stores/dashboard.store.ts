@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type {
   TodayWorkoutResponse as WorkoutData,
   TodayNutritionResponse as NutritionData,
+  TodayHydrationResponse as HydrationData,
 } from "@/lib/validators/dashboard.validator";
 import {
   getTodayWorkoutApi,
@@ -12,12 +13,6 @@ import {
   addWaterApi,
   updateHydrationTargetApi,
 } from "@/lib/client/api/dashboard.api";
-
-export interface HydrationData {
-  dailyTarget: number;
-  totalConsumed: number;
-  percentage: number;
-}
 
 interface DashboardState {
   // State
@@ -43,8 +38,12 @@ interface DashboardState {
     notes?: string;
     status?: "PENDING" | "COMPLETED" | "SKIPPED" | "MISSED";
   }) => Promise<{ success: boolean; mealId: string } | undefined>;
-  addWater: (amount: number) => Promise<void>;
-  updateHydrationTarget: (target: number) => Promise<void>;
+  addWater: (
+    amount: number,
+  ) => Promise<{ success: boolean; logId: string } | undefined>;
+  updateHydrationTarget: (
+    target: number,
+  ) => Promise<{ success: boolean } | undefined>;
   reset: () => void;
 }
 
@@ -122,22 +121,30 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     return result;
   },
 
-  addWater: async (amount: number) => {
+  addWater: async (
+    amount: number,
+  ): Promise<{ success: boolean; logId: string } | undefined> => {
     const { fetchDashboardData } = get();
 
-    await addWaterApi(amount);
+    const result = await addWaterApi(amount);
     await fetchDashboardData();
+
+    return result;
   },
 
-  updateHydrationTarget: async (target: number) => {
+  updateHydrationTarget: async (
+    target: number,
+  ): Promise<{ success: boolean } | undefined> => {
     const { fetchDashboardData } = get();
 
     if (!target || target <= 0) {
       throw new Error("Please enter a valid target");
     }
 
-    await updateHydrationTargetApi(target);
+    const result = await updateHydrationTargetApi(target);
     await fetchDashboardData();
+
+    return result;
   },
 
   reset: () =>

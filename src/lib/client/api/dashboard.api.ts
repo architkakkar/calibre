@@ -3,6 +3,8 @@ import API_ROUTES from "@/lib/client/api-routes";
 import type {
   CompleteWorkoutResponse,
   CompleteMealResponse,
+  AddWaterResponse,
+  UpdateHydrationTargetResponse,
 } from "@/lib/validators/dashboard.validator";
 
 // Workout API
@@ -56,16 +58,18 @@ export async function getTodayHydrationApi() {
   return response.data;
 }
 
-export async function addWaterApi(amount: number) {
+export async function addWaterApi(amountMl: number): Promise<AddWaterResponse> {
   const response = await apiClient.post(API_ROUTES.dashboard.hydration, {
-    amount,
+    amountMl,
   });
   return response.data;
 }
 
-export async function updateHydrationTargetApi(dailyTarget: number) {
+export async function updateHydrationTargetApi(
+  dailyTargetMl: number,
+): Promise<UpdateHydrationTargetResponse> {
   const response = await apiClient.patch(API_ROUTES.dashboard.hydration, {
-    dailyTarget,
+    dailyTargetMl,
   });
   return response.data;
 }

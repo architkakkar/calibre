@@ -71,6 +71,13 @@
       "when": 1770292585438,
       "tag": "0009_easy_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1770294012063,
+      "tag": "0010_careless_spectrum",
+      "breakpoints": true
     }
   ]
 }

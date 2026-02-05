@@ -209,3 +209,21 @@ export const nutritionMealLogsTable = pgTable("nutrition_meal_logs", {
   meal_status: mealStatusEnum().notNull().default("PENDING"),
   logged_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });
+
+// HYDRATION TRACKING TABLES
+export const hydrationSettingsTable = pgTable("hydration_settings", {
+  user_id: varchar({ length: 255 })
+    .primaryKey()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  daily_target_ml: integer().notNull().default(2000),
+  updated_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const hydrationLogsTable = pgTable("hydration_logs", {
+  id: varchar({ length: 36 }).primaryKey(),
+  user_id: varchar({ length: 255 })
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  amount_ml: integer().notNull(),
+  logged_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
