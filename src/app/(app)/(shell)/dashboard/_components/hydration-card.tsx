@@ -40,6 +40,7 @@ export function HydrationCard({
 }: HydrationCardProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newTarget, setNewTarget] = useState("");
+  const hasGoal = data !== null;
 
   const handleUpdateTarget = async () => {
     const target = parseInt(newTarget);
@@ -63,9 +64,11 @@ export function HydrationCard({
               <CardTitle className="text-base leading-none pb-0.5">
                 Hydration
               </CardTitle>
-              <p className="text-xs text-muted-foreground mt-1">
-                Daily goal: {data?.dailyTargetMl || 2000}ml
-              </p>
+              {hasGoal && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Daily goal: {data.dailyTargetMl}ml
+                </p>
+              )}
             </div>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -107,121 +110,157 @@ export function HydrationCard({
         </div>
 
         {/* Progress Badge */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">
-            Progress: {data?.totalConsumedMl || 0}ml /{" "}
-            {data?.dailyTargetMl || 2000}ml
-          </span>
-          {data && data.percentage >= 100 && (
-            <Badge
-              variant="secondary"
-              className="rounded-full text-xs bg-green-500/10 text-green-600 border-green-500/20"
-            >
-              <HugeiconsIcon
-                icon={CheckmarkCircle02Icon}
-                className="w-3 h-3 mr-1"
-              />
-              Complete
-            </Badge>
-          )}
-        </div>
+        {hasGoal && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">
+              Progress: {data.totalConsumedMl}ml / {data.dailyTargetMl}ml
+            </span>
+            {data.percentage >= 100 && (
+              <Badge
+                variant="secondary"
+                className="rounded-full text-xs bg-green-500/10 text-green-600 border-green-500/20"
+              >
+                <HugeiconsIcon
+                  icon={CheckmarkCircle02Icon}
+                  className="w-3 h-3 mr-1"
+                />
+                Complete
+              </Badge>
+            )}
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="flex-1 relative overflow-y-auto max-h-full px-5 space-y-3">
-        {/* Circular progress */}
-        <div className="relative flex items-center justify-center py-4 mb-0">
-          <svg className="w-32 h-32 transform -rotate-90">
-            <circle
-              cx="64"
-              cy="64"
-              r="56"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="none"
-              className="text-muted/30"
-            />
-            <circle
-              cx="64"
-              cy="64"
-              r="56"
-              stroke="currentColor"
-              strokeWidth="8"
-              fill="none"
-              strokeDasharray={`${2 * Math.PI * 56}`}
-              strokeDashoffset={`${2 * Math.PI * 56 * (1 - (data?.percentage || 0) / 100)}`}
-              className="text-primary transition-all duration-1000"
-              strokeLinecap="round"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-3xl font-bold text-foreground">
-              {data?.percentage || 0}%
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {data?.totalConsumedMl || 0}ml
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Add Buttons */}
-        <div className="grid grid-cols-3 gap-2 pt-4">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onAddWater(250)}
-            className="rounded-xl h-8 text-xs"
-          >
-            +250ml
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onAddWater(500)}
-            className="rounded-xl h-8 text-xs"
-          >
-            +500ml
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onAddWater(1000)}
-            className="rounded-xl h-8 text-xs"
-          >
-            +1L
-          </Button>
-        </div>
-
-        {/* Water Log History */}
-        {data && data.logs.length > 0 && (
-          <div className="space-y-1.5">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-              Today&apos;s Intake
-            </p>
-            <div className="space-y-1 max-h-32 overflow-y-auto">
-              {data.logs.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-muted/30 border border-border/50"
-                >
-                  <div className="flex items-center gap-1.5">
-                    <HugeiconsIcon
-                      icon={DropletIcon}
-                      className="w-3 h-3 text-blue-500"
-                    />
-                    <span className="font-medium text-xs">
-                      {log.amountMl}ml
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-muted-foreground">
-                    {new Date(log.loggedAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
-              ))}
+        {!hasGoal ? (
+          <div className="flex flex-col items-center justify-center py-8 text-center space-y-3">
+            <div className="p-3 rounded-full bg-primary/10">
+              <HugeiconsIcon
+                icon={DropletIcon}
+                className="w-8 h-8 text-primary"
+              />
             </div>
+            <div className="space-y-1">
+              <h3 className="font-semibold text-sm">
+                Start Tracking Hydration
+              </h3>
+              <p className="text-xs text-muted-foreground max-w-50">
+                Set your daily water intake goal to begin tracking your
+                hydration
+              </p>
+            </div>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              className="rounded-xl mt-2"
+              size="sm"
+            >
+              Set Goal
+            </Button>
           </div>
+        ) : (
+          <>
+            {/* Circular progress */}
+            <div className="relative flex items-center justify-center py-4 mb-0">
+              <svg className="w-32 h-32 transform -rotate-90">
+                <circle
+                  cx="64"
+                  cy="64"
+                  r="56"
+                  stroke="currentColor"
+                  strokeWidth="8"
+                  fill="none"
+                  className="text-muted/30"
+                />
+                <circle
+                  cx="64"
+                  cy="64"
+                  r="56"
+                  stroke="currentColor"
+                  strokeWidth="8"
+                  fill="none"
+                  strokeDasharray={`${2 * Math.PI * 56}`}
+                  strokeDashoffset={`${2 * Math.PI * 56 * (1 - Math.min(data?.percentage || 0, 100) / 100)}`}
+                  className="text-primary transition-all duration-1000"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-3xl font-bold text-foreground">
+                  {Math.min(data?.percentage || 0, 100)}%
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {data?.totalConsumedMl || 0}ml
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Add Buttons */}
+            <div className="grid grid-cols-3 gap-2 pt-4">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAddWater(250)}
+                className="rounded-xl h-8 text-xs disabled:cursor-not-allowed!"
+                disabled={data.percentage >= 100}
+                title={data.percentage >= 100 ? "Target already achieved" : ""}
+              >
+                +250ml
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAddWater(500)}
+                className="rounded-xl h-8 text-xs disabled:cursor-not-allowed"
+                disabled={data.percentage >= 100}
+                title={data.percentage >= 100 ? "Target already achieved" : ""}
+              >
+                +500ml
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAddWater(1000)}
+                className="rounded-xl h-8 text-xs disabled:cursor-not-allowed"
+                disabled={data.percentage >= 100}
+                title={data.percentage >= 100 ? "Target already achieved" : ""}
+              >
+                +1L
+              </Button>
+            </div>
+
+            {/* Water Log History */}
+            {data && data.logs.length > 0 && (
+              <div className="space-y-1.5">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                  Today&apos;s Intake
+                </p>
+                <div className="space-y-1 max-h-32 overflow-y-auto">
+                  {data.logs.map((log) => (
+                    <div
+                      key={log.id}
+                      className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-muted/30 border border-border/50"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <HugeiconsIcon
+                          icon={DropletIcon}
+                          className="w-3 h-3 text-blue-500"
+                        />
+                        <span className="font-medium text-xs">
+                          {log.amountMl}ml
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-muted-foreground">
+                        {new Date(log.loggedAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>

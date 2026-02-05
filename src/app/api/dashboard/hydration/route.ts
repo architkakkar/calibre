@@ -21,6 +21,12 @@ export async function GET() {
 
   try {
     const data = await getTodayHydration({ userId });
+
+    // Return null if user hasn't set up hydration tracking
+    if (data === null) {
+      return NextResponse.json(null);
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching today's hydration:", error);

@@ -315,13 +315,7 @@ export async function getTodayHydration({
   userId,
 }: {
   userId: string;
-}): Promise<TodayHydrationResponse> {
-  let today = new Date();
-  today = addDays.call(today, 2); // for testing purposes only
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
+}): Promise<TodayHydrationResponse | null> {
   // Get user's hydration settings
   const settings = await db
     .select()
@@ -329,8 +323,18 @@ export async function getTodayHydration({
     .where(eq(hydrationSettingsTable.user_id, userId))
     .limit(1);
 
-  const dailyTargetMl =
-    settings.length > 0 ? settings[0].daily_target_ml : 2000;
+  // Return null if user hasn't set up hydration tracking yet
+  if (settings.length === 0) {
+    return null;
+  }
+
+  const dailyTargetMl = settings[0].daily_target_ml;
+
+  let today = new Date();
+  today = addDays.call(today, 2); // for testing purposes only
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   // Get today's hydration logs
   const logs = await db
@@ -342,11 +346,27 @@ export async function getTodayHydration({
         gte(hydrationLogsTable.logged_at, today),
         lte(hydrationLogsTable.logged_at, tomorrow),
       ),
-    );
+    )
+    .orderBy(hydrationLogsTable.logged_at);
+
+  console.log("[DEBUG] getTodayHydration:", {
+    userId,
+    today: today.toISOString(),
+    tomorrow: tomorrow.toISOString(),
+    logsCount: logs.length,
+    logs: logs.map((l) => ({
+      id: l.id,
+      amount: l.amount_ml,
+      logged_at: l.logged_at,
+    })),
+  });
 
   // Calculate total consumed
   const totalConsumedMl = logs.reduce((sum, log) => sum + log.amount_ml, 0);
-  const percentage = Math.round((totalConsumedMl / dailyTargetMl) * 100);
+  const percentage = Math.min(
+    Math.round((totalConsumedMl / dailyTargetMl) * 100),
+    100,
+  );
 
   return {
     dailyTargetMl,
@@ -371,10 +391,15 @@ export async function addWater(
 
   const logId = crypto.randomUUID();
 
+  // Apply same date offset as getTodayHydration for testing
+  let loggedAt = new Date();
+  loggedAt = addDays.call(loggedAt, 2);
+
   await db.insert(hydrationLogsTable).values({
     id: logId,
     user_id: userId,
     amount_ml: amountMl,
+    logged_at: loggedAt,
   });
 
   return {
