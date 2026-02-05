@@ -244,7 +244,7 @@ export function NutritionCard({ data, onCompleteMeal }: NutritionCardProps) {
                 <Button
                   onClick={handleLogMeal}
                   disabled={!mealType}
-                  className="w-full rounded-xl"
+                  className="w-full rounded-lg"
                 >
                   Log Meal
                 </Button>
