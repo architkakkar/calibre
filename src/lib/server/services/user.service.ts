@@ -2,7 +2,6 @@ import "server-only";
 
 import { db } from "@/lib/server/db/drizzle";
 import { eq } from "drizzle-orm";
-import { currentUser } from "@clerk/nextjs/server";
 import { updateClerkUserMetadata } from "@/lib/server/services/clerk.service";
 import {
   usersTable,
@@ -24,18 +23,26 @@ import {
   MOTIVATION_MAP,
 } from "@/lib/domain/onboarding.helpers";
 
-export async function getUser(): Promise<UserResponse | null> {
-  const user = await currentUser();
+export async function getUser(userId: string): Promise<UserResponse | null> {
+  const dbUser = await db
+    .select({
+      email: usersTable.email,
+      firstName: userProfilesTable.first_name,
+      lastName: userProfilesTable.last_name,
+    })
+    .from(usersTable)
+    .leftJoin(userProfilesTable, eq(usersTable.id, userProfilesTable.user_id))
+    .where(eq(usersTable.id, userId))
+    .limit(1);
 
-  if (!user) {
+  if (!dbUser || dbUser.length === 0) {
     return null;
   }
 
   return {
-    firstName: user.firstName || "User",
-    lastName: user.lastName || null,
-    email: user.emailAddresses[0]?.emailAddress || "",
-    imageUrl: user.imageUrl || null,
+    firstName: dbUser[0].firstName || "User",
+    lastName: dbUser[0].lastName || null,
+    email: dbUser[0].email,
   };
 }
 

@@ -203,7 +203,7 @@ export function Navbar() {
                 <Avatar className="size-7">
                   <AvatarImage />
                   <AvatarFallback className="text-xs bg-primary/90 text-background">
-                    AK
+                    {user?.firstName?.[0] + (user?.lastName?.[0] || "") || ""}
                   </AvatarFallback>
                 </Avatar>
                 <HugeiconsIcon icon={ArrowDown01FreeIcons} size={16} />
